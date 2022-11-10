@@ -1,5 +1,5 @@
 import javax.swing.*;
-import java.util.Objects;
+import java.awt.*;
 
 public class MainWindow {
     /**
@@ -8,24 +8,36 @@ public class MainWindow {
     static JFrame mainFrame;
 
     /**
-     *
+     * 当前页面
      */
-    MainWindow(){
+    static Page nowPage = new Page();
+
+
+
+    MainWindow() {
         // 窗口标题
         mainFrame = new JFrame("Picture Point 2077");
         // 窗口位置
-        mainFrame.setLocation(100,100);
+        mainFrame.setLocation(800, 300);
         // 窗口大小
-        mainFrame.setSize(900,600);
+        mainFrame.setSize(900, 600);
+        // 空界面
+        mainFrame.add(nowPage);
+        //
         // 窗口菜单栏
         setMenu();
+        // 监听器
+        setListener();
+        //隐藏标题栏
+        //mainFrame.setUndecorated(true);
     }
 
     /**
      * 配置菜单栏
      */
-    private void setMenu(){
+    private void setMenu() {
         JMenuBar menuBar = new JMenuBar();
+
         // 文件菜单
         JMenu fileMenu = new JMenu("文件");
 
@@ -47,7 +59,7 @@ public class MainWindow {
         JMenuItem drawSetPencil = new JMenuItem("设置画笔");
         drawMenu.add(drawSetPencil);
         menuBar.add(drawMenu);
-        
+
         // 操作菜单
         JMenu operationMenu = new JMenu("图像");
         JMenuItem operationUndo = new JMenuItem("撤销");
@@ -76,9 +88,20 @@ public class MainWindow {
         menuBar.add(settingMenu);
 
         mainFrame.setJMenuBar(menuBar);
+
     }
 
-    public void showMainWindow(){
+    /**
+     * 配置监听器
+     */
+    void setListener() {
+        DrawListener drawListener = new DrawListener();
+        drawListener.setPage(nowPage);
+        mainFrame.addMouseListener(drawListener);
+
+    }
+
+    public void showMainWindow() {
 
         mainFrame.setVisible(true);
     }
