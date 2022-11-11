@@ -1,9 +1,11 @@
-package Image;
+package Picture;
+
+import java.awt.*;
 
 /**
  * 直线类
  */
-public class Line extends BaseImage {
+public class Line extends Picture {
     /**
      * 直线右侧截止点X坐标
      */
@@ -45,7 +47,7 @@ public class Line extends BaseImage {
         }
     }
 
-    public Line() {
-        imageKind = 1;
+    public void draw(Graphics graphics){
+        graphics.drawLine(baseX, baseY, endX, endY);
     }
 }

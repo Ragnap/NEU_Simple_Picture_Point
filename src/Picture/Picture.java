@@ -1,16 +1,18 @@
-package Image;
+package Picture;
+
+import java.awt.*;
 
 /**
  * 图形基类
  */
-public class BaseImage {
+public class Picture {
     /**
      * 图形种类
      * 1:直线
-     * 2:
-     * 3:
-     * 4:
-     * 5:
+     * 2:矩形
+     * 3:圆
+     * 4:椭圆
+     * 5:文本
      */
     int imageKind;
     /**
@@ -43,5 +45,13 @@ public class BaseImage {
     public void move(int deltaX, int deltaY) {
         this.baseX += deltaX;
         this.baseY += deltaY;
+    }
+
+    /**
+     * 绘制图形，多态重载
+     * @param graphics 当前画笔
+     */
+    public void draw(Graphics graphics){
+
     }
 }

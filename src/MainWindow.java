@@ -16,10 +16,14 @@ public class MainWindow {
     MainWindow() {
         // 窗口标题
         mainFrame = new JFrame("Picture Point 2077");
-        // 窗口位置
-        mainFrame.setLocation(800, 300);
-        // 窗口大小
-        mainFrame.setSize(900, 600);
+        // 获取当前屏幕大小
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        // 设置窗口大小为1/4屏幕大小
+        mainFrame.setSize(screenSize.width/2,screenSize.height/2);
+        // 设置居中
+        mainFrame.setLocation(screenSize.width/4,screenSize.height/4);
+        // 设置默认关闭
+        mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // 空界面
         mainFrame.add(nowPage);
         //
@@ -58,6 +62,7 @@ public class MainWindow {
 
         // 查看菜单
         menuTitle = "查看";
+
         subMenuTitle = new String[]{};
         menuBar.add(creatMenu(menuTitle, subMenuTitle));
 

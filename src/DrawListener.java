@@ -1,6 +1,5 @@
-import Image.Line;
+import Picture.*;
 
-import java.awt.*;
 import java.awt.event.*;
 
 public class DrawListener implements MouseListener, ActionListener, MouseMotionListener {
@@ -24,11 +23,13 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     // 鼠标进入
     public void mouseEntered(MouseEvent e) {
+
     }
 
 
     // 鼠标退出
     public void mouseExited(MouseEvent e) {
+
     }
 
     // 鼠标按下
@@ -41,8 +42,11 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
     public void mouseReleased(MouseEvent e) {
         x2 = e.getX() - panelX;
         y2 = e.getY() - panelY;
-        Line newLine = new Line(x1, y1, x2, y2);
-        page.addImage(newLine);
+        //避免单次点击产生一个像素点
+        if (x2 == x1 && y1 == y2)
+            return;
+        Picture newImage = new Ellipse(x1, y1, x2, y2);
+        page.addImage(newImage);
         page.paint();
     }
 
@@ -60,8 +64,8 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
     public void mouseDragged(MouseEvent e) {
         x2 = e.getX() - panelX;
         y2 = e.getY() - panelY;
-        Line newLine = new Line(x1, y1, x2, y2);
-        page.addPreview(newLine);
+        Picture newImage = new Ellipse(x1, y1, x2, y2);
+        page.addPreview(newImage);
         page.paint();
     }
 }
