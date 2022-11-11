@@ -4,6 +4,15 @@ package Image;
  */
 public class BaseImage {
     /**
+     * 图形种类
+     * 1:直线
+     * 2:
+     * 3:
+     * 4:
+     * 5:
+     */
+    int imageKind;
+    /**
      * 图形左上角X坐标
      */
     int baseX;
@@ -18,6 +27,10 @@ public class BaseImage {
     public int getBaseY(){
         return baseY;
     }
+    public int getImageKind(){
+        return imageKind;
+    }
+
     /**
      * 移动图形
      *

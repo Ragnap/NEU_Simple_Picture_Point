@@ -98,7 +98,7 @@ public class MainWindow {
         DrawListener drawListener = new DrawListener();
         drawListener.setPage(nowPage);
         mainFrame.addMouseListener(drawListener);
-
+        mainFrame.addMouseMotionListener(drawListener);
     }
 
     public void showMainWindow() {

@@ -11,6 +11,7 @@ public class Line extends BaseImage {
      * 直线右侧截止点Y坐标
      */
     int endY;
+
     public int getEndX(){
         return endX;
     }
@@ -26,6 +27,7 @@ public class Line extends BaseImage {
      * @param BY B点Y坐标
      */
     public Line(int AX, int AY, int BX, int BY) {
+        imageKind = 1;
         // 确保起点在左
         if (AX < BX) {
             this.baseX = AX;
@@ -40,5 +42,7 @@ public class Line extends BaseImage {
             this.endY = AY;
         }
     }
-
+    public Line(){
+        imageKind = 1;
+    }
 }

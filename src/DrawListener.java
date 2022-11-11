@@ -42,8 +42,6 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     // 鼠标释放
     public void mouseReleased(MouseEvent e) {
-
-
         x2 = e.getX() - panelX;
         y2 = e.getY() - panelY;
 
@@ -59,10 +57,17 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     // 鼠标移动
     public void mouseMoved(MouseEvent e) {
+
     }
 
     // 鼠标拖动拖动
     public void mouseDragged(MouseEvent e) {
 
+        x2 = e.getX() - panelX;
+        y2 = e.getY() - panelY;
+
+        Line newLine = new Line(x1, y1, x2, y2);
+        page.addPreview(newLine);
+        page.paint();
     }
 }
