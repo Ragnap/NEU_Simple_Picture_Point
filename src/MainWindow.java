@@ -1,6 +1,5 @@
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class MainWindow {
     /**
@@ -12,7 +11,10 @@ public class MainWindow {
      * 当前页面
      */
     static Page nowPage = new Page();
-
+    /**
+     * 绘画监听器
+     */
+    static DrawListener drawListener = new DrawListener();
     MainWindow() {
         // 窗口标题
         mainFrame = new JFrame("Picture Point 2077");
@@ -52,7 +54,7 @@ public class MainWindow {
 
         // 绘制菜单
         menuTitle = "图像";
-        subMenuTitle = new String[]{"设置画笔"};
+        subMenuTitle = new String[]{"直线画笔","矩形画笔","圆形画笔","椭圆画笔","自由线画笔",};
         menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 操作菜单
@@ -88,6 +90,7 @@ public class MainWindow {
                 menu.addSeparator();
             else {
                 JMenuItem fileCrate = new JMenuItem(subMenu);
+                fileCrate.addActionListener(drawListener);
                 menu.add(fileCrate);
             }
         }
@@ -98,7 +101,6 @@ public class MainWindow {
      * 配置监听器
      */
     void setListener() {
-        DrawListener drawListener = new DrawListener();
         drawListener.setPage(nowPage);
         mainFrame.addMouseListener(drawListener);
         mainFrame.addMouseMotionListener(drawListener);

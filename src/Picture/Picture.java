@@ -12,7 +12,7 @@ public class Picture {
      * 2:矩形
      * 3:圆
      * 4:椭圆
-     * 5:文本
+     * 5:自由线
      */
     int imageKind;
     /**

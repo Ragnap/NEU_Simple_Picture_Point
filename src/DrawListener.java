@@ -1,23 +1,67 @@
 import Picture.*;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class DrawListener implements MouseListener, ActionListener, MouseMotionListener {
     int panelX, panelY;
     int x1, x2, y1, y2;
     private Page page;
+    /**
+     * 绘制模式
+     * 0:不进行绘制
+     * 1:直线
+     * 2:矩形
+     * 3:圆
+     * 4:椭圆
+     * 5:自由线
+     */
+    private int drawMode = 0;
+    /**
+     * 鼠标拖动轨迹上的点x坐标
+     */
+    private ArrayList<Integer> trailX;
+    /**
+     * 鼠标拖动轨迹上的点y坐标
+     */
+    private ArrayList<Integer> trailY;
 
+    /**
+     * 根据drawMode的值与对应的变量创建新的对应的图形
+     * @return 指向对应的图形的父类
+     */
+    Picture getNewPicture(){
+        return switch (drawMode) {
+            case 1 -> new Line(x1, y1, x2, y2);
+            case 2 -> new Rectangle(x1, y1, x2, y2);
+            case 3 -> new Circle(x1, y1, x2, y2);
+            case 4 -> new Ellipse(x1, y1, x2, y2);
+            case 5 -> new FreeLine(trailX, trailY);
+            default -> null;
+        };
+    }
+
+    /**
+     * 设置当前绘画页面
+     * @param page 当前页面
+     */
     public void setPage(Page page) {
         this.page = page;
         panelX = 8;
         panelY = 52;
     }
 
-    //记录图形类型信息
-    String imageType = "";
 
     public void actionPerformed(ActionEvent e) {
-        imageType = e.getActionCommand();
+        System.out.println("目录中 选中 "+e.getActionCommand());
+        switch (e.getActionCommand()) {
+            case "直线画笔" -> drawMode = 1;
+            case "矩形画笔" -> drawMode = 2;
+            case "圆形画笔" -> drawMode = 3;
+            case "椭圆形画笔" -> drawMode = 4;
+            case "自由线画笔" -> drawMode = 5;
+            default -> drawMode = 0;
+        }
     }
 
 
@@ -34,19 +78,30 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     // 鼠标按下
     public void mousePressed(MouseEvent e) {
+        if (drawMode == 0)
+            return;
         x1 = e.getX() - panelX;
         y1 = e.getY() - panelY;
+        if (drawMode == 5) {
+            trailX = new ArrayList<>();
+            trailX.add(x1);
+            trailY = new ArrayList<>();
+            trailY.add(y1);
+        }
     }
 
     // 鼠标释放
     public void mouseReleased(MouseEvent e) {
+        if (drawMode == 0)
+            return;
         x2 = e.getX() - panelX;
         y2 = e.getY() - panelY;
         //避免单次点击产生一个像素点
-        if (x2 == x1 && y1 == y2)
+        if (x2 == x1 && y1 == y2 && drawMode != 5)
             return;
-        Picture newImage = new Ellipse(x1, y1, x2, y2);
-        page.addImage(newImage);
+        Picture newPicture = getNewPicture();
+        if (newPicture != null)
+            page.addImage(newPicture);
         page.paint();
     }
 
@@ -62,10 +117,18 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     // 鼠标拖动拖动
     public void mouseDragged(MouseEvent e) {
+        if (drawMode == 0)
+            return;
         x2 = e.getX() - panelX;
         y2 = e.getY() - panelY;
-        Picture newImage = new Ellipse(x1, y1, x2, y2);
-        page.addPreview(newImage);
+        if(drawMode == 5){
+            trailX.add(x2);
+            trailY.add(y2);
+        }
+        Picture newPicture = getNewPicture();
+        if (newPicture != null)
+            page.addPreview(newPicture);
+
         page.paint();
     }
 }
