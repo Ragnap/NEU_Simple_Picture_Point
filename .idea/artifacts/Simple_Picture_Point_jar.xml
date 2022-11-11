@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Simple_Picture_Point:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Simple_Picture_Point_jar</output-path>
+    <root id="archive" name="Simple_Picture_Point.jar">
+      <element id="module-output" name="Simple_Picture_Point" />
+    </root>
+  </artifact>
+</component>

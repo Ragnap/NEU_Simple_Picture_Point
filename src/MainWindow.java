@@ -1,5 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
 
 public class MainWindow {
     /**
@@ -15,20 +17,29 @@ public class MainWindow {
      * 绘画监听器
      */
     static DrawListener drawListener = new DrawListener();
+
     MainWindow() {
+
+
         // 窗口标题
         mainFrame = new JFrame("Picture Point 2077");
+
+        // 窗口图标
+        ImageIcon imageIcon = new ImageIcon("./src/Resource/PicturePoint2077.png");
+        mainFrame.setIconImage(imageIcon.getImage());
+
         // 获取当前屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         // 设置窗口大小为1/4屏幕大小
-        mainFrame.setSize(screenSize.width/2,screenSize.height/2);
+        mainFrame.setSize(screenSize.width / 2, screenSize.height / 2);
         // 设置居中
-        mainFrame.setLocation(screenSize.width/4,screenSize.height/4);
+        mainFrame.setLocation(screenSize.width / 4, screenSize.height / 4);
         // 设置默认关闭
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // 空界面
         mainFrame.add(nowPage);
-        //
+
+
         // 窗口菜单栏
         setMenu();
         // 监听器
@@ -54,7 +65,7 @@ public class MainWindow {
 
         // 绘制菜单
         menuTitle = "图像";
-        subMenuTitle = new String[]{"直线画笔","矩形画笔","圆形画笔","椭圆画笔","自由线画笔",};
+        subMenuTitle = new String[]{"直线画笔", "矩形画笔", "圆形画笔", "椭圆画笔", "自由线画笔",};
         menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 操作菜单

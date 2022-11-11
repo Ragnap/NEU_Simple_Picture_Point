@@ -58,7 +58,7 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
             case "直线画笔" -> drawMode = 1;
             case "矩形画笔" -> drawMode = 2;
             case "圆形画笔" -> drawMode = 3;
-            case "椭圆形画笔" -> drawMode = 4;
+            case "椭圆画笔" -> drawMode = 4;
             case "自由线画笔" -> drawMode = 5;
             default -> drawMode = 0;
         }
