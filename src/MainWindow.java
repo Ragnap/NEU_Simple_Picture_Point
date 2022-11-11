@@ -1,5 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 
 public class MainWindow {
     /**
@@ -11,8 +12,6 @@ public class MainWindow {
      * 当前页面
      */
     static Page nowPage = new Page();
-
-
 
     MainWindow() {
         // 窗口标题
@@ -36,59 +35,58 @@ public class MainWindow {
      * 配置菜单栏
      */
     private void setMenu() {
+
         JMenuBar menuBar = new JMenuBar();
 
+        String menuTitle = null;
+        String[] subMenuTitle = null;
+
         // 文件菜单
-        JMenu fileMenu = new JMenu("文件");
-
-        JMenuItem fileCrate = new JMenuItem("新建");
-        fileMenu.add(fileCrate);
-        JMenuItem fileOpen = new JMenuItem("打开");
-        fileMenu.add(fileOpen);
-        JMenuItem fileSave = new JMenuItem("保存");
-        fileMenu.add(fileSave);
-        JMenuItem fileMenuSaveAs = new JMenuItem("另存为");
-        fileMenu.add(fileMenuSaveAs);
-
-
-        menuBar.add(fileMenu);
+        menuTitle = "文件";
+        subMenuTitle = new String[]{"新建", "打开", "保存", "另存为"};
+        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 绘制菜单
-        JMenu drawMenu = new JMenu("图像");
-
-        JMenuItem drawSetPencil = new JMenuItem("设置画笔");
-        drawMenu.add(drawSetPencil);
-        menuBar.add(drawMenu);
+        menuTitle = "图像";
+        subMenuTitle = new String[]{"设置画笔"};
+        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 操作菜单
-        JMenu operationMenu = new JMenu("图像");
-        JMenuItem operationUndo = new JMenuItem("撤销");
-        operationMenu.add(operationUndo);
-        JMenuItem operationRedo = new JMenuItem("重做");
-        operationMenu.add(operationRedo);
-        operationMenu.addSeparator();
-        JMenuItem operationCratePic = new JMenuItem("新建图形");
-        operationMenu.add(operationCratePic);
-        JMenuItem operationCrateText = new JMenuItem("新建文字");
-        operationMenu.add(operationCrateText);
-        operationMenu.addSeparator();
-        JMenuItem operationSetPencil = new JMenuItem("设置画笔");
-        operationMenu.add(operationSetPencil);
-        menuBar.add(operationMenu);
+        menuTitle = "操作";
+        subMenuTitle = new String[]{"撤销", "重做", "-", "新建图形", "新建文字", "-", "设置画笔"};
+        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 查看菜单
-        JMenu viewMenu = new JMenu("查看");
-
-        menuBar.add(viewMenu);
-
+        menuTitle = "查看";
+        subMenuTitle = new String[]{};
+        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 设置菜单
-        JMenu settingMenu = new JMenu("设置");
-
-        menuBar.add(settingMenu);
+        menuTitle = "设置";
+        subMenuTitle = new String[]{};
+        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         mainFrame.setJMenuBar(menuBar);
+    }
 
+    /**
+     * 根据输入的子项创建一个创建目录
+     *
+     * @param title        目录名
+     * @param subMenuTitle 子目录名，‘-’表示分隔符
+     * @return 生成的目录
+     */
+    JMenu creatMenu(String title, String[] subMenuTitle) {
+        JMenu menu = new JMenu(title);
+        for (String subMenu : subMenuTitle) {
+            if (subMenu.equals("-"))
+                menu.addSeparator();
+            else {
+                JMenuItem fileCrate = new JMenuItem(subMenu);
+                menu.add(fileCrate);
+            }
+        }
+        return menu;
     }
 
     /**
@@ -102,7 +100,6 @@ public class MainWindow {
     }
 
     public void showMainWindow() {
-
         mainFrame.setVisible(true);
     }
 

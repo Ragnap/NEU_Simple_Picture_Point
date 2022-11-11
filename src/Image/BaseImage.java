@@ -1,4 +1,5 @@
 package Image;
+
 /**
  * 图形基类
  */
@@ -21,13 +22,15 @@ public class BaseImage {
      */
     int baseY;
 
-    public int getBaseX(){
+    public int getBaseX() {
         return baseX;
     }
-    public int getBaseY(){
+
+    public int getBaseY() {
         return baseY;
     }
-    public int getImageKind(){
+
+    public int getImageKind() {
         return imageKind;
     }
 
@@ -41,6 +44,4 @@ public class BaseImage {
         this.baseX += deltaX;
         this.baseY += deltaY;
     }
-
-
 }

@@ -28,7 +28,6 @@ public class Page extends JPanel {
 
     void addImage(BaseImage newImage) {
         Images.add(newImage);
-        System.out.println(Images.size());
         deletePreview();
     }
 
@@ -45,7 +44,7 @@ public class Page extends JPanel {
 
         //缓冲区
         if (buffer != null) {
-            graphics.drawImage(buffer,0,0,this);
+            graphics.drawImage(buffer, 0, 0, this);
         }
 
         buffer = createImage(this.getWidth(), this.getWidth());
@@ -66,6 +65,5 @@ public class Page extends JPanel {
         }
 
         bufferGraphics.dispose();
-
     }
 }

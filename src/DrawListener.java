@@ -12,7 +12,6 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
         this.page = page;
         panelX = 8;
         panelY = 52;
-
     }
 
     //记录图形类型信息
@@ -34,17 +33,14 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     // 鼠标按下
     public void mousePressed(MouseEvent e) {
-        System.out.println(e.getX() + " " + e.getY());
         x1 = e.getX() - panelX;
         y1 = e.getY() - panelY;
-
     }
 
     // 鼠标释放
     public void mouseReleased(MouseEvent e) {
         x2 = e.getX() - panelX;
         y2 = e.getY() - panelY;
-
         Line newLine = new Line(x1, y1, x2, y2);
         page.addImage(newLine);
         page.paint();
@@ -62,10 +58,8 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     // 鼠标拖动拖动
     public void mouseDragged(MouseEvent e) {
-
         x2 = e.getX() - panelX;
         y2 = e.getY() - panelY;
-
         Line newLine = new Line(x1, y1, x2, y2);
         page.addPreview(newLine);
         page.paint();

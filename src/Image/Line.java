@@ -1,4 +1,5 @@
 package Image;
+
 /**
  * 直线类
  */
@@ -12,12 +13,14 @@ public class Line extends BaseImage {
      */
     int endY;
 
-    public int getEndX(){
+    public int getEndX() {
         return endX;
     }
-    public int getEndY(){
+
+    public int getEndY() {
         return endY;
     }
+
     /**
      * 通过给定端点A，B创建直线
      *
@@ -34,15 +37,15 @@ public class Line extends BaseImage {
             this.baseY = AY;
             this.endX = BX;
             this.endY = BY;
-        }
-        else{
+        } else {
             this.baseX = BX;
             this.baseY = BY;
             this.endX = AX;
             this.endY = AY;
         }
     }
-    public Line(){
+
+    public Line() {
         imageKind = 1;
     }
 }
