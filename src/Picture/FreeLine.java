@@ -32,10 +32,20 @@ public class FreeLine extends Picture {
         pointsY = y;
     }
 
-    public void draw(Graphics graphics) {
+    public void draw(Graphics2D graphics) {
+        //设置特色属性
+        Color originColor = graphics.getColor();
+        BasicStroke originStroke = (BasicStroke) graphics.getStroke();
+        graphics.setColor(color);
+        graphics.setStroke(stroke);
+
+        graphics.setStroke(new BasicStroke(2f) );
         for (int i = 1; i < pointsX.size(); i++) {
             graphics.drawLine(pointsX.get(i - 1), pointsY.get(i - 1), pointsX.get(i), pointsY.get(i));
         }
+        //还原画笔
+        graphics.setColor(originColor);
+        graphics.setStroke(originStroke);
     }
 
 }

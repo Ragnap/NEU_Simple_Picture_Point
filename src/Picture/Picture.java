@@ -23,6 +23,20 @@ public class Picture {
      * 图形左上角Y坐标
      */
     int baseY;
+    /**
+     *  图形名称
+     */
+    String name;
+
+    /**
+     *  图形颜色
+     */
+    Color color = Color.BLACK;
+
+    /**
+     *  图形宽带
+     */
+    BasicStroke stroke = new BasicStroke(1.0f);
 
     public int getBaseX() {
         return baseX;
@@ -34,6 +48,26 @@ public class Picture {
 
     public int getImageKind() {
         return imageKind;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setStroke(BasicStroke stroke) {
+        this.stroke = stroke;
     }
 
     /**
@@ -51,7 +85,7 @@ public class Picture {
      * 绘制图形，多态重载
      * @param graphics 当前画笔
      */
-    public void draw(Graphics graphics){
+    public void draw(Graphics2D graphics){
 
     }
 }

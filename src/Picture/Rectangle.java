@@ -12,13 +12,6 @@ public class Rectangle extends Picture {
      */
     int height;
 
-    public int getHeight() {
-        return height;
-    }
-
-    public int getWeight() {
-        return weight;
-    }
     /**
      * 通过给左上角点A，右下角点B创建矩形
      *
@@ -35,7 +28,16 @@ public class Rectangle extends Picture {
         this.height = Math.abs(AY - BY);
     }
 
-    public void draw(Graphics graphics){
+    public void draw(Graphics2D graphics){
+        //设置特色属性
+        Color originColor = graphics.getColor();
+        BasicStroke originStroke = (BasicStroke) graphics.getStroke();
+        graphics.setColor(color);
+        graphics.setStroke(stroke);
+
         graphics.drawRect(baseX, baseY, weight, height);
+        //还原画笔
+        graphics.setColor(originColor);
+        graphics.setStroke(originStroke);
     }
 }

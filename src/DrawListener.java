@@ -1,5 +1,7 @@
 import Picture.*;
+import Picture.Rectangle;
 
+import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
@@ -25,13 +27,37 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
      * 鼠标拖动轨迹上的点y坐标
      */
     private ArrayList<Integer> trailY;
+    /**
+     * 当前画笔颜色
+     */
+    private Color color = Color.BLACK;
+    /**
+     * 当前画笔粗细
+     */
+    private BasicStroke stroke = new BasicStroke();
+    /**
+     * 当前画笔字体
+     */
+    private Font font = new Font("宋体",Font.PLAIN,10);
+
+    public void setColor(Color color) {
+        this.color = color;
+    }
+
+    public void setStroke(BasicStroke stroke) {
+        this.stroke = stroke;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
 
     /**
      * 根据drawMode的值与对应的变量创建新的对应的图形
      * @return 指向对应的图形的父类
      */
     Picture getNewPicture(){
-        return switch (drawMode) {
+        Picture newPicture = switch (drawMode) {
             case 1 -> new Line(x1, y1, x2, y2);
             case 2 -> new Rectangle(x1, y1, x2, y2);
             case 3 -> new Circle(x1, y1, x2, y2);
@@ -39,6 +65,11 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
             case 5 -> new FreeLine(trailX, trailY);
             default -> null;
         };
+        if( newPicture == null)
+            return null;
+        newPicture.setColor(color);
+        newPicture.setStroke(stroke);
+        return newPicture;
     }
 
     /**
@@ -53,7 +84,9 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println("目录中 选中 "+e.getActionCommand());
+        System.out.print("选中"+e.getActionCommand());
+        System.out.print(" 颜色为("+color.getRed()+","+color.getGreen()+","+color.getBlue()+","+color.getAlpha()+")");
+        System.out.println(" 粗细为"+stroke.getLineWidth()+"px");
         switch (e.getActionCommand()) {
             case "直线画笔" -> drawMode = 1;
             case "矩形画笔" -> drawMode = 2;
@@ -128,7 +161,6 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
         Picture newPicture = getNewPicture();
         if (newPicture != null)
             page.addPreview(newPicture);
-
         page.paint();
     }
 }

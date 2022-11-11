@@ -15,14 +15,6 @@ public class Line extends Picture {
      */
     int endY;
 
-    public int getEndX() {
-        return endX;
-    }
-
-    public int getEndY() {
-        return endY;
-    }
-
     /**
      * 通过给定端点A，B创建直线
      *
@@ -32,6 +24,7 @@ public class Line extends Picture {
      * @param BY B点Y坐标
      */
     public Line(int AX, int AY, int BX, int BY) {
+
         imageKind = 1;
         // 确保起点在左
         if (AX < BX) {
@@ -47,7 +40,16 @@ public class Line extends Picture {
         }
     }
 
-    public void draw(Graphics graphics){
+    public void draw(Graphics2D graphics){
+        //设置特色属性
+        Color originColor = graphics.getColor();
+        BasicStroke originStroke = (BasicStroke) graphics.getStroke();
+        graphics.setColor(color);
+        graphics.setStroke(stroke);
+
         graphics.drawLine(baseX, baseY, endX, endY);
+        //还原画笔
+        graphics.setColor(originColor);
+        graphics.setStroke(originStroke);
     }
 }

@@ -10,12 +10,9 @@ public class Circle extends Picture {
      */
     int r;
 
-    public int getR() {
-        return r;
-    }
-
     /**
      * 创建以O为圆心,过B点的圆
+     *
      * @param OX O点X坐标
      * @param OY O点Y坐标
      * @param BX B点X坐标
@@ -28,7 +25,16 @@ public class Circle extends Picture {
         r = (int) sqrt((BX - OX) * (BX - OX) + (BY - OY) * (BY - OY));
     }
 
-    public void draw(Graphics graphics) {
+    public void draw(Graphics2D graphics) {
+        //设置特色属性
+        Color originColor = graphics.getColor();
+        BasicStroke originStroke = (BasicStroke) graphics.getStroke();
+        graphics.setColor(color);
+        graphics.setStroke(stroke);
+
         graphics.drawOval(baseX - r, baseY - r, r * 2, r * 2);
+        //还原画笔
+        graphics.setColor(originColor);
+        graphics.setStroke(originStroke);
     }
 }

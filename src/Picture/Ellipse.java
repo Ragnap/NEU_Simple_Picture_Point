@@ -31,7 +31,16 @@ public class Ellipse extends Picture {
         b = abs(BY - OY);
     }
 
-    public void draw(Graphics graphics) {
+    public void draw(Graphics2D graphics) {
+        //设置特色属性
+        Color originColor = graphics.getColor();
+        BasicStroke originStroke = (BasicStroke) graphics.getStroke();
+        graphics.setColor(color);
+        graphics.setStroke(stroke);
+
         graphics.drawOval(baseX - a, baseY - b, a * 2, b * 2);
+        //还原画笔
+        graphics.setColor(originColor);
+        graphics.setStroke(originStroke);
     }
 }

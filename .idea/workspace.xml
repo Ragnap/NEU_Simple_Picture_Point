@@ -46,7 +46,7 @@
     "project.structure.last.edited": "Artifacts",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.keymap"
+    "settings.editor.selected.configurable": "editor.preferences.appearance"
   }
 }]]></component>
   <component name="RecentsManager">
@@ -66,7 +66,7 @@
       <workItem from="1667919736062" duration="4201000" />
       <workItem from="1668060039646" duration="13644000" />
       <workItem from="1668094152737" duration="648000" />
-      <workItem from="1668155162120" duration="13187000" />
+      <workItem from="1668155162120" duration="17540000" />
     </task>
     <servers />
   </component>
@@ -83,5 +83,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

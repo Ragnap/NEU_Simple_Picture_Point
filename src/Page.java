@@ -47,7 +47,8 @@ public class Page extends JPanel {
         }
 
         buffer = createImage(this.getWidth(), this.getWidth());
-        Graphics bufferGraphics = buffer.getGraphics();
+
+        Graphics2D bufferGraphics = (Graphics2D)buffer.getGraphics();
 
         //当前界面
         for (Picture image : Images) {

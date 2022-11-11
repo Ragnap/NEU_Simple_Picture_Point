@@ -65,7 +65,7 @@ public class MainWindow {
 
         // 绘制菜单
         menuTitle = "图像";
-        subMenuTitle = new String[]{"直线画笔", "矩形画笔", "圆形画笔", "椭圆画笔", "自由线画笔",};
+        subMenuTitle = new String[]{"直线画笔", "矩形画笔", "圆形画笔", "椭圆画笔", "自由线画笔", "-", "颜色设置", "精细颜色设置", "大小设置"};
         menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 操作菜单
