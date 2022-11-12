@@ -1,11 +1,12 @@
 import Picture.*;
 import Picture.Rectangle;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class DrawListener implements MouseListener, ActionListener, MouseMotionListener {
+public class Painter implements MouseListener, ActionListener, MouseMotionListener {
     int panelX, panelY;
     int x1, x2, y1, y2;
     private Page page;
@@ -38,7 +39,7 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
     /**
      * 当前画笔字体
      */
-    private Font font = new Font("宋体",Font.PLAIN,10);
+    private Font font = new Font("宋体", Font.PLAIN, 10);
 
     public void setColor(Color color) {
         this.color = color;
@@ -54,9 +55,10 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     /**
      * 根据drawMode的值与对应的变量创建新的对应的图形
+     *
      * @return 指向对应的图形的父类
      */
-    Picture getNewPicture(){
+    Picture getNewPicture() {
         Picture newPicture = switch (drawMode) {
             case 1 -> new Line(x1, y1, x2, y2);
             case 2 -> new Rectangle(x1, y1, x2, y2);
@@ -65,7 +67,7 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
             case 5 -> new FreeLine(trailX, trailY);
             default -> null;
         };
-        if( newPicture == null)
+        if (newPicture == null)
             return null;
         newPicture.setColor(color);
         newPicture.setStroke(stroke);
@@ -74,6 +76,7 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
     /**
      * 设置当前绘画页面
+     *
      * @param page 当前页面
      */
     public void setPage(Page page) {
@@ -84,16 +87,30 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
 
 
     public void actionPerformed(ActionEvent e) {
-        System.out.print("选中"+e.getActionCommand());
-        System.out.print(" 颜色为("+color.getRed()+","+color.getGreen()+","+color.getBlue()+","+color.getAlpha()+")");
-        System.out.println(" 粗细为"+stroke.getLineWidth()+"px");
+        System.out.print("选中" + e.getActionCommand());
+        System.out.print(" 颜色为(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + "," + color.getAlpha() + ")");
+        System.out.println(" 粗细为" + stroke.getLineWidth() + "px");
+        // 画笔设置
         switch (e.getActionCommand()) {
             case "直线画笔" -> drawMode = 1;
             case "矩形画笔" -> drawMode = 2;
             case "圆形画笔" -> drawMode = 3;
             case "椭圆画笔" -> drawMode = 4;
             case "自由线画笔" -> drawMode = 5;
-            default -> drawMode = 0;
+//            default -> drawMode = 0;
+        }
+        // 颜色设置
+        switch (e.getActionCommand()) {
+            case "黑色" -> color = Color.black;
+            case "红色" -> color = Color.red;
+            case "黄色" -> color = Color.yellow;
+            case "蓝色" -> color = Color.blue;
+            case "绿色" -> color = Color.green;
+//            default -> color = Color.black;
+        }
+        if(e.getActionCommand().equals("精细颜色设置")){
+            String inputValue = JOptionPane.showInputDialog("Please input a value");
+            System.out.println(inputValue);
         }
     }
 
@@ -117,8 +134,8 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
         y1 = e.getY() - panelY;
         if (drawMode == 5) {
             trailX = new ArrayList<>();
-            trailX.add(x1);
             trailY = new ArrayList<>();
+            trailX.add(x1);
             trailY.add(y1);
         }
     }
@@ -154,7 +171,7 @@ public class DrawListener implements MouseListener, ActionListener, MouseMotionL
             return;
         x2 = e.getX() - panelX;
         y2 = e.getY() - panelY;
-        if(drawMode == 5){
+        if (drawMode == 5) {
             trailX.add(x2);
             trailY.add(y2);
         }
