@@ -1,3 +1,5 @@
+package custom.panel;
+
 import custom.picture.Picture;
 
 import javax.swing.*;
@@ -12,29 +14,29 @@ public class Page extends JPanel {
     /**
      * 该页面上的图形列表
      */
-    ArrayList<Picture> Images = new ArrayList<>();
+    private ArrayList<Picture> Images = new ArrayList<>();
 
     /**
      * 正在绘制的图形预览
      */
-    Picture previewImage = null;
+    private Picture previewImage = null;
 
     /**
      * 双缓冲消除闪烁
      */
-    Image buffer = null;
+    private Image buffer = null;
 
 
-    void addImage(Picture newImage) {
+    public void addImage(Picture newImage) {
         Images.add(newImage);
         deletePreview();
     }
 
-    void addPreview(Picture previewImage) {
+    public void addPreview(Picture previewImage) {
         this.previewImage = previewImage;
     }
 
-    void deletePreview() {
+    public void deletePreview() {
         this.previewImage = null;
     }
 

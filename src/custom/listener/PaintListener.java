@@ -1,13 +1,16 @@
+package custom.listener;
+
+import custom.MainWindow;
+import custom.panel.Page;
 import custom.picture.*;
-import custom.picture.*;
+
 import custom.picture.Rectangle;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class Painter implements MouseListener, ActionListener, MouseMotionListener {
+public class PaintListener implements MouseListener, ActionListener, MouseMotionListener {
 
     private MainWindow mainWindow;
     private int x1, x2, y1, y2;
@@ -86,7 +89,6 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
      * @param page 当前页面
      */
     public void setPage(Page page) {
-        System.out.println(page.toString());
         this.page = page;
     }
 
@@ -116,7 +118,7 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
     }
 
 
-    // 鼠标进入,隐藏所有控制栏
+    // 鼠标进入
     public void mouseEntered(MouseEvent e) {
 
     }
@@ -129,6 +131,7 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
 
     // 鼠标按下
     public void mousePressed(MouseEvent e) {
+        // 隐藏所有控制栏
         mainWindow.hideAllSettingPanel();
         if (drawMode == 0)
             return;
@@ -146,8 +149,8 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
     public void mouseReleased(MouseEvent e) {
         if (drawMode == 0)
             return;
-        x2 = e.getX() ;
-        y2 = e.getY() ;
+        x2 = e.getX();
+        y2 = e.getY();
         //避免单次点击产生一个像素点
         if (x2 == x1 && y1 == y2 && drawMode != 5)
             return;
@@ -171,8 +174,8 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
     public void mouseDragged(MouseEvent e) {
         if (drawMode == 0)
             return;
-        x2 = e.getX() ;
-        y2 = e.getY() ;
+        x2 = e.getX();
+        y2 = e.getY();
         if (drawMode == 5) {
             trailX.add(x2);
             trailY.add(y2);

@@ -1,4 +1,9 @@
+package custom;
+
+import custom.listener.PaintListener;
+import custom.listener.SettingListener;
 import custom.panel.ColorSettingBar;
+import custom.panel.Page;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +13,7 @@ public class MainWindow {
     /**
      * 主界面框架
      */
-    JFrame mainFrame= new JFrame("Picture Point 2077");
+    JFrame mainFrame = new JFrame("Picture Point 2077");
     /**
      * 主页面,JLayeredPane提供覆盖的高低控制
      */
@@ -24,15 +29,15 @@ public class MainWindow {
     /**
      * 绘画监听器
      */
-    Painter painter = new Painter();
+    PaintListener paintListener = new PaintListener();
 
     /**
      * 颜色设置工具栏
      */
-    ColorSettingBar colorSettingBar= new ColorSettingBar();
+    ColorSettingBar colorSettingBar = new ColorSettingBar();
 
 
-    MainWindow() {
+    public MainWindow() {
 
         // 窗口图标
         ImageIcon imageIcon = new ImageIcon("./src/Resource/PicturePoint2077.png");
@@ -58,7 +63,7 @@ public class MainWindow {
         setMenu();
 
         // 颜色状态设置栏
-
+        colorSettingBar.setPaintListener(paintListener);
 
         // 默认不显示工具栏
         hideAllSettingPanel();
@@ -68,17 +73,16 @@ public class MainWindow {
 
 
         // 画笔
-        painter.setPage(nowPage);
-        painter.setMainWindow(this);
-        mainWindow.addMouseListener(painter);
-        mainWindow.addMouseMotionListener(painter);
+        paintListener.setPage(nowPage);
+        paintListener.setMainWindow(this);
+        mainWindow.addMouseListener(paintListener);
+        mainWindow.addMouseMotionListener(paintListener);
 
 
-
-        mainWindow.setSize(screenSize.width / 2,screenSize.height / 2);
+        mainWindow.setSize(screenSize.width / 2, screenSize.height / 2);
         mainWindow.setLayout(null);
-        mainWindow.add(nowPage,JLayeredPane.DEFAULT_LAYER);
-        mainWindow.add(colorSettingBar,JLayeredPane.MODAL_LAYER);
+        mainWindow.add(nowPage, JLayeredPane.DEFAULT_LAYER);
+        mainWindow.add(colorSettingBar, JLayeredPane.MODAL_LAYER);
 
     }
 
@@ -172,7 +176,7 @@ public class MainWindow {
             //正常目录
             else {
                 JMenuItem subMenu = new JMenuItem(subMenuTitle);
-                subMenu.addActionListener(painter);
+                subMenu.addActionListener(paintListener);
                 subMenu.addActionListener(settingListener);
                 menu.add(subMenu);
             }
@@ -184,16 +188,18 @@ public class MainWindow {
     /**
      * 隐藏所有工具栏
      */
-    public void hideAllSettingPanel(){
+    public void hideAllSettingPanel() {
         colorSettingBar.setVisible(false);
     }
+
     /**
      * 颜色设置工具栏可见性
      */
-    public void setColorSettingBarVisible(Boolean state){
+    public void setColorSettingBarVisible(Boolean state) {
         colorSettingBar.setVisible(state);
 
     }
+
     public void showMainWindow() {
         mainFrame.setVisible(true);
 

@@ -1,6 +1,7 @@
 package custom.panel;
 
 import custom.listener.ColorSettingBarListener;
+import custom.listener.PaintListener;
 
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
@@ -10,34 +11,43 @@ import java.awt.*;
  * 设置颜色所使用的上方工具栏
  */
 public class ColorSettingBar extends JPanel {
-    Integer r;
-    Integer g;
-    Integer b;
+
+    Color color = new Color(0, 0, 0);
+
+    /**
+     * 控制的画笔
+     */
+    PaintListener paintListener;
+
+    public void setPaintListener(PaintListener paintListener) {
+        this.paintListener = paintListener;
+    }
+
     /**
      * R颜色设置条
      */
-    JScrollBar scrollBarR= new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 256);
+    JScrollBar scrollBarR = new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 256);
     /**
      * G颜色设置条
      */
-    JScrollBar scrollBarG= new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 256);
+    JScrollBar scrollBarG = new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 256);
     /**
      * B颜色设置条
      */
-    JScrollBar scrollBarB= new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 256);
+    JScrollBar scrollBarB = new JScrollBar(JScrollBar.HORIZONTAL, 0, 1, 0, 256);
 
     /**
      * R值显示
      */
-    JLabel textR= new JLabel();
+    JLabel textR = new JLabel();
     /**
      * G值显示
      */
-    JLabel textG= new JLabel();
+    JLabel textG = new JLabel();
     /**
      * B值显示
      */
-    JLabel textB= new JLabel();
+    JLabel textB = new JLabel();
 
     /**
      * 颜色预览
@@ -47,25 +57,12 @@ public class ColorSettingBar extends JPanel {
     /**
      * 监听
      */
-    ColorSettingBarListener colorSettingBarListener =new ColorSettingBarListener();
-
-
-    public int getR() {
-        return r = scrollBarR.getValue();
-    }
-
-    public int getG() {
-        return g = scrollBarG.getValue();
-    }
-
-    public int getB() {
-        return b = scrollBarB.getValue();
-    }
+    ColorSettingBarListener colorSettingBarListener = new ColorSettingBarListener();
 
     public ColorSettingBar() {
         // 独占一整行
         this.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width / 4, 30));
-        this.setBounds(0,0,Toolkit.getDefaultToolkit().getScreenSize().width / 4,30);
+        this.setBounds(0, 0, Toolkit.getDefaultToolkit().getScreenSize().width / 4, 30);
         this.setBackground(Color.white);
         // 加个边框
         this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
@@ -87,7 +84,7 @@ public class ColorSettingBar extends JPanel {
         scrollBarB.addAdjustmentListener(colorSettingBarListener);
         textB.setPreferredSize(new Dimension(50, 15));
 
-        preview.setPreferredSize(new Dimension(15,15));
+        preview.setPreferredSize(new Dimension(15, 15));
         preview.setOpaque(true);
 
         this.add(preview);
@@ -97,18 +94,19 @@ public class ColorSettingBar extends JPanel {
         this.add(textG);
         this.add(scrollBarB);
         this.add(textB);
-
         updateView();
     }
 
     public void updateView() {
-        r = scrollBarR.getValue();
-        g = scrollBarG.getValue();
-        b = scrollBarB.getValue();
+        int r = scrollBarR.getValue();
+        int g = scrollBarG.getValue();
+        int b = scrollBarB.getValue();
         textR.setText("R:" + r);
         textG.setText("G:" + g);
         textB.setText("B:" + b);
-        preview.setBackground(new Color(r,g,b));
-
+        color = new Color(r, g, b);
+        preview.setBackground(color);
+        if (paintListener != null)
+            paintListener.setColor(color);
     }
 }
