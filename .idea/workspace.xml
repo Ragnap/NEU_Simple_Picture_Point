@@ -46,10 +46,13 @@
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;editor.preferences.appearance&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
   }
 }</component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\Code\Java\Simple_Picture_Point\src\Resource" />
       <recent name="E:\Code\Java\Simple_Picture_Point\src" />
@@ -67,7 +70,8 @@
       <workItem from="1668060039646" duration="13644000" />
       <workItem from="1668094152737" duration="648000" />
       <workItem from="1668155162120" duration="23458000" />
-      <workItem from="1668258626653" duration="622000" />
+      <workItem from="1668258626653" duration="2876000" />
+      <workItem from="1668268687808" duration="14507000" />
     </task>
     <servers />
   </component>

@@ -1,4 +1,4 @@
-import Picture.Picture;
+import custom.picture.Picture;
 
 import javax.swing.*;
 import java.awt.*;
@@ -40,7 +40,6 @@ public class Page extends JPanel {
 
     public void paint() {
         Graphics graphics = this.getGraphics();
-
         //缓冲区
         if (buffer != null) {
             graphics.drawImage(buffer, 0, 0, this);

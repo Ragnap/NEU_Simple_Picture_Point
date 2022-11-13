@@ -1,4 +1,4 @@
-package Picture;
+package custom.picture;
 
 import java.awt.*;
 

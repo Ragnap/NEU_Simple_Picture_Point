@@ -1,3 +1,5 @@
+import custom.panel.ColorSettingBar;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
@@ -6,26 +8,36 @@ public class MainWindow {
     /**
      * 主界面框架
      */
-    static JFrame mainFrame;
-
+    JFrame mainFrame= new JFrame("Picture Point 2077");
+    /**
+     * 主页面,JLayeredPane提供覆盖的高低控制
+     */
+    JLayeredPane mainWindow = new JLayeredPane();
     /**
      * 当前页面
      */
-    static Page nowPage = new Page();
+    Page nowPage = new Page();
+    /**
+     * 设置面板显示监听器
+     */
+    SettingListener settingListener = new SettingListener();
     /**
      * 绘画监听器
      */
-    static Painter painter = new Painter();
+    Painter painter = new Painter();
+
+    /**
+     * 颜色设置工具栏
+     */
+    ColorSettingBar colorSettingBar= new ColorSettingBar();
+
 
     MainWindow() {
-
-
-        // 窗口标题
-        mainFrame = new JFrame("Picture Point 2077");
 
         // 窗口图标
         ImageIcon imageIcon = new ImageIcon("./src/Resource/PicturePoint2077.png");
         mainFrame.setIconImage(imageIcon.getImage());
+        mainFrame.add(mainWindow);
 
         // 获取当前屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -35,16 +47,39 @@ public class MainWindow {
         mainFrame.setLocation(screenSize.width / 4, screenSize.height / 4);
         // 设置默认关闭
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // 空界面
-        mainFrame.add(nowPage);
 
+        // 隐藏标题栏
+        //mainFrame.setUndecorated(true);
+
+        // 菜单显示监听
+        settingListener.setMainWindow(this);
 
         // 窗口菜单栏
         setMenu();
-        // 监听器
-        setListener();
-        //隐藏标题栏
-        //mainFrame.setUndecorated(true);
+
+        // 颜色状态设置栏
+
+
+        // 默认不显示工具栏
+        hideAllSettingPanel();
+
+        // 当前绘制页
+        nowPage.setSize(mainFrame.getSize());
+
+
+        // 画笔
+        painter.setPage(nowPage);
+        painter.setMainWindow(this);
+        mainWindow.addMouseListener(painter);
+        mainWindow.addMouseMotionListener(painter);
+
+
+
+        mainWindow.setSize(screenSize.width / 2,screenSize.height / 2);
+        mainWindow.setLayout(null);
+        mainWindow.add(nowPage,JLayeredPane.DEFAULT_LAYER);
+        mainWindow.add(colorSettingBar,JLayeredPane.MODAL_LAYER);
+
     }
 
     /**
@@ -70,15 +105,27 @@ public class MainWindow {
         // 绘制菜单
         menuTitle = "图像";
         subMenuTitle = new String[]{
-                "直线画笔", "矩形画笔", "圆形画笔", "椭圆画笔", "自由线画笔",
+                "直线画笔",
+                "矩形画笔",
+                "圆形画笔",
+                "椭圆画笔",
+                "自由线画笔",
                 "-",
                 "颜色设置:", "黑色", "红色", "黄色", "蓝色", "绿色", "<-",
-                "精细颜色设置", "大小设置"};
+                "精细颜色设置",
+                "大小设置"};
         menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 操作菜单
         menuTitle = "操作";
-        subMenuTitle = new String[]{"撤销", "重做", "-", "新建图形", "新建文字", "-", "设置画笔"};
+        subMenuTitle = new String[]{
+                "撤销",
+                "重做",
+                "-",
+                "新建图形",
+                "新建文字",
+                "-",
+                "设置画笔"};
         menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
         // 查看菜单
@@ -126,23 +173,30 @@ public class MainWindow {
             else {
                 JMenuItem subMenu = new JMenuItem(subMenuTitle);
                 subMenu.addActionListener(painter);
+                subMenu.addActionListener(settingListener);
                 menu.add(subMenu);
             }
         }
         return menu;
     }
 
-    /**
-     * 配置监听器
-     */
-    void setListener() {
-        painter.setPage(nowPage);
-        mainFrame.addMouseListener(painter);
-        mainFrame.addMouseMotionListener(painter);
-    }
 
+    /**
+     * 隐藏所有工具栏
+     */
+    public void hideAllSettingPanel(){
+        colorSettingBar.setVisible(false);
+    }
+    /**
+     * 颜色设置工具栏可见性
+     */
+    public void setColorSettingBarVisible(Boolean state){
+        colorSettingBar.setVisible(state);
+
+    }
     public void showMainWindow() {
         mainFrame.setVisible(true);
+
     }
 
 }

@@ -1,4 +1,4 @@
-package Picture;
+package custom.picture;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -39,7 +39,6 @@ public class FreeLine extends Picture {
         graphics.setColor(color);
         graphics.setStroke(stroke);
 
-        graphics.setStroke(new BasicStroke(2f) );
         for (int i = 1; i < pointsX.size(); i++) {
             graphics.drawLine(pointsX.get(i - 1), pointsY.get(i - 1), pointsX.get(i), pointsY.get(i));
         }

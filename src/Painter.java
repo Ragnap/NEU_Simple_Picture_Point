@@ -1,5 +1,6 @@
-import Picture.*;
-import Picture.Rectangle;
+import custom.picture.*;
+import custom.picture.*;
+import custom.picture.Rectangle;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,8 +8,9 @@ import java.awt.event.*;
 import java.util.ArrayList;
 
 public class Painter implements MouseListener, ActionListener, MouseMotionListener {
-    int panelX, panelY;
-    int x1, x2, y1, y2;
+
+    private MainWindow mainWindow;
+    private int x1, x2, y1, y2;
     private Page page;
     /**
      * 绘制模式
@@ -40,6 +42,10 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
      * 当前画笔字体
      */
     private Font font = new Font("宋体", Font.PLAIN, 10);
+
+    public void setMainWindow(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+    }
 
     public void setColor(Color color) {
         this.color = color;
@@ -80,9 +86,8 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
      * @param page 当前页面
      */
     public void setPage(Page page) {
+        System.out.println(page.toString());
         this.page = page;
-        panelX = 8;
-        panelY = 52;
     }
 
 
@@ -108,14 +113,10 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
             case "绿色" -> color = Color.green;
 //            default -> color = Color.black;
         }
-        if(e.getActionCommand().equals("精细颜色设置")){
-            String inputValue = JOptionPane.showInputDialog("Please input a value");
-            System.out.println(inputValue);
-        }
     }
 
 
-    // 鼠标进入
+    // 鼠标进入,隐藏所有控制栏
     public void mouseEntered(MouseEvent e) {
 
     }
@@ -128,10 +129,11 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
 
     // 鼠标按下
     public void mousePressed(MouseEvent e) {
+        mainWindow.hideAllSettingPanel();
         if (drawMode == 0)
             return;
-        x1 = e.getX() - panelX;
-        y1 = e.getY() - panelY;
+        x1 = e.getX();
+        y1 = e.getY();
         if (drawMode == 5) {
             trailX = new ArrayList<>();
             trailY = new ArrayList<>();
@@ -144,8 +146,8 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
     public void mouseReleased(MouseEvent e) {
         if (drawMode == 0)
             return;
-        x2 = e.getX() - panelX;
-        y2 = e.getY() - panelY;
+        x2 = e.getX() ;
+        y2 = e.getY() ;
         //避免单次点击产生一个像素点
         if (x2 == x1 && y1 == y2 && drawMode != 5)
             return;
@@ -169,8 +171,8 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
     public void mouseDragged(MouseEvent e) {
         if (drawMode == 0)
             return;
-        x2 = e.getX() - panelX;
-        y2 = e.getY() - panelY;
+        x2 = e.getX() ;
+        y2 = e.getY() ;
         if (drawMode == 5) {
             trailX.add(x2);
             trailY.add(y2);
@@ -179,5 +181,6 @@ public class Painter implements MouseListener, ActionListener, MouseMotionListen
         if (newPicture != null)
             page.addPreview(newPicture);
         page.paint();
+
     }
 }
