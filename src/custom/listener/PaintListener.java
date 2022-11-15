@@ -1,7 +1,7 @@
 package custom.listener;
 
 import custom.MainWindow;
-import custom.panel.Page;
+import custom.panel.PageEditPane;
 import custom.picture.*;
 
 import custom.picture.Rectangle;
@@ -14,17 +14,7 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
 
     private MainWindow mainWindow;
     private int x1, x2, y1, y2;
-    private Page page;
-    /**
-     * 绘制模式
-     * 0:不进行绘制
-     * 1:直线
-     * 2:矩形
-     * 3:圆
-     * 4:椭圆
-     * 5:自由线
-     */
-    private int drawMode = 0;
+
     /**
      * 鼠标拖动轨迹上的点x坐标
      */
@@ -33,6 +23,20 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
      * 鼠标拖动轨迹上的点y坐标
      */
     private ArrayList<Integer> trailY;
+    /**
+     * 当前绘制页
+     */
+    private PageEditPane pageEditPane;
+    /**
+     * 当前绘制模式
+     * 0:不进行绘制
+     * 1:直线
+     * 2:矩形
+     * 3:圆
+     * 4:椭圆
+     * 5:自由线
+     */
+    private int drawMode = 0;
     /**
      * 当前画笔颜色
      */
@@ -86,10 +90,10 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
     /**
      * 设置当前绘画页面
      *
-     * @param page 当前页面
+     * @param pageEditPane 当前页面
      */
-    public void setPage(Page page) {
-        this.page = page;
+    public void setPage(PageEditPane pageEditPane) {
+        this.pageEditPane = pageEditPane;
     }
 
 
@@ -120,7 +124,6 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
 
     // 鼠标进入
     public void mouseEntered(MouseEvent e) {
-
     }
 
 
@@ -132,7 +135,6 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
     // 鼠标按下
     public void mousePressed(MouseEvent e) {
         // 隐藏所有控制栏
-        mainWindow.hideAllSettingPanel();
         if (drawMode == 0)
             return;
         x1 = e.getX();
@@ -156,13 +158,13 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
             return;
         Picture newPicture = getNewPicture();
         if (newPicture != null)
-            page.addImage(newPicture);
-        page.paint();
+            pageEditPane.addImage(newPicture);
+        pageEditPane.update();
     }
 
     // 鼠标单击
     public void mouseClicked(MouseEvent e) {
-
+        pageEditPane.update();
     }
 
     // 鼠标移动
@@ -182,8 +184,7 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
         }
         Picture newPicture = getNewPicture();
         if (newPicture != null)
-            page.addPreview(newPicture);
-        page.paint();
-
+            pageEditPane.addPreview(newPicture);
+        pageEditPane.update();
     }
 }

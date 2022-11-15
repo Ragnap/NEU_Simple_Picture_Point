@@ -28,6 +28,9 @@
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
   <component name="ProjectId" id="2HGmKXZCCxyxyR6yBLork5fM2fZ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -46,7 +49,7 @@
     &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.statistic.project.settings&quot;
   }
 }</component>
   <component name="RecentsManager">
@@ -71,7 +74,11 @@
       <workItem from="1668094152737" duration="648000" />
       <workItem from="1668155162120" duration="23458000" />
       <workItem from="1668258626653" duration="2876000" />
-      <workItem from="1668268687808" duration="16676000" />
+      <workItem from="1668268687808" duration="16923000" />
+      <workItem from="1668403466614" duration="10596000" />
+      <workItem from="1668438538552" duration="8518000" />
+      <workItem from="1668491573874" duration="3015000" />
+      <workItem from="1668494851891" duration="2653000" />
     </task>
     <servers />
   </component>

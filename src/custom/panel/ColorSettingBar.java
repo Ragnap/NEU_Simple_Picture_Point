@@ -61,11 +61,11 @@ public class ColorSettingBar extends JPanel {
 
     public ColorSettingBar() {
         // 独占一整行
-        this.setPreferredSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width / 4, 30));
-        this.setBounds(0, 0, Toolkit.getDefaultToolkit().getScreenSize().width / 4, 30);
-        this.setBackground(Color.white);
+//        this.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width/2 , 30));
+//        this.setBackground(Color.white);
+//        this.setOpaque(true);
         // 加个边框
-        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
+//        this.setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
 
         colorSettingBarListener.setColorSettingBar(this);
 
@@ -94,10 +94,10 @@ public class ColorSettingBar extends JPanel {
         this.add(textG);
         this.add(scrollBarB);
         this.add(textB);
-        updateView();
+        updatePreview();
     }
 
-    public void updateView() {
+    public void updatePreview() {
         int r = scrollBarR.getValue();
         int g = scrollBarG.getValue();
         int b = scrollBarB.getValue();
@@ -108,5 +108,6 @@ public class ColorSettingBar extends JPanel {
         preview.setBackground(color);
         if (paintListener != null)
             paintListener.setColor(color);
+
     }
 }

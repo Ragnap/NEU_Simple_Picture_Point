@@ -3,7 +3,9 @@ package custom;
 import custom.listener.PaintListener;
 import custom.listener.SettingListener;
 import custom.panel.ColorSettingBar;
-import custom.panel.Page;
+import custom.panel.PageEditPane;
+import custom.panel.PagePreviewPane;
+import custom.panel.ToolBarPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,84 +17,80 @@ public class MainWindow {
      */
     JFrame mainFrame = new JFrame("Picture Point 2077");
     /**
-     * 主页面,JLayeredPane提供覆盖的高低控制
+     * 主页面
      */
-    JLayeredPane mainWindow = new JLayeredPane();
-    /**
-     * 当前页面
-     */
-    Page nowPage = new Page();
-    /**
-     * 设置面板显示监听器
-     */
-    SettingListener settingListener = new SettingListener();
-    /**
-     * 绘画监听器
-     */
-    PaintListener paintListener = new PaintListener();
+    JSplitPane mainPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
     /**
-     * 颜色设置工具栏
+     * 上部设置工具栏
      */
-    ColorSettingBar colorSettingBar = new ColorSettingBar();
+    ToolBarPane toolBarPane;
+    /**
+     * 下部页面栏
+     */
+    JSplitPane pagePane;
+    /**
+     * 下左所有页面预览列表
+     */
+    PagePreviewPane pagePreviewPane = new PagePreviewPane();
+    /**
+     * 下右当前编辑页面
+     */
+    PageEditPane pageEditPane = new PageEditPane();
 
 
     public MainWindow() {
 
-        // 窗口图标
-        ImageIcon imageIcon = new ImageIcon("./src/Resource/PicturePoint2077.png");
-        mainFrame.setIconImage(imageIcon.getImage());
-        mainFrame.add(mainWindow);
 
+        // 设置窗口图标
+        mainFrame.setIconImage(new ImageIcon("./src/Resource/PicturePoint2077.png").getImage());
         // 获取当前屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        // 设置窗口大小为1/4屏幕大小
-        mainFrame.setSize(screenSize.width / 2, screenSize.height / 2);
+        Dimension windowSize = new Dimension(screenSize.width / 2, screenSize.height * 2 / 3);
+        // 设置窗口
+        mainFrame.setSize(windowSize);
         // 设置居中
-        mainFrame.setLocation(screenSize.width / 4, screenSize.height / 4);
+        mainFrame.setLocation((screenSize.width - windowSize.width) / 2, (screenSize.height - windowSize.height) / 2);
         // 设置默认关闭
         mainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        // 设置主界面
+        mainFrame.setContentPane(mainPane);
+        // 主界面大小等同于窗口
+        mainPane.setSize(mainFrame.getSize());
 
-        // 隐藏标题栏
-        //mainFrame.setUndecorated(true);
+        // 工具栏大小设置为窗口宽度*100
+        toolBarPane = new ToolBarPane(windowSize.width, 100);
+        // 上半部分为工具栏
+        mainPane.setLeftComponent(toolBarPane);
 
-        // 菜单显示监听
-        settingListener.setMainWindow(this);
+        // 设置工具栏高度为100
+        mainPane.setDividerLocation(100);
+        // 设置工具栏分界线宽度为1
+        mainPane.setDividerSize(1);
+        // 设置不可移动工具栏的分界线
+        mainPane.setEnabled(false);
 
-        // 窗口菜单栏
-        setMenu();
+        // 下半部分为幻灯片部分，由左右两个部分构成
+        pagePane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pagePreviewPane, pageEditPane);
+        mainPane.setRightComponent(pagePane);
+        // 大小为减去工具栏高度100后的剩余部分
+        pagePane.setSize(windowSize.width, windowSize.height - 100);
+        // 幻灯片部分分界线可调
+        pagePane.setEnabled(true);
+        // 调整分界线时重绘
+        pagePane.setContinuousLayout(true);
+        // 默认分界线位置
+        pagePane.setDividerLocation(0.1);
 
-        // 颜色状态设置栏
-        colorSettingBar.setPaintListener(paintListener);
-
-        // 默认不显示工具栏
-        hideAllSettingPanel();
-
-        // 当前绘制页
-        nowPage.setSize(mainFrame.getSize());
-
-
-        // 画笔
-        paintListener.setPage(nowPage);
-        paintListener.setMainWindow(this);
-        mainWindow.addMouseListener(paintListener);
-        mainWindow.addMouseMotionListener(paintListener);
-
-
-        mainWindow.setSize(screenSize.width / 2, screenSize.height / 2);
-        mainWindow.setLayout(null);
-        mainWindow.add(nowPage, JLayeredPane.DEFAULT_LAYER);
-        mainWindow.add(colorSettingBar, JLayeredPane.MODAL_LAYER);
+        // 下左部分为所有页面的预览
+        pagePane.setLeftComponent(pagePreviewPane);
+        // 下右部分为单个界面的编辑
+        pagePane.setRightComponent(pageEditPane);
 
     }
 
-    /**
-     * 配置菜单栏
-     */
+
     private void setMenu() {
-
-        JMenuBar menuBar = new JMenuBar();
-
         String menuTitle = null;
         String[] subMenuTitle = null;
 
@@ -104,9 +102,7 @@ public class MainWindow {
                 "保存",
                 "另存为"
         };
-        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
-        // 绘制菜单
         menuTitle = "图像";
         subMenuTitle = new String[]{
                 "直线画笔",
@@ -118,9 +114,7 @@ public class MainWindow {
                 "颜色设置:", "黑色", "红色", "黄色", "蓝色", "绿色", "<-",
                 "精细颜色设置",
                 "大小设置"};
-        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
-        // 操作菜单
         menuTitle = "操作";
         subMenuTitle = new String[]{
                 "撤销",
@@ -130,75 +124,15 @@ public class MainWindow {
                 "新建文字",
                 "-",
                 "设置画笔"};
-        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
-        // 查看菜单
         menuTitle = "查看";
-
         subMenuTitle = new String[]{};
-        menuBar.add(creatMenu(menuTitle, subMenuTitle));
 
-        // 设置菜单
         menuTitle = "设置";
         subMenuTitle = new String[]{};
-        menuBar.add(creatMenu(menuTitle, subMenuTitle));
-
-        mainFrame.setJMenuBar(menuBar);
-    }
-
-    /**
-     * 根据输入的子项创建一个创建目录
-     *
-     * @param title         目录名
-     * @param subMenuTitles 子目录名,‘-’表示分隔符,目录名后接':'表示二级子目录开始,单独的'<-'表示二级子目录结束
-     * @return 生成的目录
-     */
-    JMenu creatMenu(String title, String[] subMenuTitles) {
-        JMenu menu = new JMenu(title);
-        for (int i = 0; i < subMenuTitles.length; i++) {
-            String subMenuTitle = subMenuTitles[i];
-            if (subMenuTitle.equals("-")) {
-                menu.addSeparator();
-            }
-            //检测目录名后两位
-            else if ((subMenuTitle.length() > 2) && (subMenuTitle.substring(subMenuTitle.length() - 1)).equals(":")) {
-                //构建二级目录
-                int fin = i + 1;
-                while (fin < subMenuTitles.length && !subMenuTitles[fin].equals("<-")) {
-                    fin++;
-                }
-                String[] secondSubMenuTitles = Arrays.copyOfRange(subMenuTitles, i + 1, fin);
-                //二级目录加入到当前目录
-                menu.add(creatMenu(subMenuTitle.substring(0, subMenuTitle.length() - 1), secondSubMenuTitles));
-                //跳过对应的二级目录项
-                i = fin;
-            }
-            //正常目录
-            else {
-                JMenuItem subMenu = new JMenuItem(subMenuTitle);
-                subMenu.addActionListener(paintListener);
-                subMenu.addActionListener(settingListener);
-                menu.add(subMenu);
-            }
-        }
-        return menu;
-    }
-
-
-    /**
-     * 隐藏所有工具栏
-     */
-    public void hideAllSettingPanel() {
-        colorSettingBar.setVisible(false);
-    }
-
-    /**
-     * 颜色设置工具栏可见性
-     */
-    public void setColorSettingBarVisible(Boolean state) {
-        colorSettingBar.setVisible(state);
 
     }
+
 
     public void showMainWindow() {
         mainFrame.setVisible(true);

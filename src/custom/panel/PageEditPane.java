@@ -8,9 +8,9 @@ import java.util.ArrayList;
 
 
 /**
- * 单页面
+ * 单页面操作
  */
-public class Page extends JPanel {
+public class PageEditPane extends JPanel {
     /**
      * 该页面上的图形列表
      */
@@ -40,7 +40,7 @@ public class Page extends JPanel {
         this.previewImage = null;
     }
 
-    public void paint() {
+    public void update() {
         Graphics graphics = this.getGraphics();
         //缓冲区
         if (buffer != null) {
@@ -48,9 +48,7 @@ public class Page extends JPanel {
         }
 
         buffer = createImage(this.getWidth(), this.getWidth());
-
         Graphics2D bufferGraphics = (Graphics2D)buffer.getGraphics();
-
         //当前界面
         for (Picture image : Images) {
             image.draw(bufferGraphics);

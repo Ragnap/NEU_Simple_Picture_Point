@@ -14,6 +14,6 @@ public class ColorSettingBarListener implements AdjustmentListener {
     }
 
     public void adjustmentValueChanged(AdjustmentEvent e) {
-        colorSettingBar.updateView();
+        colorSettingBar.updatePreview();
     }
 }
