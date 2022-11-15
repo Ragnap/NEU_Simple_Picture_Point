@@ -21,10 +21,6 @@ public class ToolBarPane extends JSplitPane {
     JLayeredPane menuPane = new JLayeredPane();
 
     /**
-     * 下部详细设置栏
-     */
-    JPanel nowSettingPane = null;
-    /**
      * 文件设置栏
      */
     JPanel fileSettingPane = new JPanel();
@@ -42,16 +38,13 @@ public class ToolBarPane extends JSplitPane {
     JPanel viewSettingPane = new JPanel();
 
 
-    /**
-     * 设置栏
-     */
     public ToolBarPane(int width, int height) {
         // 工具栏大小
         this.setSize(width, height);
         // 竖向面板
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);
         // 设置菜单栏高度为20
-        this.setDividerLocation(30);
+        this.setDividerLocation(20);
         // 设置菜单栏分界线宽度为0
         this.setDividerSize(0);
         // 设置不可移动菜单栏的分界线
@@ -135,6 +128,7 @@ public class ToolBarPane extends JSplitPane {
      */
     void buildPictureSettingPane(){
         pictureSettingPane.setSize(new Dimension(this.getWidth(),this.getWidth()-getDividerLocation()-getDividerSize()-2));
+        pictureSettingPane.add(new ColorSettingBar(pictureSettingPane.getSize()));
     }
 
     /**
@@ -150,4 +144,6 @@ public class ToolBarPane extends JSplitPane {
     void buildViewSettingPane(){
         viewSettingPane.setSize(new Dimension(this.getWidth(),this.getWidth()-getDividerLocation()-getDividerSize()-2));
     }
+
+
 }
