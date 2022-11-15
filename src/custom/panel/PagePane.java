@@ -1,5 +1,6 @@
 package custom.panel;
 
+import custom.listener.PaintListener;
 import custom.picture.Picture;
 
 import javax.swing.*;
@@ -10,7 +11,10 @@ import java.util.ArrayList;
 /**
  * 单页面操作
  */
-public class PageEditPane extends JPanel {
+public class PagePane extends JPanel {
+    // 画笔
+    static public PaintListener paintListener = new PaintListener();
+
     /**
      * 该页面上的图形列表
      */
@@ -26,6 +30,12 @@ public class PageEditPane extends JPanel {
      */
     private Image buffer = null;
 
+    public PagePane() {
+        paintListener.setPage(this);
+        this.addMouseListener(paintListener);
+        this.addMouseMotionListener(paintListener);
+
+    }
 
     public void addImage(Picture newImage) {
         Images.add(newImage);
@@ -48,7 +58,7 @@ public class PageEditPane extends JPanel {
         }
 
         buffer = createImage(this.getWidth(), this.getWidth());
-        Graphics2D bufferGraphics = (Graphics2D)buffer.getGraphics();
+        Graphics2D bufferGraphics = (Graphics2D) buffer.getGraphics();
         //当前界面
         for (Picture image : Images) {
             image.draw(bufferGraphics);
@@ -56,7 +66,6 @@ public class PageEditPane extends JPanel {
         if (previewImage != null) {
             previewImage.draw(bufferGraphics);
         }
-
         bufferGraphics.dispose();
     }
 }

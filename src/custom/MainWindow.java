@@ -1,15 +1,11 @@
 package custom;
 
-import custom.listener.PaintListener;
-import custom.listener.SettingListener;
-import custom.panel.ColorSettingBar;
-import custom.panel.PageEditPane;
+import custom.panel.PagePane;
 import custom.panel.PagePreviewPane;
 import custom.panel.ToolBarPane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class MainWindow {
     /**
@@ -28,7 +24,7 @@ public class MainWindow {
     /**
      * 下部页面栏
      */
-    JSplitPane pagePane;
+    JSplitPane pageEditPane;
     /**
      * 下左所有页面预览列表
      */
@@ -36,7 +32,7 @@ public class MainWindow {
     /**
      * 下右当前编辑页面
      */
-    PageEditPane pageEditPane = new PageEditPane();
+    PagePane pagePane = new PagePane();
 
 
     public MainWindow() {
@@ -59,33 +55,35 @@ public class MainWindow {
         mainPane.setSize(mainFrame.getSize());
 
         // 工具栏大小设置为窗口宽度*100
-        toolBarPane = new ToolBarPane(windowSize.width, 100);
+        toolBarPane = new ToolBarPane(windowSize.width, 110);
+        // 提供绘制界面给工具栏，方便数据修改
+        toolBarPane.setPagePane(pagePane);
         // 上半部分为工具栏
         mainPane.setLeftComponent(toolBarPane);
 
         // 设置工具栏高度为100
-        mainPane.setDividerLocation(100);
+        mainPane.setDividerLocation(toolBarPane.getHeight());
         // 设置工具栏分界线宽度为1
         mainPane.setDividerSize(1);
         // 设置不可移动工具栏的分界线
         mainPane.setEnabled(false);
 
         // 下半部分为幻灯片部分，由左右两个部分构成
-        pagePane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pagePreviewPane, pageEditPane);
-        mainPane.setRightComponent(pagePane);
+        pageEditPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pagePreviewPane, pageEditPane);
+        mainPane.setRightComponent(pageEditPane);
         // 大小为减去工具栏高度100后的剩余部分
-        pagePane.setSize(windowSize.width, windowSize.height - 100);
+        pageEditPane.setSize(windowSize.width, windowSize.height - toolBarPane.getHeight());
         // 幻灯片部分分界线可调
-        pagePane.setEnabled(true);
+        pageEditPane.setEnabled(true);
         // 调整分界线时重绘
-        pagePane.setContinuousLayout(true);
+        pageEditPane.setContinuousLayout(true);
         // 默认分界线位置
-        pagePane.setDividerLocation(0.1);
+        pageEditPane.setDividerLocation(0.1);
 
         // 下左部分为所有页面的预览
-        pagePane.setLeftComponent(pagePreviewPane);
+        pageEditPane.setLeftComponent(pagePreviewPane);
         // 下右部分为单个界面的编辑
-        pagePane.setRightComponent(pageEditPane);
+        pageEditPane.setRightComponent(pagePane);
 
     }
 

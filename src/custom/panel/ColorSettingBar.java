@@ -94,7 +94,9 @@ public class ColorSettingBar extends JPanel {
         // 设置大小
         System.out.println(size);
         this.setBounds(0, 0, size.width / 2, size.height);
-
+        // 边框
+//        this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+//        this.setBackground(Color.LIGHT_GRAY);
         // 布局
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
@@ -112,7 +114,7 @@ public class ColorSettingBar extends JPanel {
                     case "green" -> color = Color.GREEN;
                 }
                 useCommonColor = true;
-                updatePreview();
+                updateColor();
             }
         };
 
@@ -120,24 +122,22 @@ public class ColorSettingBar extends JPanel {
         JLabel previewText = new JLabel("当前颜色");
         this.add(previewText);
         previewText.setFont(new Font("宋体", Font.BOLD, 12));
-        previewText.setOpaque(true);
         previewText.setPreferredSize(new Dimension(50, 12));
-        layout.setConstraints(previewText, buildConstraints(0, 0, 4, 1, new Insets(0, 0, 2, 10)));
+        layout.setConstraints(previewText, buildConstraints(0, 0, 4, 1, new Insets(2, 10, 2, 10)));
 
         // 颜色预览 5*4
         this.add(preview);
         preview.setOpaque(true);
         preview.setBorder(BorderFactory.createLineBorder(Color.black));
         preview.setPreferredSize(new Dimension(50, 50));
-        layout.setConstraints(preview, buildConstraints(0, 1, 4, 3, new Insets(5, 0, 2, 10)));
+        layout.setConstraints(preview, buildConstraints(0, 1, 4, 3, new Insets(5, 10, 2, 10)));
 
         // 常用颜色文字提示 5*1
         JLabel commonColorText = new JLabel("常用颜色");
         this.add(commonColorText);
         commonColorText.setFont(new Font("宋体", Font.BOLD, 12));
         commonColorText.setPreferredSize(new Dimension(50, 12));
-        commonColorText.setOpaque(true);
-        layout.setConstraints(commonColorText, buildConstraints(4, 0, 4, 1, new Insets(0, 0, 2, 10)));
+        layout.setConstraints(commonColorText, buildConstraints(4, 0, 4, 1, new Insets(2, 0, 2, 10)));
 
         // 黑色按钮 1*1
         JButton blackButton = new JButton("black");
@@ -208,7 +208,7 @@ public class ColorSettingBar extends JPanel {
                     return;
                 System.out.println("选择自定义颜色：(" + scrollBarR.getValue() + "," + scrollBarG.getValue() + "," + scrollBarB.getValue() + ")");
                 color = new Color(scrollBarR.getValue(), scrollBarG.getValue(), scrollBarB.getValue());
-                updatePreview();
+                updateColor();
             }
         };
 
@@ -216,9 +216,8 @@ public class ColorSettingBar extends JPanel {
         JLabel RGBText = new JLabel("RGB设置");
         this.add(RGBText);
         RGBText.setFont(new Font("宋体", Font.BOLD, 12));
-        RGBText.setOpaque(true);
         RGBText.setPreferredSize(new Dimension(50, 12));
-        layout.setConstraints(RGBText, buildConstraints(8, 0, 3, 1, new Insets(0, 0, 2, 2)));
+        layout.setConstraints(RGBText, buildConstraints(8, 0, 3, 1, new Insets(2, 0, 2, 2)));
 
         // R条 5*1
         this.add(scrollBarR);
@@ -257,13 +256,13 @@ public class ColorSettingBar extends JPanel {
         layout.setConstraints(textB, buildConstraints(13, 3, 2, 1, new Insets(0, 0, 2, 2)));
 
 
-        updatePreview();
+        updateColor();
     }
 
     /**
      * 更新设置界面的预览
      */
-    public void updatePreview() {
+    private void updateColor() {
         textR.setText("R:" + color.getRed());
         textG.setText("G:" + color.getGreen());
         textB.setText("B:" + color.getBlue());
@@ -273,12 +272,18 @@ public class ColorSettingBar extends JPanel {
         scrollBarB.setValue(color.getBlue());
 
         preview.setBackground(color);
+
+        updateColorSetting();
         // 状态清空,准备下次更新
         if (useCommonColor)
             useCommonColor = false;
+    }
 
+    /**
+     * 将修改的结果返回画笔
+     */
+    private void updateColorSetting(){
         if (paintListener != null)
             paintListener.setColor(color);
-
     }
 }

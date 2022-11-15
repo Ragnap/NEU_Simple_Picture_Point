@@ -1,7 +1,5 @@
 package custom.panel;
 
-import custom.MainWindow;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -12,9 +10,9 @@ import java.awt.event.ActionListener;
  */
 public class ToolBarPane extends JSplitPane {
     /**
-     * 父界面
+     * 绘制界面
      */
-    MainWindow mainWindow;
+    PagePane pagePane;
     /**
      * 上部菜单选项栏
      */
@@ -37,10 +35,15 @@ public class ToolBarPane extends JSplitPane {
      */
     JPanel viewSettingPane = new JPanel();
 
+    public void setPagePane(PagePane pagePane) {
+        this.pagePane = pagePane;
+    }
 
     public ToolBarPane(int width, int height) {
         // 工具栏大小
         this.setSize(width, height);
+        // 背景颜色
+        this.setBackground(Color.LIGHT_GRAY);
         // 竖向面板
         this.setOrientation(JSplitPane.VERTICAL_SPLIT);
         // 设置菜单栏高度为20
@@ -113,7 +116,6 @@ public class ToolBarPane extends JSplitPane {
         viewMenuButton.setBorder(null);
         viewMenuButton.addActionListener(actionListener);
         menuPane.add(viewMenuButton);
-
     }
 
     /**
@@ -128,7 +130,13 @@ public class ToolBarPane extends JSplitPane {
      */
     void buildPictureSettingPane(){
         pictureSettingPane.setSize(new Dimension(this.getWidth(),this.getWidth()-getDividerLocation()-getDividerSize()-2));
-        pictureSettingPane.add(new ColorSettingBar(pictureSettingPane.getSize()));
+
+        // 颜色控制栏
+        ColorSettingBar colorSettingBar = new ColorSettingBar(pictureSettingPane.getSize());
+        colorSettingBar.setPaintListener(PagePane.paintListener);
+        pictureSettingPane.add(colorSettingBar);
+
+
     }
 
     /**

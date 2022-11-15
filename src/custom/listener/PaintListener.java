@@ -1,7 +1,6 @@
 package custom.listener;
 
-import custom.MainWindow;
-import custom.panel.PageEditPane;
+import custom.panel.PagePane;
 import custom.picture.*;
 
 import custom.picture.Rectangle;
@@ -10,9 +9,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class PaintListener implements MouseListener, ActionListener, MouseMotionListener {
+public class PaintListener implements MouseListener, MouseMotionListener {
 
-    private MainWindow mainWindow;
     private int x1, x2, y1, y2;
 
     /**
@@ -26,7 +24,7 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
     /**
      * 当前绘制页
      */
-    private PageEditPane pageEditPane;
+    private PagePane nowPage;
     /**
      * 当前绘制模式
      * 0:不进行绘制
@@ -36,7 +34,7 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
      * 4:椭圆
      * 5:自由线
      */
-    private int drawMode = 0;
+    private int drawMode = 1;
     /**
      * 当前画笔颜色
      */
@@ -48,11 +46,7 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
     /**
      * 当前画笔字体
      */
-    private Font font = new Font("宋体", Font.PLAIN, 10);
-
-    public void setMainWindow(MainWindow mainWindow) {
-        this.mainWindow = mainWindow;
-    }
+    private Font font = new Font("宋体", Font.PLAIN, 12);
 
     public void setColor(Color color) {
         this.color = color;
@@ -90,42 +84,15 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
     /**
      * 设置当前绘画页面
      *
-     * @param pageEditPane 当前页面
+     * @param nowPage 当前页面
      */
-    public void setPage(PageEditPane pageEditPane) {
-        this.pageEditPane = pageEditPane;
+    public void setPage(PagePane nowPage) {
+        this.nowPage = nowPage;
     }
-
-
-    public void actionPerformed(ActionEvent e) {
-        System.out.print("选中" + e.getActionCommand());
-        System.out.print(" 颜色为(" + color.getRed() + "," + color.getGreen() + "," + color.getBlue() + "," + color.getAlpha() + ")");
-        System.out.println(" 粗细为" + stroke.getLineWidth() + "px");
-        // 画笔设置
-        switch (e.getActionCommand()) {
-            case "直线画笔" -> drawMode = 1;
-            case "矩形画笔" -> drawMode = 2;
-            case "圆形画笔" -> drawMode = 3;
-            case "椭圆画笔" -> drawMode = 4;
-            case "自由线画笔" -> drawMode = 5;
-//            default -> drawMode = 0;
-        }
-        // 颜色设置
-        switch (e.getActionCommand()) {
-            case "黑色" -> color = Color.black;
-            case "红色" -> color = Color.red;
-            case "黄色" -> color = Color.yellow;
-            case "蓝色" -> color = Color.blue;
-            case "绿色" -> color = Color.green;
-//            default -> color = Color.black;
-        }
-    }
-
 
     // 鼠标进入
     public void mouseEntered(MouseEvent e) {
     }
-
 
     // 鼠标退出
     public void mouseExited(MouseEvent e) {
@@ -134,7 +101,6 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
 
     // 鼠标按下
     public void mousePressed(MouseEvent e) {
-        // 隐藏所有控制栏
         if (drawMode == 0)
             return;
         x1 = e.getX();
@@ -158,13 +124,13 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
             return;
         Picture newPicture = getNewPicture();
         if (newPicture != null)
-            pageEditPane.addImage(newPicture);
-        pageEditPane.update();
+            nowPage.addImage(newPicture);
+        nowPage.update();
     }
 
     // 鼠标单击
     public void mouseClicked(MouseEvent e) {
-        pageEditPane.update();
+        nowPage.update();
     }
 
     // 鼠标移动
@@ -184,7 +150,7 @@ public class PaintListener implements MouseListener, ActionListener, MouseMotion
         }
         Picture newPicture = getNewPicture();
         if (newPicture != null)
-            pageEditPane.addPreview(newPicture);
-        pageEditPane.update();
+            nowPage.addPreview(newPicture);
+        nowPage.update();
     }
 }
