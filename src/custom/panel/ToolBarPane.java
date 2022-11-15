@@ -121,20 +121,23 @@ public class ToolBarPane extends JSplitPane {
     /**
      * 构建文件设置面板
      */
-    void buildFileSettingPane(){
-        fileSettingPane.setSize(new Dimension(this.getWidth(),this.getWidth()-getDividerLocation()-getDividerSize()-2));
+    void buildFileSettingPane() {
+        fileSettingPane.setSize(new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2));
     }
 
     /**
      * 构建图片设置面板
      */
-    void buildPictureSettingPane(){
-        pictureSettingPane.setSize(new Dimension(this.getWidth(),this.getWidth()-getDividerLocation()-getDividerSize()-2));
-
+    void buildPictureSettingPane() {
+        pictureSettingPane.setSize(new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2));
+        // 绘制模式控制栏
+        DrawModeSettingBar drawModeSettingBar = new DrawModeSettingBar(pictureSettingPane.getSize());
+        drawModeSettingBar.setPaintListener(PagePane.paintListener);
+        pictureSettingPane.add(drawModeSettingBar);
         // 颜色控制栏
-        ColorSettingBar colorSettingBar = new ColorSettingBar(pictureSettingPane.getSize());
-        colorSettingBar.setPaintListener(PagePane.paintListener);
-        pictureSettingPane.add(colorSettingBar);
+        DrawColorSettingBar drawColorSettingBar = new DrawColorSettingBar(pictureSettingPane.getSize());
+        drawColorSettingBar.setPaintListener(PagePane.paintListener);
+        pictureSettingPane.add(drawColorSettingBar);
 
 
     }
@@ -142,15 +145,15 @@ public class ToolBarPane extends JSplitPane {
     /**
      * 构建操作设置面板
      */
-    void buildOperationSettingPane(){
-        operationSettingPane.setSize(new Dimension(this.getWidth(),this.getWidth()-getDividerLocation()-getDividerSize()-2));
+    void buildOperationSettingPane() {
+        operationSettingPane.setSize(new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2));
     }
 
     /**
      * 构建查看设置面板
      */
-    void buildViewSettingPane(){
-        viewSettingPane.setSize(new Dimension(this.getWidth(),this.getWidth()-getDividerLocation()-getDividerSize()-2));
+    void buildViewSettingPane() {
+        viewSettingPane.setSize(new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2));
     }
 
 

@@ -12,7 +12,7 @@ import java.awt.event.AdjustmentListener;
 /**
  * 设置颜色所使用的上方工具栏
  */
-public class ColorSettingBar extends JPanel {
+public class DrawColorSettingBar extends JPanel {
 
     Color color = new Color(0, 0, 0);
 
@@ -90,9 +90,8 @@ public class ColorSettingBar extends JPanel {
         return constraints;
     }
 
-    public ColorSettingBar(Dimension size) {
+    public DrawColorSettingBar(Dimension size) {
         // 设置大小
-        System.out.println(size);
         this.setBounds(0, 0, size.width / 2, size.height);
         // 边框
 //        this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
@@ -143,7 +142,7 @@ public class ColorSettingBar extends JPanel {
         JButton blackButton = new JButton("black");
         this.add(blackButton);
         blackButton.setPreferredSize(new Dimension(15, 15));
-        blackButton.setFont(new Font("宋体",Font.PLAIN,0));
+        blackButton.setFont(new Font("宋体", Font.PLAIN, 0));
         blackButton.setOpaque(true);
         blackButton.setBackground(Color.BLACK);
         blackButton.addActionListener(actionListener);
@@ -153,7 +152,7 @@ public class ColorSettingBar extends JPanel {
         JButton whiteButton = new JButton("white");
         this.add(whiteButton);
         whiteButton.setPreferredSize(new Dimension(15, 15));
-        whiteButton.setFont(new Font("宋体",Font.PLAIN,0));
+        whiteButton.setFont(new Font("宋体", Font.PLAIN, 0));
         whiteButton.setOpaque(true);
         whiteButton.setBackground(Color.WHITE);
         whiteButton.addActionListener(actionListener);
@@ -163,7 +162,7 @@ public class ColorSettingBar extends JPanel {
         JButton redButton = new JButton("red");
         this.add(redButton);
         redButton.setPreferredSize(new Dimension(15, 15));
-        redButton.setFont(new Font("宋体",Font.PLAIN,0));
+        redButton.setFont(new Font("宋体", Font.PLAIN, 0));
         redButton.setOpaque(true);
         redButton.setBackground(Color.RED);
         redButton.addActionListener(actionListener);
@@ -173,7 +172,7 @@ public class ColorSettingBar extends JPanel {
         JButton yellowButton = new JButton("yellow");
         this.add(yellowButton);
         yellowButton.setPreferredSize(new Dimension(15, 15));
-        yellowButton.setFont(new Font("宋体",Font.PLAIN,0));
+        yellowButton.setFont(new Font("宋体", Font.PLAIN, 0));
         yellowButton.setOpaque(true);
         yellowButton.setBackground(Color.YELLOW);
         yellowButton.addActionListener(actionListener);
@@ -183,7 +182,7 @@ public class ColorSettingBar extends JPanel {
         JButton blueButton = new JButton("blue");
         this.add(blueButton);
         blueButton.setPreferredSize(new Dimension(15, 15));
-        blueButton.setFont(new Font("宋体",Font.PLAIN,0));
+        blueButton.setFont(new Font("宋体", Font.PLAIN, 0));
         blueButton.setOpaque(true);
         blueButton.setBackground(Color.BLUE);
         blueButton.addActionListener(actionListener);
@@ -193,7 +192,7 @@ public class ColorSettingBar extends JPanel {
         JButton greenButton = new JButton("green");
         this.add(greenButton);
         greenButton.setPreferredSize(new Dimension(15, 15));
-        greenButton.setFont(new Font("宋体",Font.PLAIN,0));
+        greenButton.setFont(new Font("宋体", Font.PLAIN, 0));
         greenButton.setOpaque(true);
         greenButton.setBackground(Color.GREEN);
         greenButton.addActionListener(actionListener);
@@ -282,7 +281,7 @@ public class ColorSettingBar extends JPanel {
     /**
      * 将修改的结果返回画笔
      */
-    private void updateColorSetting(){
+    private void updateColorSetting() {
         if (paintListener != null)
             paintListener.setColor(color);
     }

@@ -48,6 +48,10 @@ public class PaintListener implements MouseListener, MouseMotionListener {
      */
     private Font font = new Font("宋体", Font.PLAIN, 12);
 
+    public void setDrawMode(int drawMode) {
+        this.drawMode = drawMode;
+    }
+
     public void setColor(Color color) {
         this.color = color;
     }
@@ -66,6 +70,7 @@ public class PaintListener implements MouseListener, MouseMotionListener {
      * @return 指向对应的图形的父类
      */
     Picture getNewPicture() {
+
         Picture newPicture = switch (drawMode) {
             case 1 -> new Line(x1, y1, x2, y2);
             case 2 -> new Rectangle(x1, y1, x2, y2);
@@ -76,6 +81,8 @@ public class PaintListener implements MouseListener, MouseMotionListener {
         };
         if (newPicture == null)
             return null;
+
+
         newPicture.setColor(color);
         newPicture.setStroke(stroke);
         return newPicture;
@@ -119,12 +126,23 @@ public class PaintListener implements MouseListener, MouseMotionListener {
             return;
         x2 = e.getX();
         y2 = e.getY();
-        //避免单次点击产生一个像素点
+        //避免非任意线时单次点击产生一个像素点
         if (x2 == x1 && y1 == y2 && drawMode != 5)
             return;
         Picture newPicture = getNewPicture();
-        if (newPicture != null)
+        if (newPicture != null) {
             nowPage.addImage(newPicture);
+
+            String pictureType = switch (drawMode) {
+                case 1 -> "直线";
+                case 2 -> "矩形";
+                case 3 -> "圆形";
+                case 4 -> "椭圆";
+                case 5 -> "任意线";
+                default -> null;
+            };
+            System.out.println("新增图形：" + pictureType);
+        }
         nowPage.update();
     }
 
