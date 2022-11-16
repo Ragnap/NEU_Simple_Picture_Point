@@ -40,7 +40,7 @@ public class Line extends Picture {
         }
     }
 
-    public void draw(Graphics2D graphics){
+    public void draw(Graphics2D graphics) {
         //设置特色属性
         Color originColor = graphics.getColor();
         BasicStroke originStroke = (BasicStroke) graphics.getStroke();
@@ -51,5 +51,16 @@ public class Line extends Picture {
         //还原画笔
         graphics.setColor(originColor);
         graphics.setStroke(originStroke);
+    }
+
+    /**
+     * 转换成保持到文件的格式
+     * 1 R G B size baseX baseY endX endY
+     *
+     * @return 表示该图形的一行字符串
+     */
+    public String toFileString() {
+        return imageKind + " " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " " + stroke.getLineWidth() + " "
+                + baseX + " " + baseY + " " + endX + " " + endY;
     }
 }

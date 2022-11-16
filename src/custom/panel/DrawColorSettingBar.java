@@ -12,7 +12,7 @@ import java.awt.event.AdjustmentListener;
 /**
  * 设置颜色所使用的上方工具栏
  */
-public class DrawColorSettingBar extends JPanel {
+public class DrawColorSettingBar extends BaseBar {
 
     Color color = new Color(0, 0, 0);
 
@@ -61,44 +61,9 @@ public class DrawColorSettingBar extends JPanel {
      */
     boolean useCommonColor = false;
 
-    /**
-     * 构建一个Constrains
-     *
-     * @param x      组件最左上占用的格子的x坐标
-     * @param y      组件最左上占用的格子的y坐标
-     * @param width  组件占用的水平格子数
-     * @param height 组件占用的竖直格子数
-     * @return 对应的约束
-     */
-    private GridBagConstraints buildConstraints(int x, int y, int width, int height, Insets insets) {
-        GridBagConstraints constraints = new GridBagConstraints();
-        // 组件所在的区域比组件本身要大时进行缩放
-        constraints.fill = GridBagConstraints.NONE;
-        // 组件所在的区域比组件本身要小时居中
-        constraints.anchor = GridBagConstraints.CENTER;
-        // 默认组件间隔
-        constraints.insets = insets;
-        // 默认缩放改动
-        constraints.weightx = 1;
-        constraints.weighty = 1;
-
-        constraints.gridx = x;
-        constraints.gridy = y;
-        constraints.gridwidth = width;
-        constraints.gridheight = height;
-
-        return constraints;
-    }
-
     public DrawColorSettingBar(Dimension size) {
-        // 设置大小
-        this.setBounds(0, 0, size.width / 4, size.height);
-        // 边框
-        this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-//        this.setBackground(Color.LIGHT_GRAY);
-        // 布局
-        GridBagLayout layout = new GridBagLayout();
-        this.setLayout(layout);
+        baseSetting(size);
+        GridBagLayout layout = (GridBagLayout)this.getLayout();
 
         // 常用颜色按键监听,匿名内部类
         ActionListener actionListener = new ActionListener() {
@@ -113,7 +78,7 @@ public class DrawColorSettingBar extends JPanel {
                     case "green" -> color = Color.GREEN;
                 }
                 useCommonColor = true;
-                updateColor();
+                updateView();
             }
         };
 
@@ -207,7 +172,7 @@ public class DrawColorSettingBar extends JPanel {
                     return;
                 System.out.println("选择自定义颜色：(" + scrollBarR.getValue() + "," + scrollBarG.getValue() + "," + scrollBarB.getValue() + ")");
                 color = new Color(scrollBarR.getValue(), scrollBarG.getValue(), scrollBarB.getValue());
-                updateColor();
+                updateView();
             }
         };
 
@@ -255,13 +220,13 @@ public class DrawColorSettingBar extends JPanel {
         layout.setConstraints(textB, buildConstraints(13, 3, 2, 1, new Insets(0, 0, 2, 2)));
 
 
-        updateColor();
+        updateView();
     }
 
     /**
      * 更新设置界面的预览
      */
-    private void updateColor() {
+    public void updateView() {
         textR.setText("R:" + color.getRed());
         textG.setText("G:" + color.getGreen());
         textB.setText("B:" + color.getBlue());
@@ -272,7 +237,7 @@ public class DrawColorSettingBar extends JPanel {
 
         preview.setBackground(color);
 
-        updateColorSetting();
+        updateSetting();
         // 状态清空,准备下次更新
         if (useCommonColor)
             useCommonColor = false;
@@ -281,7 +246,7 @@ public class DrawColorSettingBar extends JPanel {
     /**
      * 将修改的结果返回画笔
      */
-    private void updateColorSetting() {
+    public void updateSetting() {
         if (paintListener != null)
             paintListener.setColor(color);
     }

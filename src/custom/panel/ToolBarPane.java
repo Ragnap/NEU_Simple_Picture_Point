@@ -1,5 +1,7 @@
 package custom.panel;
 
+import custom.MainWindow;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,9 +12,10 @@ import java.awt.event.ActionListener;
  */
 public class ToolBarPane extends JSplitPane {
     /**
-     * 绘制界面
+     * 主窗口
      */
-    PagePane pagePane;
+    MainWindow mainWindow = null;
+
     /**
      * 上部菜单选项栏
      */
@@ -35,11 +38,10 @@ public class ToolBarPane extends JSplitPane {
      */
     JPanel viewSettingPane = new JPanel();
 
-    public void setPagePane(PagePane pagePane) {
-        this.pagePane = pagePane;
-    }
+    public ToolBarPane(int width, int height, MainWindow mainWindow) {
+        //给工具栏传主页面方便读取数据
+        this.mainWindow = mainWindow;
 
-    public ToolBarPane(int width, int height) {
         // 工具栏大小
         this.setSize(width, height);
         // 背景颜色
@@ -122,7 +124,13 @@ public class ToolBarPane extends JSplitPane {
      * 构建文件设置面板
      */
     void buildFileSettingPane() {
-        fileSettingPane.setSize(new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2));
+        Dimension dimension = new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2);
+        fileSettingPane.setSize(dimension);
+        dimension = new Dimension(this.getWidth() - 5, this.getWidth() - getDividerLocation() - getDividerSize() - 2);
+        // 保存按钮
+        FileSaveBar fileSaveBar = new FileSaveBar(dimension);
+        fileSaveBar.setMainWindow(mainWindow);
+        fileSettingPane.add(fileSaveBar);
     }
 
     /**
@@ -131,7 +139,7 @@ public class ToolBarPane extends JSplitPane {
     void buildPictureSettingPane() {
         Dimension dimension = new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2);
         pictureSettingPane.setSize(dimension);
-        dimension = new Dimension(this.getWidth()-5, this.getWidth() - getDividerLocation() - getDividerSize()-2);
+        dimension = new Dimension(this.getWidth() - 5, this.getWidth() - getDividerLocation() - getDividerSize() - 2);
         // 绘制模式控制栏
         DrawModeSettingBar drawModeSettingBar = new DrawModeSettingBar(dimension);
         drawModeSettingBar.setPaintListener(PagePane.paintListener);

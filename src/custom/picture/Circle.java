@@ -37,4 +37,15 @@ public class Circle extends Picture {
         graphics.setColor(originColor);
         graphics.setStroke(originStroke);
     }
+
+    /**
+     * 转换成保持到文件的格式
+     * 3 R G B size baseX baseY r
+     *
+     * @return 表示该图形的一行字符串
+     */
+    public String toFileString() {
+        return imageKind + " " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " " + stroke.getLineWidth() + " "
+                + baseX + " " + baseY + " " + r;
+    }
 }

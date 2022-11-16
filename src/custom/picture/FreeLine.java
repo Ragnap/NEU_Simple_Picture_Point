@@ -47,4 +47,21 @@ public class FreeLine extends Picture {
         graphics.setStroke(originStroke);
     }
 
+    /**
+     * 转换成保持到文件的格式
+     * 5 R G B size baseX baseY pointSize [pointsX] [pointsY]
+     *
+     * @return 表示该图形的一行字符串
+     */
+    public String toFileString() {
+        String pointSting = String.valueOf(pointsX.size());
+        for (Integer x : pointsX) {
+            pointSting += " " + x;
+        }
+        for (Integer y : pointsY) {
+            pointSting += " " + y;
+        }
+        return imageKind + " " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " " + stroke.getLineWidth() + " "
+                + baseX + " " + baseY + " " + pointSting;
+    }
 }

@@ -40,4 +40,14 @@ public class Rectangle extends Picture {
         graphics.setColor(originColor);
         graphics.setStroke(originStroke);
     }
+    /**
+     * 转换成保持到文件的格式
+     * 2 R G B size baseX baseY weight height
+     *
+     * @return 表示该图形的一行字符串
+     */
+    public String toFileString() {
+        return imageKind + " " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " " + stroke.getLineWidth() + " "
+                + baseX + " " + baseY + " " + weight + " " + height;
+    }
 }

@@ -33,6 +33,10 @@ public class MainWindow {
      * 下右当前编辑页面
      */
     PagePane pagePane = new PagePane();
+    public PagePane getPagePane() {
+        return pagePane;
+    }
+
 
 
     public MainWindow() {
@@ -55,12 +59,9 @@ public class MainWindow {
         mainPane.setSize(mainFrame.getSize());
 
         // 工具栏大小设置为窗口宽度*100
-        toolBarPane = new ToolBarPane(windowSize.width, 110);
-        // 提供绘制界面给工具栏，方便数据修改
-        toolBarPane.setPagePane(pagePane);
+        toolBarPane = new ToolBarPane(windowSize.width, 110,this);
         // 上半部分为工具栏
         mainPane.setLeftComponent(toolBarPane);
-
         // 设置工具栏高度为100
         mainPane.setDividerLocation(toolBarPane.getHeight());
         // 设置工具栏分界线宽度为1
@@ -86,51 +87,6 @@ public class MainWindow {
         pageEditPane.setRightComponent(pagePane);
 
     }
-
-
-    private void setMenu() {
-        String menuTitle = null;
-        String[] subMenuTitle = null;
-
-        // 文件菜单
-        menuTitle = "文件";
-        subMenuTitle = new String[]{
-                "新建",
-                "打开",
-                "保存",
-                "另存为"
-        };
-
-        menuTitle = "图像";
-        subMenuTitle = new String[]{
-                "直线画笔",
-                "矩形画笔",
-                "圆形画笔",
-                "椭圆画笔",
-                "自由线画笔",
-                "-",
-                "颜色设置:", "黑色", "红色", "黄色", "蓝色", "绿色", "<-",
-                "精细颜色设置",
-                "大小设置"};
-
-        menuTitle = "操作";
-        subMenuTitle = new String[]{
-                "撤销",
-                "重做",
-                "-",
-                "新建图形",
-                "新建文字",
-                "-",
-                "设置画笔"};
-
-        menuTitle = "查看";
-        subMenuTitle = new String[]{};
-
-        menuTitle = "设置";
-        subMenuTitle = new String[]{};
-
-    }
-
 
     public void showMainWindow() {
         mainFrame.setVisible(true);

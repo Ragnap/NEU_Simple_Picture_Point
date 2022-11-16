@@ -24,17 +24,17 @@ public class Picture {
      */
     int baseY;
     /**
-     *  图形名称
+     * 图形名称
      */
     String name;
 
     /**
-     *  图形颜色
+     * 图形颜色
      */
     Color color = Color.BLACK;
 
     /**
-     *  图形宽带
+     * 图形宽带
      */
     BasicStroke stroke = new BasicStroke(1.0f);
 
@@ -83,9 +83,22 @@ public class Picture {
 
     /**
      * 绘制图形，多态重载
+     *
      * @param graphics 当前画笔
      */
-    public void draw(Graphics2D graphics){
+    public void draw(Graphics2D graphics) {
 
     }
+
+    /**
+     * 转换成保持到文件的格式，多态重载
+     * imageKind R G B size baseX baseY 图形的特殊属性值
+     *
+     * @return 表示该图形的一行字符串
+     */
+    public String toFileString() {
+        return imageKind + " " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " " + stroke.getLineWidth() + " "
+                + baseX + " " + baseY;
+    }
+
 }
