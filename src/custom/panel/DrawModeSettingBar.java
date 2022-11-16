@@ -47,9 +47,9 @@ public class DrawModeSettingBar extends JPanel {
 
     public DrawModeSettingBar(Dimension size) {
         // 设置大小
-        this.setBounds(0, 0, size.width / 2, size.height);
+        this.setBounds(0, 0, size.width / 4, size.height);
         // 边框
-//        this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 //        this.setBackground(Color.LIGHT_GRAY);
         // 布局
         GridBagLayout layout = new GridBagLayout();

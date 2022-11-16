@@ -92,9 +92,9 @@ public class DrawColorSettingBar extends JPanel {
 
     public DrawColorSettingBar(Dimension size) {
         // 设置大小
-        this.setBounds(0, 0, size.width / 2, size.height);
+        this.setBounds(0, 0, size.width / 4, size.height);
         // 边框
-//        this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+        this.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 //        this.setBackground(Color.LIGHT_GRAY);
         // 布局
         GridBagLayout layout = new GridBagLayout();
@@ -211,7 +211,7 @@ public class DrawColorSettingBar extends JPanel {
             }
         };
 
-        // RGB设置提示文字 5*1
+        // RGB设置提示文字 3*1
         JLabel RGBText = new JLabel("RGB设置");
         this.add(RGBText);
         RGBText.setFont(new Font("宋体", Font.BOLD, 12));

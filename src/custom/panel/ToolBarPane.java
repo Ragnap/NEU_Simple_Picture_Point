@@ -129,17 +129,21 @@ public class ToolBarPane extends JSplitPane {
      * 构建图片设置面板
      */
     void buildPictureSettingPane() {
-        pictureSettingPane.setSize(new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2));
+        Dimension dimension = new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2);
+        pictureSettingPane.setSize(dimension);
+        dimension = new Dimension(this.getWidth()-5, this.getWidth() - getDividerLocation() - getDividerSize()-2);
         // 绘制模式控制栏
-        DrawModeSettingBar drawModeSettingBar = new DrawModeSettingBar(pictureSettingPane.getSize());
+        DrawModeSettingBar drawModeSettingBar = new DrawModeSettingBar(dimension);
         drawModeSettingBar.setPaintListener(PagePane.paintListener);
         pictureSettingPane.add(drawModeSettingBar);
         // 颜色控制栏
-        DrawColorSettingBar drawColorSettingBar = new DrawColorSettingBar(pictureSettingPane.getSize());
+        DrawColorSettingBar drawColorSettingBar = new DrawColorSettingBar(dimension);
         drawColorSettingBar.setPaintListener(PagePane.paintListener);
         pictureSettingPane.add(drawColorSettingBar);
-
-
+        // 粗细控制栏
+        DrawStrokeSettingBar drawStrokeSettingBar = new DrawStrokeSettingBar(dimension);
+        drawStrokeSettingBar.setPaintListener(PagePane.paintListener);
+        pictureSettingPane.add(drawStrokeSettingBar);
     }
 
     /**
