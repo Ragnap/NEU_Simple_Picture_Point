@@ -1,5 +1,7 @@
 package custom;
 
+import custom.file.PicturePointFile;
+import custom.panel.PageEditPane;
 import custom.panel.PagePane;
 import custom.panel.PagePreviewPane;
 import custom.panel.ToolBarPane;
@@ -24,7 +26,7 @@ public class MainWindow {
     /**
      * 下部页面栏
      */
-    JSplitPane pageEditPane;
+    PagePane pagePane;
     /**
      * 下左所有页面预览列表
      */
@@ -32,11 +34,14 @@ public class MainWindow {
     /**
      * 下右当前编辑页面
      */
-    PagePane pagePane = new PagePane();
+    PageEditPane pageEditPane = new PageEditPane();
+
+
+
+
     public PagePane getPagePane() {
         return pagePane;
     }
-
 
 
     public MainWindow() {
@@ -70,22 +75,9 @@ public class MainWindow {
         mainPane.setEnabled(false);
 
         // 下半部分为幻灯片部分，由左右两个部分构成
-        pageEditPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pagePreviewPane, pageEditPane);
-        mainPane.setRightComponent(pageEditPane);
-        // 大小为减去工具栏高度100后的剩余部分
-        pageEditPane.setSize(windowSize.width, windowSize.height - toolBarPane.getHeight());
-        // 幻灯片部分分界线可调
-        pageEditPane.setEnabled(true);
-        // 调整分界线时重绘
-        pageEditPane.setContinuousLayout(true);
-        // 默认分界线位置
-        pageEditPane.setDividerLocation(0.1);
+        pagePane = new PagePane(windowSize.width, windowSize.height - toolBarPane.getHeight());
 
-        // 下左部分为所有页面的预览
-        pageEditPane.setLeftComponent(pagePreviewPane);
-        // 下右部分为单个界面的编辑
-        pageEditPane.setRightComponent(pagePane);
-
+        mainPane.setRightComponent(pagePane);
     }
 
     public void showMainWindow() {

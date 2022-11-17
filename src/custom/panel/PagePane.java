@@ -1,75 +1,70 @@
 package custom.panel;
 
-import custom.listener.PaintListener;
-import custom.picture.Picture;
+import custom.file.Page;
+import custom.file.PicturePointFile;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
+public class PagePane extends JSplitPane {
+    /**
+     * 左所有页面预览列表
+     */
+    PagePreviewPane pagePreviewPane = new PagePreviewPane();
+    /**
+     * 右当前编辑页面
+     */
+    PageEditPane pageEditPane = new PageEditPane();
+    /**
+     * 当前打开的文件
+     */
+    PicturePointFile nowFile = new PicturePointFile();
+    /**
+     * 当前页数
+     */
+    int nowPageIndex = 0;
 
-/**
- * 单页面操作
- */
-public class PagePane extends JPanel {
-    // 画笔
-    static public PaintListener paintListener = new PaintListener();
+    public PageEditPane getPageEditPane() {
+        return pageEditPane;
+    }
+
+    public PicturePointFile getNowFile() {
+        return nowFile;
+    }
+
+    public PagePane(int width, int height) {
+        this.setSize(width, height);
+        // 设置竖直分隔线
+        this.setOrientation(JSplitPane.HORIZONTAL_SPLIT);
+        // 左部分为所有页面的预览
+        this.setLeftComponent(pagePreviewPane);
+        // 右部分为单个界面的编辑
+        this.setRightComponent(pageEditPane);
+        // 幻灯片部分分界线可调
+        this.setEnabled(true);
+        // 调整分界线时重绘
+        this.setContinuousLayout(true);
+        // 默认分界线位置
+        this.setDividerLocation(0.1);
+        // 设置画笔
+        PageEditPane.drawListener.setEditPane(pageEditPane);
+        // 当前编辑的是默认的第一页
+        pageEditPane.setNowPage(nowFile.getPageFront());
+    }
 
     /**
-     * 该页面上的图形列表
+     * 在当前页后插入一个新的页并打开
      */
-    private ArrayList<Picture> pictures = new ArrayList<>();
-
-    public ArrayList<Picture> getPictures() {
-        return pictures;
+    public void insertNewPageAfter(){
+        Page newPage = new Page();
+        nowFile.addPage(nowPageIndex,newPage);
+        nowPageIndex++;
+        pageEditPane.setNowPage(nowFile.getPageAt(nowPageIndex));
     }
 
     /**
-     * 正在绘制的图形预览
+     * 清空文件
      */
-    private Picture previewPicture = null;
-
-    /**
-     * 双缓冲消除闪烁
-     */
-    private Image buffer = null;
-
-    public PagePane() {
-        paintListener.setPage(this);
-        this.addMouseListener(paintListener);
-        this.addMouseMotionListener(paintListener);
-
-    }
-
-    public void addImage(Picture newImage) {
-        pictures.add(newImage);
-        deletePreview();
-    }
-
-    public void addPreview(Picture previewImage) {
-        this.previewPicture = previewImage;
-    }
-
-    public void deletePreview() {
-        this.previewPicture = null;
-    }
-
-    public void update() {
-        Graphics graphics = this.getGraphics();
-        //缓冲区
-        if (buffer != null) {
-            graphics.drawImage(buffer, 0, 0, this);
-        }
-
-        buffer = createImage(this.getWidth(), this.getWidth());
-        Graphics2D bufferGraphics = (Graphics2D) buffer.getGraphics();
-        //当前界面
-        for (Picture image : pictures) {
-            image.draw(bufferGraphics);
-        }
-        if (previewPicture != null) {
-            previewPicture.draw(bufferGraphics);
-        }
-        bufferGraphics.dispose();
+    public void clear(){
+        nowFile = new PicturePointFile();
     }
 }

@@ -24,11 +24,32 @@ public class Ellipse extends Picture {
      * @param BY B点Y坐标
      */
     public Ellipse(int OX, int OY, int BX, int BY) {
-        imageKind = 4;
+        pictureKind = 4;
         baseX = OX;
         baseY = OY;
         a = abs(BX - OX);
         b = abs(BY - OY);
+    }
+
+    /**
+     * 提供参数构建
+     *
+     * @param pictureKind 图形种类
+     * @param RGB         RGB值
+     * @param lineWidth   图形粗细，单位像素
+     * @param baseX       基点x坐标
+     * @param baseY       基点y坐标
+     * @param a           长半轴
+     * @param b           短半轴
+     */
+    public Ellipse(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, int a, int b) {
+        this.pictureKind = pictureKind;
+        this.color = new Color(RGB);
+        this.stroke = new BasicStroke(lineWidth);
+        this.baseX = baseX;
+        this.baseY = baseY;
+        this.a = a;
+        this.b = b;
     }
 
     public void draw(Graphics2D graphics) {
@@ -46,12 +67,11 @@ public class Ellipse extends Picture {
 
     /**
      * 转换成保持到文件的格式
-     * 4 R G B size baseX baseY a b
+     * 4 RGB size baseX baseY a b
      *
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return imageKind + " " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " " + stroke.getLineWidth() + " "
-                + baseX + " " + baseY + " " + a + " " + b;
+        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + a + " " + b;
     }
 }

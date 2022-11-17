@@ -1,6 +1,6 @@
 package custom.listener;
 
-import custom.panel.PagePane;
+import custom.panel.PageEditPane;
 import custom.picture.*;
 
 import custom.picture.Rectangle;
@@ -9,7 +9,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
 
-public class PaintListener implements MouseListener, MouseMotionListener {
+public class DrawListener implements MouseListener, MouseMotionListener {
 
     private int x1, x2, y1, y2;
 
@@ -24,7 +24,7 @@ public class PaintListener implements MouseListener, MouseMotionListener {
     /**
      * 当前绘制页
      */
-    private PagePane nowPage;
+    private PageEditPane pageEditPane;
     /**
      * 当前绘制模式
      * 0:不进行绘制
@@ -82,7 +82,6 @@ public class PaintListener implements MouseListener, MouseMotionListener {
         if (newPicture == null)
             return null;
 
-
         newPicture.setColor(color);
         newPicture.setStroke(stroke);
         return newPicture;
@@ -91,10 +90,10 @@ public class PaintListener implements MouseListener, MouseMotionListener {
     /**
      * 设置当前绘画页面
      *
-     * @param nowPage 当前页面
+     * @param pageEditPane 当前页面
      */
-    public void setPage(PagePane nowPage) {
-        this.nowPage = nowPage;
+    public void setEditPane(PageEditPane pageEditPane) {
+        this.pageEditPane = pageEditPane;
     }
 
     // 鼠标进入
@@ -131,7 +130,7 @@ public class PaintListener implements MouseListener, MouseMotionListener {
             return;
         Picture newPicture = getNewPicture();
         if (newPicture != null) {
-            nowPage.addImage(newPicture);
+            pageEditPane.addPicture(newPicture);
 
             String pictureType = switch (drawMode) {
                 case 1 -> "直线";
@@ -143,12 +142,12 @@ public class PaintListener implements MouseListener, MouseMotionListener {
             };
             System.out.println("新增图形：" + pictureType);
         }
-        nowPage.update();
+        pageEditPane.update();
     }
 
     // 鼠标单击
     public void mouseClicked(MouseEvent e) {
-        nowPage.update();
+        pageEditPane.update();
     }
 
     // 鼠标移动
@@ -168,7 +167,7 @@ public class PaintListener implements MouseListener, MouseMotionListener {
         }
         Picture newPicture = getNewPicture();
         if (newPicture != null)
-            nowPage.addPreview(newPicture);
-        nowPage.update();
+            pageEditPane.addPreview(newPicture);
+        pageEditPane.update();
     }
 }

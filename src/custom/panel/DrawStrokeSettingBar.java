@@ -1,6 +1,6 @@
 package custom.panel;
 
-import custom.listener.PaintListener;
+import custom.listener.DrawListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +13,10 @@ public class DrawStrokeSettingBar extends BaseBar {
     /**
      * 控制的画笔
      */
-    PaintListener paintListener;
+    DrawListener drawListener;
 
-    public void setPaintListener(PaintListener paintListener) {
-        this.paintListener = paintListener;
+    public void setPaintListener(DrawListener drawListener) {
+        this.drawListener = drawListener;
     }
 
     /**
@@ -73,7 +73,7 @@ public class DrawStrokeSettingBar extends BaseBar {
      * 将修改的结果返回画笔
      */
     public void updateSetting(){
-        if (paintListener != null)
-            paintListener.setStroke(stroke);
+        if (drawListener != null)
+            drawListener.setStroke(stroke);
     }
 }

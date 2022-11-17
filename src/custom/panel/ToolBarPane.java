@@ -127,10 +127,10 @@ public class ToolBarPane extends JSplitPane {
         Dimension dimension = new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2);
         fileSettingPane.setSize(dimension);
         dimension = new Dimension(this.getWidth() - 5, this.getWidth() - getDividerLocation() - getDividerSize() - 2);
-        // 保存按钮
-        FileSaveBar fileSaveBar = new FileSaveBar(dimension);
-        fileSaveBar.setMainWindow(mainWindow);
-        fileSettingPane.add(fileSaveBar);
+        // 文件操作面板
+        FileSaveLoadBar fileSaveLoadBar = new FileSaveLoadBar(dimension);
+        fileSaveLoadBar.setMainWindow(mainWindow);
+        fileSettingPane.add(fileSaveLoadBar);
     }
 
     /**
@@ -142,15 +142,15 @@ public class ToolBarPane extends JSplitPane {
         dimension = new Dimension(this.getWidth() - 5, this.getWidth() - getDividerLocation() - getDividerSize() - 2);
         // 绘制模式控制栏
         DrawModeSettingBar drawModeSettingBar = new DrawModeSettingBar(dimension);
-        drawModeSettingBar.setPaintListener(PagePane.paintListener);
+        drawModeSettingBar.setPaintListener(PageEditPane.drawListener);
         pictureSettingPane.add(drawModeSettingBar);
         // 颜色控制栏
         DrawColorSettingBar drawColorSettingBar = new DrawColorSettingBar(dimension);
-        drawColorSettingBar.setPaintListener(PagePane.paintListener);
+        drawColorSettingBar.setPaintListener(PageEditPane.drawListener);
         pictureSettingPane.add(drawColorSettingBar);
         // 粗细控制栏
         DrawStrokeSettingBar drawStrokeSettingBar = new DrawStrokeSettingBar(dimension);
-        drawStrokeSettingBar.setPaintListener(PagePane.paintListener);
+        drawStrokeSettingBar.setPaintListener(PageEditPane.drawListener);
         pictureSettingPane.add(drawStrokeSettingBar);
     }
 

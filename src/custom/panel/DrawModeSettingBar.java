@@ -1,6 +1,6 @@
 package custom.panel;
 
-import custom.listener.PaintListener;
+import custom.listener.DrawListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,10 +10,10 @@ public class DrawModeSettingBar extends BaseBar {
     /**
      * 控制的画笔
      */
-    PaintListener paintListener;
+    DrawListener drawListener;
 
-    public void setPaintListener(PaintListener paintListener) {
-        this.paintListener = paintListener;
+    public void setPaintListener(DrawListener drawListener) {
+        this.drawListener = drawListener;
     }
 
     public DrawModeSettingBar(Dimension size) {
@@ -32,7 +32,7 @@ public class DrawModeSettingBar extends BaseBar {
 
         // 选择按钮 4*1
         JRadioButton chooseMode = new JRadioButton("选择");
-        chooseMode.addActionListener(e -> paintListener.setDrawMode(0));
+        chooseMode.addActionListener(e -> drawListener.setDrawMode(0));
         modes.add(chooseMode);
         this.add(chooseMode);
         chooseMode.setPreferredSize(buttonSize);
@@ -40,7 +40,7 @@ public class DrawModeSettingBar extends BaseBar {
 
         // 选择按钮 4*1
         JRadioButton eraserMode = new JRadioButton("橡皮擦");
-        eraserMode.addActionListener(e -> paintListener.setDrawMode(-1));
+        eraserMode.addActionListener(e -> drawListener.setDrawMode(-1));
         modes.add(eraserMode);
         this.add(eraserMode);
         eraserMode.setPreferredSize(buttonSize);
@@ -48,7 +48,7 @@ public class DrawModeSettingBar extends BaseBar {
 
         // 直线按钮 4*1
         JRadioButton lineMode = new JRadioButton("直线");
-        lineMode.addActionListener(e -> paintListener.setDrawMode(1));
+        lineMode.addActionListener(e -> drawListener.setDrawMode(1));
         modes.add(lineMode);
         this.add(lineMode);
         lineMode.setPreferredSize(buttonSize);
@@ -56,7 +56,7 @@ public class DrawModeSettingBar extends BaseBar {
 
         // 矩形按钮 4*1
         JRadioButton rectangleMode = new JRadioButton("矩形");
-        rectangleMode.addActionListener(e -> paintListener.setDrawMode(2));
+        rectangleMode.addActionListener(e -> drawListener.setDrawMode(2));
         modes.add(rectangleMode);
         this.add(rectangleMode);
         rectangleMode.setPreferredSize(buttonSize);
@@ -64,7 +64,7 @@ public class DrawModeSettingBar extends BaseBar {
 
         // 圆按钮 4*1
         JRadioButton circleMode = new JRadioButton("圆");
-        circleMode.addActionListener(e -> paintListener.setDrawMode(3));
+        circleMode.addActionListener(e -> drawListener.setDrawMode(3));
         modes.add(circleMode);
         this.add(circleMode);
         circleMode.setPreferredSize(buttonSize);
@@ -72,7 +72,7 @@ public class DrawModeSettingBar extends BaseBar {
 
         // 椭圆按钮 4*1
         JRadioButton ellipseMode = new JRadioButton("椭圆");
-        ellipseMode.addActionListener(e -> paintListener.setDrawMode(4));
+        ellipseMode.addActionListener(e -> drawListener.setDrawMode(4));
         modes.add(ellipseMode);
         this.add(ellipseMode);
         ellipseMode.setPreferredSize(buttonSize);
@@ -80,7 +80,7 @@ public class DrawModeSettingBar extends BaseBar {
 
         // 自由线按钮 4*1
         JRadioButton freeLineMode = new JRadioButton("任意线");
-        freeLineMode.addActionListener(e -> paintListener.setDrawMode(5));
+        freeLineMode.addActionListener(e -> drawListener.setDrawMode(5));
         modes.add(freeLineMode);
         this.add(freeLineMode);
         freeLineMode.setPreferredSize(buttonSize);
@@ -88,7 +88,7 @@ public class DrawModeSettingBar extends BaseBar {
 
         // 文字按钮 4*1
         JRadioButton textMode = new JRadioButton("文本");
-        textMode.addActionListener(e -> paintListener.setDrawMode(6));
+        textMode.addActionListener(e -> drawListener.setDrawMode(6));
         modes.add(textMode);
         this.add(textMode);
         textMode.setPreferredSize(buttonSize);

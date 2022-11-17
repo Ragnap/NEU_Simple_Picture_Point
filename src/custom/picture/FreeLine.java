@@ -28,8 +28,30 @@ public class FreeLine extends Picture {
      * @param y 路径上的点y
      */
     public FreeLine(ArrayList<Integer> x, ArrayList<Integer> y) {
+        pictureKind =5;
         pointsX = x;
         pointsY = y;
+    }
+
+    /**
+     * 提供参数构建
+     *
+     * @param pictureKind 图形种类
+     * @param RGB         RGB值
+     * @param lineWidth   图形粗细，单位像素
+     * @param baseX       基点x坐标
+     * @param baseY       基点y坐标
+     * @param pointsX     点的x坐标
+     * @param pointsY     点的y坐标
+     */
+    public FreeLine(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, ArrayList<Integer> pointsX, ArrayList<Integer> pointsY) {
+        this.pictureKind = pictureKind;
+        this.color = new Color(RGB);
+        this.stroke = new BasicStroke(lineWidth);
+        this.baseX = baseX;
+        this.baseY = baseY;
+        this.pointsX = pointsX;
+        this.pointsY = pointsY;
     }
 
     public void draw(Graphics2D graphics) {
@@ -49,7 +71,7 @@ public class FreeLine extends Picture {
 
     /**
      * 转换成保持到文件的格式
-     * 5 R G B size baseX baseY pointSize [pointsX] [pointsY]
+     * 5 RGB size baseX baseY pointSize [pointsX] [pointsY]
      *
      * @return 表示该图形的一行字符串
      */
@@ -61,7 +83,6 @@ public class FreeLine extends Picture {
         for (Integer y : pointsY) {
             pointSting += " " + y;
         }
-        return imageKind + " " + color.getRed() + " " + color.getGreen() + " " + color.getBlue() + " " + stroke.getLineWidth() + " "
-                + baseX + " " + baseY + " " + pointSting;
+        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + pointSting;
     }
 }
