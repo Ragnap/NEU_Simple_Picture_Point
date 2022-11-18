@@ -59,12 +59,17 @@ public class PagePane extends JSplitPane {
         nowFile.addPage(nowPageIndex,newPage);
         nowPageIndex++;
         pageEditPane.setNowPage(nowFile.getPageAt(nowPageIndex));
+        pageEditPane.refresh();
+
     }
 
     /**
-     * 清空文件
+     * 清空文件并打开一个只有一页的新文件
      */
     public void clear(){
         nowFile = new PicturePointFile();
+        nowPageIndex = 0;
+        pageEditPane.setNowPage(nowFile.getPageAt(nowPageIndex));
+        pageEditPane.refresh();
     }
 }

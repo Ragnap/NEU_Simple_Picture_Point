@@ -5,6 +5,7 @@ import custom.picture.*;
 
 import custom.picture.Rectangle;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class DrawListener implements MouseListener, MouseMotionListener {
      * 3:圆
      * 4:椭圆
      * 5:自由线
+     * 6:文字
      */
     private int drawMode = 1;
     /**
@@ -47,6 +49,10 @@ public class DrawListener implements MouseListener, MouseMotionListener {
      * 当前画笔字体
      */
     private Font font = new Font("宋体", Font.PLAIN, 12);
+
+    /**
+     * 当前待插入的文字
+     */
 
     public void setDrawMode(int drawMode) {
         this.drawMode = drawMode;
@@ -65,18 +71,36 @@ public class DrawListener implements MouseListener, MouseMotionListener {
     }
 
     /**
+     * 通过弹出输入框的方式获得待插入字符
+     *
+     * @return 待插入的字符
+     */
+    private String getTextContent() {
+        return JOptionPane.showInputDialog(pageEditPane, "待插入的文字", "插入文字", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    /**
      * 根据drawMode的值与对应的变量创建新的对应的图形
      *
      * @return 指向对应的图形的父类
      */
     Picture getNewPicture() {
-
+        // 插入文字的模式需要获取待插入文字
+        String textContent = null;
+        if (drawMode == 6) {
+            textContent = getTextContent();
+            // 取消了文字的输入
+            if (textContent == null)
+                return null;
+        }
+        // 获取对应的图像
         Picture newPicture = switch (drawMode) {
             case 1 -> new Line(x1, y1, x2, y2);
             case 2 -> new Rectangle(x1, y1, x2, y2);
             case 3 -> new Circle(x1, y1, x2, y2);
             case 4 -> new Ellipse(x1, y1, x2, y2);
             case 5 -> new FreeLine(trailX, trailY);
+            case 6 -> new Text(x1, y1, textContent, font);
             default -> null;
         };
         if (newPicture == null)
@@ -94,6 +118,27 @@ public class DrawListener implements MouseListener, MouseMotionListener {
      */
     public void setEditPane(PageEditPane pageEditPane) {
         this.pageEditPane = pageEditPane;
+    }
+
+    /**
+     * 添加一个新的图像
+     */
+    void addPicture() {
+        Picture newPicture = getNewPicture();
+        if (newPicture != null) {
+            pageEditPane.addPicture(newPicture);
+            String pictureType = switch (drawMode) {
+                case 1 -> "直线";
+                case 2 -> "矩形";
+                case 3 -> "圆形";
+                case 4 -> "椭圆";
+                case 5 -> "任意线";
+                case 6 -> "文字";
+                default -> null;
+            };
+            System.out.println("新增图形：" + pictureType);
+        }
+        pageEditPane.refresh();
     }
 
     // 鼠标进入
@@ -119,35 +164,22 @@ public class DrawListener implements MouseListener, MouseMotionListener {
         }
     }
 
+
     // 鼠标释放
     public void mouseReleased(MouseEvent e) {
         if (drawMode == 0)
             return;
         x2 = e.getX();
         y2 = e.getY();
-        //避免非任意线时单次点击产生一个像素点
-        if (x2 == x1 && y1 == y2 && drawMode != 5)
+        //避免绘制普通图像时单次点击产生一个像素点
+        if (x2 == x1 && y1 == y2 && (drawMode == 1 || drawMode == 2 || drawMode == 3 || drawMode == 4))
             return;
-        Picture newPicture = getNewPicture();
-        if (newPicture != null) {
-            pageEditPane.addPicture(newPicture);
-
-            String pictureType = switch (drawMode) {
-                case 1 -> "直线";
-                case 2 -> "矩形";
-                case 3 -> "圆形";
-                case 4 -> "椭圆";
-                case 5 -> "任意线";
-                default -> null;
-            };
-            System.out.println("新增图形：" + pictureType);
-        }
-        pageEditPane.update();
+        addPicture();
     }
 
     // 鼠标单击
     public void mouseClicked(MouseEvent e) {
-        pageEditPane.update();
+        pageEditPane.refresh();
     }
 
     // 鼠标移动
@@ -159,15 +191,22 @@ public class DrawListener implements MouseListener, MouseMotionListener {
     public void mouseDragged(MouseEvent e) {
         if (drawMode == 0)
             return;
+        // 记录预览中的结束点
         x2 = e.getX();
         y2 = e.getY();
+
+        // 自由线模式记录路径点
         if (drawMode == 5) {
             trailX.add(x2);
             trailY.add(y2);
         }
-        Picture newPicture = getNewPicture();
-        if (newPicture != null)
-            pageEditPane.addPreview(newPicture);
-        pageEditPane.update();
+        // 文字模式不添加预览
+        if (drawMode != 6) {
+            Picture newPicture = getNewPicture();
+            if (newPicture != null)
+                pageEditPane.addPreview(newPicture);
+            pageEditPane.update();
+        }
+
     }
 }

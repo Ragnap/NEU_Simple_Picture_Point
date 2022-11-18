@@ -50,7 +50,7 @@ public class PageEditPane extends JPanel {
     public void addPicture(Picture newPicture) {
         nowPage.addPicture(newPicture);
         deletePreview();
-        update();
+        refresh();
     }
 
     /**
@@ -111,6 +111,11 @@ public class PageEditPane extends JPanel {
                 System.out.println(pointsX.size());
                 newPicture = new FreeLine(drawMode, RGB, lineWidth, baseX, baseY, pointsX, pointsY);
             }
+            // 文字
+            case 6 -> {
+                Font font = new Font(info[6],Integer.parseInt(info[7]),Integer.parseInt(info[8]));
+                newPicture = new Text(drawMode,RGB,0,baseX,baseY,info[5],font);
+            }
         }
 
         addPicture(newPicture);
@@ -158,5 +163,12 @@ public class PageEditPane extends JPanel {
      */
     public Image getPageShot(){
         return buffer;
+    }
+    /**
+     * 刷新当前页面到最新，避免双缓冲带来的延迟问题
+     */
+    public void refresh(){
+        update();
+        update();
     }
 }

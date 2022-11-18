@@ -174,7 +174,7 @@ public class FileSaveLoadBar extends BaseBar {
             if (file.exists()) {
                 System.out.println("存在已有文件！");
 
-                int choose = JOptionPane.showConfirmDialog(mainWindow.getPagePane(), "已存在对应的文件，是否覆盖？", "已存在对应文件", 2);
+                int choose = JOptionPane.showConfirmDialog(mainWindow.getPagePane(), "已存在对应的文件，是否覆盖？", "已存在对应文件", JOptionPane.OK_CANCEL_OPTION);
                 if (choose == 0) {
                     if (file.delete()) {
                         System.out.println("成功覆盖原有文件！");
@@ -212,20 +212,39 @@ public class FileSaveLoadBar extends BaseBar {
             System.out.println("未设置主页面!");
             return;
         }
-        // 未指定文件名时选取一个文件
-        if (filePath == null) {
-            chooseFilePath("保存");
-        }
+
         //打开文件
         try {
-            File file = new File(filePath);
-            //不存在时创建文件
-            if (!file.exists()) {
+            File file = null;
+            // 未指定文件名时等同于另存为
+            if (filePath == null) {
+                chooseFilePath("保存");
+                file = new File(filePath);
+                // 已存在对应文件时弹出提醒
+                if (file.exists()) {
+                    System.out.println("存在已有文件！");
+                    int choose = JOptionPane.showConfirmDialog(mainWindow.getPagePane(), "已存在对应的文件，是否覆盖？", "已存在对应文件", JOptionPane.OK_CANCEL_OPTION);
+                    if (choose == 0) {
+                        if (file.delete()) {
+                            System.out.println("成功覆盖原有文件！");
+                        } else {
+                            System.out.println("删除原有文件失败！");
+                            return;
+                        }
+                    } else {
+                        return;
+                    }
+                }
+                // 否则创建文件
                 if (!file.createNewFile()) {
                     System.out.println("创建文件失败!");
                     return;
                 }
             }
+            else
+                file = new File(filePath);
+
+
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
 
             ArrayList<Page> pages = mainWindow.getPagePane().getNowFile().getPages();
@@ -284,13 +303,13 @@ public class FileSaveLoadBar extends BaseBar {
             // 总页数
             int pageSize = Integer.parseInt(in.readLine());
             // 读取一页中的图形
-            for(int i= 0;i<pageSize;i++){
+            for (int i = 0; i < pageSize; i++) {
                 // 设置当前绘制页
                 mainWindow.getPagePane().insertNewPageAfter();
                 // 当前页所含图形数
                 int pictureSize = Integer.parseInt(in.readLine());
                 // 读取每个图形
-                for(int j =0;j<pictureSize;j++){
+                for (int j = 0; j < pictureSize; j++) {
                     String picture = in.readLine();
                     System.out.println(picture);
                     mainWindow.getPagePane().getPageEditPane().addPicture(picture);
