@@ -152,6 +152,10 @@ public class ToolBarPane extends JSplitPane {
         DrawStrokeSettingBar drawStrokeSettingBar = new DrawStrokeSettingBar(dimension);
         drawStrokeSettingBar.setPaintListener(PageEditPane.drawListener);
         pictureSettingPane.add(drawStrokeSettingBar);
+        // 文字控制栏
+        DrawTextSettingBar drawTextSettingBar = new DrawTextSettingBar(dimension);
+        drawTextSettingBar.setDrawListener(PageEditPane.drawListener);
+        pictureSettingPane.add(drawTextSettingBar);
     }
 
     /**

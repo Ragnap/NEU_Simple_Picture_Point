@@ -20,7 +20,6 @@ public class DrawColorSettingBar extends BaseBar {
      * 控制的画笔
      */
     DrawListener drawListener;
-
     public void setPaintListener(DrawListener drawListener) {
         this.drawListener = drawListener;
     }
