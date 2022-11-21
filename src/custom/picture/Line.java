@@ -7,6 +7,10 @@ import java.awt.*;
  */
 public class Line extends Picture {
     /**
+     * 所有矩形的记数
+     */
+    static int lineCount = 0;
+    /**
      * 直线右侧截止点X坐标
      */
     int endX;
@@ -24,7 +28,10 @@ public class Line extends Picture {
      * @param BY B点Y坐标
      */
     public Line(int AX, int AY, int BX, int BY) {
-        pictureKind = 1;
+        this.pictureKind = 1;
+
+        this.id = ++lineCount;
+        this.name = "直线" + id;
         // 确保起点在左
         if (AX < BX) {
             this.baseX = AX;
@@ -47,15 +54,18 @@ public class Line extends Picture {
      * @param lineWidth   图形粗细，单位像素
      * @param baseX       基点x坐标
      * @param baseY       基点y坐标
+     * @param name        名称
      * @param endX        终止点x坐标
      * @param endY        终止点y坐标
      */
-    public Line(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, int endX, int endY) {
+    public Line(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, String name, int endX, int endY) {
         this.pictureKind = pictureKind;
         this.color = new Color(RGB);
         this.stroke = new BasicStroke(lineWidth);
         this.baseX = baseX;
         this.baseY = baseY;
+        this.id = ++lineCount;
+        this.name = name;
         this.endX = endX;
         this.endY = endY;
     }
@@ -80,6 +90,6 @@ public class Line extends Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + endX + " " + endY;
+        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name + " " + endX + " " + endY;
     }
 }

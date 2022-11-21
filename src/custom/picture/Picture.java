@@ -27,7 +27,10 @@ public class Picture {
      * 图形名称
      */
     String name;
-
+    /**
+     * 图形编号
+     */
+    int id;
     /**
      * 图形颜色
      */
@@ -59,22 +62,26 @@ public class Picture {
         this.stroke = stroke;
     }
 
-    public Picture(){}
+    public Picture() {
+    }
+
     /**
      * 提供参数构建
+     *
      * @param pictureKind 图形种类
-     * @param RGB RGB值
-     * @param lineWidth 图形粗细，单位像素
-     * @param baseX 基点x坐标
-     * @param baseY 基点y坐标
+     * @param RGB         RGB值
+     * @param lineWidth   图形粗细，单位像素
+     * @param baseX       基点x坐标
+     * @param baseY       基点y坐标
      */
-    public Picture(int pictureKind,int RGB,float lineWidth,int baseX,int baseY){
-        this.pictureKind= pictureKind;
+    public Picture(int pictureKind, int RGB, float lineWidth, int baseX, int baseY) {
+        this.pictureKind = pictureKind;
         this.color = new Color(RGB);
         this.stroke = new BasicStroke(lineWidth);
         this.baseX = baseX;
         this.baseY = baseY;
     }
+
     /**
      * 移动图形
      *
@@ -97,12 +104,12 @@ public class Picture {
 
     /**
      * 转换成保持到文件的格式，多态重载
-     * pictureKind RGB size baseX baseY 图形的特殊属性值
+     * pictureKind RGB size baseX baseY name 图形的特殊属性值
      *
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY;
+        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name;
     }
 
 

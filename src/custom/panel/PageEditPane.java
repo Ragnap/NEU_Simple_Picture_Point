@@ -72,49 +72,51 @@ public class PageEditPane extends JPanel {
         int baseX = Integer.parseInt(info[3]);
         // 第五个参数为左上角x坐标
         int baseY = Integer.parseInt(info[4]);
+        // 第六个参数为图形名称
+        String name = info[5];
         // 其他参数
         switch (drawMode) {
             // 直线
             case 1 -> {
-                int endX = Integer.parseInt(info[5]);
-                int endY = Integer.parseInt(info[6]);
-                newPicture = new Line(drawMode, RGB, lineWidth, baseX, baseY, endX, endY);
+                int endX = Integer.parseInt(info[6]);
+                int endY = Integer.parseInt(info[7]);
+                newPicture = new Line(drawMode, RGB, lineWidth, baseX, baseY,name, endX, endY);
 
             }
             // 矩形
             case 2 -> {
-                int width = Integer.parseInt(info[5]);
-                int height = Integer.parseInt(info[6]);
-                newPicture = new Rectangle(drawMode, RGB, lineWidth, baseX, baseY, width, height);
+                int width = Integer.parseInt(info[6]);
+                int height = Integer.parseInt(info[7]);
+                newPicture = new Rectangle(drawMode, RGB, lineWidth, baseX, baseY,name, width, height);
             }
             // 圆
             case 3 -> {
-                int r = Integer.parseInt(info[5]);
-                newPicture = new Circle(drawMode, RGB, lineWidth, baseX, baseY, r);
+                int r = Integer.parseInt(info[6]);
+                newPicture = new Circle(drawMode, RGB, lineWidth, baseX, baseY,name, r);
             }
             // 椭圆
             case 4 -> {
-                int a = Integer.parseInt(info[5]);
-                int b = Integer.parseInt(info[6]);
-                newPicture = new Ellipse(drawMode, RGB, lineWidth, baseX, baseY, a, b);
+                int a = Integer.parseInt(info[6]);
+                int b = Integer.parseInt(info[7]);
+                newPicture = new Ellipse(drawMode, RGB, lineWidth, baseX, baseY,name, a, b);
             }
             // 自由线
             case 5 -> {
-                int pointSize = Integer.parseInt(info[5]);
+                int pointSize = Integer.parseInt(info[6]);
                 ArrayList<Integer> pointsX = new ArrayList<Integer>();
                 ArrayList<Integer> pointsY = new ArrayList<Integer>();
 
                 for (int i = 0; i < pointSize; i++) {
-                    pointsX.add(Integer.parseInt(info[6 + i]));
-                    pointsY.add(Integer.parseInt(info[6 + pointSize + i]));
+                    pointsX.add(Integer.parseInt(info[7 + i]));
+                    pointsY.add(Integer.parseInt(info[7 + pointSize + i]));
                 }
                 System.out.println(pointsX.size());
-                newPicture = new FreeLine(drawMode, RGB, lineWidth, baseX, baseY, pointsX, pointsY);
+                newPicture = new FreeLine(drawMode, RGB, lineWidth, baseX, baseY, name,pointsX, pointsY);
             }
             // 文字
             case 6 -> {
-                Font font = new Font(info[6],Integer.parseInt(info[7]),Integer.parseInt(info[8]));
-                newPicture = new Text(drawMode,RGB,0,baseX,baseY,info[5],font);
+                Font font = new Font(info[7],Integer.parseInt(info[8]),Integer.parseInt(info[9]));
+                newPicture = new Text(drawMode,RGB,0,baseX,baseY,name,info[6],font);
             }
         }
 

@@ -5,6 +5,10 @@ import java.util.ArrayList;
 
 public class FreeLine extends Picture {
     /**
+     * 所有自由线的记数
+     */
+    static int freeLineCount = 0;
+    /**
      * 路径上每个点的X坐标
      */
     ArrayList<Integer> pointsX;
@@ -14,23 +18,19 @@ public class FreeLine extends Picture {
     ArrayList<Integer> pointsY;
 
     /**
-     * 不给出初始点的初始化
-     */
-    public FreeLine() {
-        pointsX = new ArrayList<>();
-        pointsY = new ArrayList<>();
-    }
-
-    /**
      * 给出路径点集坐标
      *
      * @param x 路径上的点x
      * @param y 路径上的点y
      */
     public FreeLine(ArrayList<Integer> x, ArrayList<Integer> y) {
-        pictureKind =5;
-        pointsX = x;
-        pointsY = y;
+        this.pictureKind = 5;
+
+        this.id = ++freeLineCount;
+        this.name = "自由线" + id;
+
+        this.pointsX = x;
+        this.pointsY = y;
     }
 
     /**
@@ -41,15 +41,18 @@ public class FreeLine extends Picture {
      * @param lineWidth   图形粗细，单位像素
      * @param baseX       基点x坐标
      * @param baseY       基点y坐标
+     * @param name        名称
      * @param pointsX     点的x坐标
      * @param pointsY     点的y坐标
      */
-    public FreeLine(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, ArrayList<Integer> pointsX, ArrayList<Integer> pointsY) {
+    public FreeLine(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, String name, ArrayList<Integer> pointsX, ArrayList<Integer> pointsY) {
         this.pictureKind = pictureKind;
         this.color = new Color(RGB);
         this.stroke = new BasicStroke(lineWidth);
         this.baseX = baseX;
         this.baseY = baseY;
+        this.id = ++freeLineCount;
+        this.name = name;
         this.pointsX = pointsX;
         this.pointsY = pointsY;
     }
@@ -83,6 +86,6 @@ public class FreeLine extends Picture {
         for (Integer y : pointsY) {
             pointSting += " " + y;
         }
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + pointSting;
+        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name + " " + pointSting;
     }
 }

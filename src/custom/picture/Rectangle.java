@@ -4,6 +4,10 @@ import java.awt.*;
 
 public class Rectangle extends Picture {
     /**
+     * 所有矩形的记数
+     */
+    static int rectangleCount = 0;
+    /**
      * 矩形宽
      */
     int width;
@@ -21,7 +25,11 @@ public class Rectangle extends Picture {
      * @param BY B点Y坐标
      */
     public Rectangle(int AX, int AY, int BX, int BY) {
-        pictureKind = 2;
+        this.pictureKind = 2;
+
+        this.id = ++rectangleCount;
+        this.name = "矩形" + id;
+
         this.baseX = Math.min(AX, BX);
         this.baseY = Math.min(AY, BY);
         this.width = Math.abs(AX - BX);
@@ -36,15 +44,18 @@ public class Rectangle extends Picture {
      * @param lineWidth   图形粗细，单位像素
      * @param baseX       基点x坐标
      * @param baseY       基点y坐标
+     * @param name 名称
      * @param width       长
      * @param height      宽
      */
-    public Rectangle(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, int width, int height) {
+    public Rectangle(int pictureKind, int RGB, float lineWidth, int baseX, int baseY,String name, int width, int height) {
         this.pictureKind = pictureKind;
         this.color = new Color(RGB);
         this.stroke = new BasicStroke(lineWidth);
         this.baseX = baseX;
         this.baseY = baseY;
+        this.id = ++rectangleCount;
+        this.name = name;
         this.width = width;
         this.height = height;
     }
@@ -69,6 +80,6 @@ public class Rectangle extends Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + width + " " + height;
+        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name+ " " + width + " " + height;
     }
 }

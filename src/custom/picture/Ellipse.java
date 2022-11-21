@@ -7,6 +7,10 @@ import static java.lang.Math.abs;
 
 public class Ellipse extends Picture {
     /**
+     * 所有椭圆的记数
+     */
+    static int ellipseCount = 0;
+    /**
      * 半长轴
      */
     int a;
@@ -24,11 +28,15 @@ public class Ellipse extends Picture {
      * @param BY B点Y坐标
      */
     public Ellipse(int OX, int OY, int BX, int BY) {
-        pictureKind = 4;
-        baseX = OX;
-        baseY = OY;
-        a = abs(BX - OX);
-        b = abs(BY - OY);
+        this.pictureKind = 4;
+
+        this.id = ++ellipseCount;
+        this.name = "椭圆" + id;
+
+        this.baseX = OX;
+        this.baseY = OY;
+        this.a = abs(BX - OX);
+        this.b = abs(BY - OY);
     }
 
     /**
@@ -39,15 +47,18 @@ public class Ellipse extends Picture {
      * @param lineWidth   图形粗细，单位像素
      * @param baseX       基点x坐标
      * @param baseY       基点y坐标
+     * @param name        名称
      * @param a           长半轴
      * @param b           短半轴
      */
-    public Ellipse(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, int a, int b) {
+    public Ellipse(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, String name, int a, int b) {
         this.pictureKind = pictureKind;
         this.color = new Color(RGB);
         this.stroke = new BasicStroke(lineWidth);
         this.baseX = baseX;
         this.baseY = baseY;
+        this.id = ++ellipseCount;
+        this.name = name;
         this.a = a;
         this.b = b;
     }
@@ -72,6 +83,6 @@ public class Ellipse extends Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + a + " " + b;
+        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name + " " + a + " " + b;
     }
 }

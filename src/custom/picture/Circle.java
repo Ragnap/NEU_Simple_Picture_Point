@@ -7,6 +7,11 @@ import static java.lang.Math.sqrt;
 
 public class Circle extends Picture {
     /**
+     * 所有圆形的编号记数
+     */
+    static int circleCount = 0;
+
+    /**
      * 半径
      */
     int r;
@@ -20,10 +25,14 @@ public class Circle extends Picture {
      * @param BY B点Y坐标
      */
     public Circle(int OX, int OY, int BX, int BY) {
-        pictureKind = 3;
-        baseX = OX;
-        baseY = OY;
-        r = (int) sqrt((BX - OX) * (BX - OX) + (BY - OY) * (BY - OY));
+        this.pictureKind = 3;
+
+        this.id = ++circleCount;
+        this.name = "圆形" + id;
+
+        this.baseX = OX;
+        this.baseY = OY;
+        this.r = (int) sqrt((BX - OX) * (BX - OX) + (BY - OY) * (BY - OY));
     }
 
     /**
@@ -34,14 +43,17 @@ public class Circle extends Picture {
      * @param lineWidth   图形粗细，单位像素
      * @param baseX       基点x坐标
      * @param baseY       基点y坐标
+     * @param name        名称
      * @param r           半径
      */
-    public Circle(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, int r) {
+    public Circle(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, String name, int r) {
         this.pictureKind = pictureKind;
         this.color = new Color(RGB);
         this.stroke = new BasicStroke(lineWidth);
         this.baseX = baseX;
         this.baseY = baseY;
+        this.id = ++circleCount;
+        this.name = name;
         this.r = r;
     }
 
@@ -65,6 +77,6 @@ public class Circle extends Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + r;
+        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name + " " + r;
     }
 }
