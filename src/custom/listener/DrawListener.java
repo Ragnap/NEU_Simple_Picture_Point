@@ -36,7 +36,7 @@ public class DrawListener implements MouseListener, MouseMotionListener {
      * 5:自由线
      * 6:文字
      */
-    private int drawMode = 1;
+    private int drawMode = 0;
     /**
      * 当前画笔颜色
      */
@@ -84,7 +84,7 @@ public class DrawListener implements MouseListener, MouseMotionListener {
      *
      * @return 指向对应的图形的父类
      */
-    Picture getNewPicture() {
+    Picture getNewPicture(boolean isPreview) {
         // 插入文字的模式需要获取待插入文字
         String textContent = null;
         if (drawMode == 6) {
@@ -95,12 +95,12 @@ public class DrawListener implements MouseListener, MouseMotionListener {
         }
         // 获取对应的图像
         Picture newPicture = switch (drawMode) {
-            case 1 -> new Line(x1, y1, x2, y2);
-            case 2 -> new Rectangle(x1, y1, x2, y2);
-            case 3 -> new Circle(x1, y1, x2, y2);
-            case 4 -> new Ellipse(x1, y1, x2, y2);
-            case 5 -> new FreeLine(trailX, trailY);
-            case 6 -> new Text(x1, y1, textContent, font);
+            case 1 -> new Line(x1, y1, x2, y2, isPreview);
+            case 2 -> new Rectangle(x1, y1, x2, y2, isPreview);
+            case 3 -> new Circle(x1, y1, x2, y2, isPreview);
+            case 4 -> new Ellipse(x1, y1, x2, y2, isPreview);
+            case 5 -> new FreeLine(trailX, trailY, isPreview);
+            case 6 -> new Text(x1, y1, textContent, font, isPreview);
             default -> null;
         };
         if (newPicture == null)
@@ -124,7 +124,7 @@ public class DrawListener implements MouseListener, MouseMotionListener {
      * 添加一个新的图像
      */
     void addPicture() {
-        Picture newPicture = getNewPicture();
+        Picture newPicture = getNewPicture(false);
         if (newPicture != null) {
             pageEditPane.addPicture(newPicture);
             String pictureType = switch (drawMode) {
@@ -202,7 +202,7 @@ public class DrawListener implements MouseListener, MouseMotionListener {
         }
         // 文字模式不添加预览
         if (drawMode != 6) {
-            Picture newPicture = getNewPicture();
+            Picture newPicture = getNewPicture(true);
             if (newPicture != null)
                 pageEditPane.addPreview(newPicture);
             pageEditPane.update();

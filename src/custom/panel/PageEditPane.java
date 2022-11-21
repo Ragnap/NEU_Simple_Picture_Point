@@ -2,11 +2,13 @@ package custom.panel;
 
 import custom.file.Page;
 import custom.listener.DrawListener;
+import custom.listener.SelectListener;
 import custom.picture.*;
 import custom.picture.Rectangle;
 
 import javax.swing.*;
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 
@@ -14,9 +16,14 @@ import java.util.ArrayList;
  * 单页面操作
  */
 public class PageEditPane extends JPanel {
-    // 画笔
+    /**
+     * 画笔工具
+     */
     static public DrawListener drawListener = new DrawListener();
-
+    /**
+     * 选择工具
+     */
+    static public SelectListener selectListener = new SelectListener();
     /**
      * 正在绘制的页面
      */
@@ -37,8 +44,15 @@ public class PageEditPane extends JPanel {
     private Image buffer = null;
 
     public PageEditPane() {
+        // 默认是选择模式
+        drawListener.setDrawMode(0);
         drawListener.setEditPane(this);
         this.addMouseListener(drawListener);
+        this.addMouseMotionListener(drawListener);
+
+        selectListener.setSelectMode(true);
+        selectListener.setEditPane(this);
+        this.addMouseListener(selectListener);
         this.addMouseMotionListener(drawListener);
     }
 
@@ -61,7 +75,7 @@ public class PageEditPane extends JPanel {
     public void addPicture(String text) {
         Picture newPicture = null;
 
-        String[] info = text.split(" ");
+        String[] info = text.split("_");
         // 第一个参数为图形类型
         int drawMode = Integer.parseInt(info[0]);
         // 第二个参数为图形颜色
@@ -73,54 +87,67 @@ public class PageEditPane extends JPanel {
         // 第五个参数为左上角x坐标
         int baseY = Integer.parseInt(info[4]);
         // 第六个参数为图形名称
-        String name = info[5];
+        String name = toOriginString(info[5]);
+        System.out.println(name);
         // 其他参数
         switch (drawMode) {
             // 直线
             case 1 -> {
                 int endX = Integer.parseInt(info[6]);
                 int endY = Integer.parseInt(info[7]);
-                newPicture = new Line(drawMode, RGB, lineWidth, baseX, baseY,name, endX, endY);
+                newPicture = new Line(drawMode, RGB, lineWidth, baseX, baseY, name, endX, endY);
 
             }
             // 矩形
             case 2 -> {
                 int width = Integer.parseInt(info[6]);
                 int height = Integer.parseInt(info[7]);
-                newPicture = new Rectangle(drawMode, RGB, lineWidth, baseX, baseY,name, width, height);
+                newPicture = new Rectangle(drawMode, RGB, lineWidth, baseX, baseY, name, width, height);
             }
             // 圆
             case 3 -> {
                 int r = Integer.parseInt(info[6]);
-                newPicture = new Circle(drawMode, RGB, lineWidth, baseX, baseY,name, r);
+                newPicture = new Circle(drawMode, RGB, lineWidth, baseX, baseY, name, r);
             }
             // 椭圆
             case 4 -> {
                 int a = Integer.parseInt(info[6]);
                 int b = Integer.parseInt(info[7]);
-                newPicture = new Ellipse(drawMode, RGB, lineWidth, baseX, baseY,name, a, b);
+                newPicture = new Ellipse(drawMode, RGB, lineWidth, baseX, baseY, name, a, b);
             }
             // 自由线
             case 5 -> {
                 int pointSize = Integer.parseInt(info[6]);
-                ArrayList<Integer> pointsX = new ArrayList<Integer>();
-                ArrayList<Integer> pointsY = new ArrayList<Integer>();
+                ArrayList<Integer> pointsX = toOriginArrayList(info[7]);
+                ArrayList<Integer> pointsY = toOriginArrayList(info[8]);
 
-                for (int i = 0; i < pointSize; i++) {
-                    pointsX.add(Integer.parseInt(info[7 + i]));
-                    pointsY.add(Integer.parseInt(info[7 + pointSize + i]));
-                }
-                System.out.println(pointsX.size());
-                newPicture = new FreeLine(drawMode, RGB, lineWidth, baseX, baseY, name,pointsX, pointsY);
+                newPicture = new FreeLine(drawMode, RGB, lineWidth, baseX, baseY, name, pointsX, pointsY);
             }
             // 文字
             case 6 -> {
-                Font font = new Font(info[7],Integer.parseInt(info[8]),Integer.parseInt(info[9]));
-                newPicture = new Text(drawMode,RGB,0,baseX,baseY,name,info[6],font);
+                Font font = new Font(toOriginString(info[7]), Integer.parseInt(info[8]), Integer.parseInt(info[9]));
+                newPicture = new Text(drawMode, RGB, 0, baseX, baseY, name, toOriginString(info[6]), font);
             }
         }
 
         addPicture(newPicture);
+    }
+
+    /**
+     * 选中一个图片
+     * @param picture 带选中图片
+     */
+    public void selectPicture(Picture picture){
+
+    }
+    /**
+     * 获取覆盖某个点的所有图形列表
+     * @param x 点的x坐标
+     * @param y 点的y坐标
+     * @return 所有满足的图形
+     */
+    public ArrayList<Picture> getPicturesAtPosition(int x,int y){
+        return nowPage.getPicturesAtPosition(x,y);
     }
 
     /**
@@ -160,17 +187,58 @@ public class PageEditPane extends JPanel {
         }
         bufferGraphics.dispose();
     }
+
     /**
      * 获取当前界面截图
      */
-    public Image getPageShot(){
+    public Image getPageShot() {
         return buffer;
     }
+
     /**
      * 刷新当前页面到最新，避免双缓冲带来的延迟问题
      */
-    public void refresh(){
+    public void refresh() {
         update();
         update();
+    }
+
+
+    /**
+     * 将[xx, xx]形式的byte字符串返回成原来的字符串
+     *
+     * @param byteString [xx, xx]形式的byte字符串
+     * @return 原来的字符串
+     */
+    private String toOriginString(String byteString) {
+        //去掉头尾[]
+        byteString = byteString.substring(1, byteString.length() - 1);
+        //拆分为字符串数组
+        String[] splitString = byteString.split(", ");
+        //字符串数组转化为整型数组
+        byte[] bytes = new byte[splitString.length];
+        for(int i = 0;i<splitString.length;i++)
+            bytes[i]= Byte.parseByte(splitString[i]);
+        //由整型数组构建string
+        return new String(bytes, StandardCharsets.UTF_8);
+    }
+
+    /**
+     * 将[xx, xx]形式的字符串返回成原来的ArrayList
+     * @param ArrayListString [xx, xx]形式的int字符串
+     * @return ArrayList<int>的值
+     */
+    private ArrayList<Integer> toOriginArrayList(String ArrayListString) {
+        //去掉头尾[]
+        ArrayListString = ArrayListString.substring(1, ArrayListString.length() - 1);
+        //拆分为字符串数组
+        String[] splitString = ArrayListString.split(", ");
+
+        ArrayList<Integer> origin = new ArrayList<Integer>();
+        //字符串数组转化为整型数组
+        for(String nowString:splitString)
+            origin.add(Integer.valueOf(nowString));
+
+        return origin;
     }
 }

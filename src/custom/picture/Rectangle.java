@@ -1,6 +1,11 @@
 package custom.picture;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 
 public class Rectangle extends Picture {
     /**
@@ -19,15 +24,18 @@ public class Rectangle extends Picture {
     /**
      * 通过给左上角点A，右下角点B创建矩形
      *
-     * @param AX A点x坐标
-     * @param AY A点Y坐标
-     * @param BX B点X坐标
-     * @param BY B点Y坐标
+     * @param AX        A点x坐标
+     * @param AY        A点Y坐标
+     * @param BX        B点X坐标
+     * @param BY        B点Y坐标
+     * @param isPreview 是否是临时预览
      */
-    public Rectangle(int AX, int AY, int BX, int BY) {
+    public Rectangle(int AX, int AY, int BX, int BY, boolean isPreview) {
+        if(!isPreview)
+            rectangleCount++;
         this.pictureKind = 2;
 
-        this.id = ++rectangleCount;
+        this.id = rectangleCount;
         this.name = "矩形" + id;
 
         this.baseX = Math.min(AX, BX);
@@ -44,11 +52,11 @@ public class Rectangle extends Picture {
      * @param lineWidth   图形粗细，单位像素
      * @param baseX       基点x坐标
      * @param baseY       基点y坐标
-     * @param name 名称
+     * @param name        名称
      * @param width       长
      * @param height      宽
      */
-    public Rectangle(int pictureKind, int RGB, float lineWidth, int baseX, int baseY,String name, int width, int height) {
+    public Rectangle(int pictureKind, int RGB, float lineWidth, int baseX, int baseY, String name, int width, int height) {
         this.pictureKind = pictureKind;
         this.color = new Color(RGB);
         this.stroke = new BasicStroke(lineWidth);
@@ -80,6 +88,21 @@ public class Rectangle extends Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name+ " " + width + " " + height;
+        return pictureKind + "_" + color.getRGB() + "_" + stroke.getLineWidth() + "_" + baseX + "_" + baseY + "_" + Arrays.toString(name.getBytes(StandardCharsets.UTF_8)) + "_" + width + "_" + height;
+    }
+
+    /**
+     * 判断图形是否包含某个点，多态重载
+     *
+     * @param x 点x坐标
+     * @param y 点y坐标
+     * @return 该图形是否包含该点
+     */
+    public boolean isCoverPoint(int x, int y) {
+        // 直接看是否在矩形范围内就行
+        int nowX = x - baseX;
+        int nowY = y - baseY;
+        // x坐标在[-线宽/2,宽度+线宽/2]范围内，y坐标在[-线宽/2,宽度+线宽/2]范围内
+        return ((nowX >= -stroke.getLineWidth() / 2 && nowX <= width + stroke.getLineWidth() / 2) && (nowY >= -stroke.getLineWidth() / 2 && nowY <= height + stroke.getLineWidth() / 2));
     }
 }

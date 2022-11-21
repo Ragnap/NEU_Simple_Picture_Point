@@ -20,4 +20,20 @@ public class Page {
     public void addPicture(Picture newPicture){
         pictures.add(newPicture);
     }
+
+
+    /**
+     * 获取覆盖某个点的所有图形列表
+     * @param x 点的x坐标
+     * @param y 点的y坐标
+     * @return 所有满足的图形
+     */
+    public ArrayList<Picture> getPicturesAtPosition(int x,int y){
+        ArrayList<Picture> selectPictures=new ArrayList<>();
+        for(Picture picture :pictures){
+            if(picture.isCoverPoint(x,y))
+                selectPictures.add(picture);
+        }
+        return selectPictures;
+    }
 }

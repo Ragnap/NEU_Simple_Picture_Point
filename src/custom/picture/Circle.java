@@ -1,7 +1,9 @@
 package custom.picture;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.lang.Math.sqrt;
 
@@ -19,15 +21,18 @@ public class Circle extends Picture {
     /**
      * 创建以O为圆心,过B点的圆
      *
-     * @param OX O点X坐标
-     * @param OY O点Y坐标
-     * @param BX B点X坐标
-     * @param BY B点Y坐标
+     * @param OX        O点X坐标
+     * @param OY        O点Y坐标
+     * @param BX        B点X坐标
+     * @param BY        B点Y坐标
+     * @param isPreview 是否是临时预览
      */
-    public Circle(int OX, int OY, int BX, int BY) {
+    public Circle(int OX, int OY, int BX, int BY, boolean isPreview) {
+        if (!isPreview)
+            circleCount++;
         this.pictureKind = 3;
 
-        this.id = ++circleCount;
+        this.id = circleCount;
         this.name = "圆形" + id;
 
         this.baseX = OX;
@@ -41,8 +46,8 @@ public class Circle extends Picture {
      * @param pictureKind 图形种类
      * @param RGB         RGB值
      * @param lineWidth   图形粗细，单位像素
-     * @param baseX       基点x坐标
-     * @param baseY       基点y坐标
+     * @param baseX       圆点x坐标
+     * @param baseY       圆点y坐标
      * @param name        名称
      * @param r           半径
      */
@@ -77,6 +82,19 @@ public class Circle extends Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name + " " + r;
+        return pictureKind + "_" + color.getRGB() + "_" + stroke.getLineWidth() + "_" + baseX + "_" + baseY + "_" + Arrays.toString(name.getBytes(StandardCharsets.UTF_8)) + "_" + r;
+    }
+
+    /**
+     * 判断图形是否包含某个点，多态重载
+     *
+     * @param x 点x坐标
+     * @param y 点y坐标
+     * @return 该图形是否包含该点
+     */
+    public boolean isCoverPoint(int x, int y) {
+        //通过计算点到圆点距离
+        int distanceSquare = (x - baseX) * (x - baseX) + (y - baseY) * (y - baseY);
+        return distanceSquare <= (r + stroke.getLineWidth() / 2) * (r + stroke.getLineWidth() / 2);
     }
 }

@@ -143,6 +143,7 @@ public class ToolBarPane extends JSplitPane {
         // 绘制模式控制栏
         DrawModeSettingBar drawModeSettingBar = new DrawModeSettingBar(dimension);
         drawModeSettingBar.setPaintListener(PageEditPane.drawListener);
+        drawModeSettingBar.setSelectListener(PageEditPane.selectListener);
         pictureSettingPane.add(drawModeSettingBar);
         // 颜色控制栏
         DrawColorSettingBar drawColorSettingBar = new DrawColorSettingBar(dimension);

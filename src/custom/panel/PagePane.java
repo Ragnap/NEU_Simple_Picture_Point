@@ -52,7 +52,7 @@ public class PagePane extends JSplitPane {
     }
 
     /**
-     * 在当前页后插入一个新的页并打开
+     * 在当前页后插入一个新的页
      */
     public void insertNewPageAfter(){
         Page newPage = new Page();
@@ -62,7 +62,14 @@ public class PagePane extends JSplitPane {
         pageEditPane.refresh();
 
     }
-
+    /**
+     * 重新绘制index的页
+     */
+    public void resetPage(int index){
+        nowFile.clearPage(index);
+        pageEditPane.setNowPage(nowFile.getPageAt(index));
+        pageEditPane.refresh();
+    }
     /**
      * 清空文件并打开一个只有一页的新文件
      */
@@ -71,5 +78,13 @@ public class PagePane extends JSplitPane {
         nowPageIndex = 0;
         pageEditPane.setNowPage(nowFile.getPageAt(nowPageIndex));
         pageEditPane.refresh();
+    }
+    /**
+     * 返回当前总页数
+     *
+     * @return 当前总页数
+     */
+    public int getPageNum(){
+        return nowFile.getPages().size();
     }
 }

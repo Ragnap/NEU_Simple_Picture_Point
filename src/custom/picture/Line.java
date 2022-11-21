@@ -1,6 +1,11 @@
 package custom.picture;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
+
+import static java.lang.Math.abs;
+import static java.lang.Math.sqrt;
 
 /**
  * 直线类
@@ -22,15 +27,17 @@ public class Line extends Picture {
     /**
      * 通过给定端点A，B创建直线
      *
-     * @param AX A点x坐标
-     * @param AY A点Y坐标
-     * @param BX B点X坐标
-     * @param BY B点Y坐标
+     * @param AX        A点x坐标
+     * @param AY        A点Y坐标
+     * @param BX        B点X坐标
+     * @param BY        B点Y坐标
+     * @param isPreview 是否是临时预览
      */
-    public Line(int AX, int AY, int BX, int BY) {
+    public Line(int AX, int AY, int BX, int BY, boolean isPreview) {
+        if (!isPreview)
+            lineCount++;
         this.pictureKind = 1;
-
-        this.id = ++lineCount;
+        this.id = lineCount;
         this.name = "直线" + id;
         // 确保起点在左
         if (AX < BX) {
@@ -90,6 +97,44 @@ public class Line extends Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name + " " + endX + " " + endY;
+        return pictureKind + "_" + color.getRGB() + "_" + stroke.getLineWidth() + "_" + baseX + "_" + baseY + "_" + Arrays.toString(name.getBytes(StandardCharsets.UTF_8)) + "_" + endX + "_" + endY;
+    }
+
+    /**
+     * 判断图形是否包含某个点，多态重载
+     *
+     * @param x 点x坐标
+     * @param y 点y坐标
+     * @return 该图形是否包含该点
+     */
+    public boolean isCoverPoint(int x, int y) {
+        //利用点到线段距离是否小于线段宽度判断
+        return getPointSegmentDistance(baseX,baseY,endX,endY,x,y) <= stroke.getLineWidth() / 2;
+    }
+
+    /**
+     * 求点到线段距离，使用向量法求解距离
+     *
+     * @param x1 线段端点1的x坐标
+     * @param y1 线段端点1的y坐标
+     * @param x2 线段端点2的x坐标
+     * @param y2 线段端点2的y坐标
+     * @param x  待求解点的x坐标
+     * @param y  待求解点的x坐标
+     * @return 点到线段距离
+     */
+    double getPointSegmentDistance(int x1, int y1, int x2, int y2, int x, int y) {
+        double cross = (x2 - x1) * (x - x1) + (y2 - y1) * (y - y1);
+        if (cross <= 0)
+            return sqrt((x - x1) * (x - x1) + (y - y1) * (y - y1));
+
+        double d2 = (x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1); //|AB|^2：矢量AB的大小的平方
+        if (cross >= d2)
+            return sqrt((x - x2) * (x - x2) + (y - y2) * (y - y2)); //是|BP|：矢量的大小
+
+        double r = cross / d2;  //求出垂足
+        double px = x1 + (x2 - x1) * r;
+        double py = y1 + (y2 - y1) * r;
+        return sqrt((x - px) * (x - px) + (py - y) * (py - y));
     }
 }

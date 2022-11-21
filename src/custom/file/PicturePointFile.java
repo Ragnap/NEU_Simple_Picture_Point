@@ -61,4 +61,23 @@ public class PicturePointFile {
     public void addPage(int index, Page newPage) {
         pages.add(index, newPage);
     }
+
+    /**
+     * 修改指定位置为指定的页
+     *
+     * @param index   指定位置
+     * @param newPage 指定页
+     */
+    public void setPage(int index, Page newPage) {
+        pages.set(index, newPage);
+    }
+
+    /**
+     * 清空指定位置的页
+     *
+     * @param index 指定位置
+     */
+    public void clearPage(int index) {
+        pages.set(index, new Page());
+    }
 }

@@ -10,7 +10,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class FileSaveLoadBar extends BaseBar {
     /**
@@ -96,7 +98,7 @@ public class FileSaveLoadBar extends BaseBar {
         saveAsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                savePage();
+                saveAsPage();
             }
         });
         this.add(saveAsButton);
@@ -138,7 +140,7 @@ public class FileSaveLoadBar extends BaseBar {
             // 如果点击了"确定", 则获取选择的文件路径
             filePath = fileChooser.getSelectedFile().getAbsolutePath();
 
-            System.out.println("打开文件：" + filePath);
+            System.out.println("打开文件" + filePath);
         }
         // 不选择时使用默认名
         else {
@@ -240,8 +242,7 @@ public class FileSaveLoadBar extends BaseBar {
                     System.out.println("创建文件失败!");
                     return;
                 }
-            }
-            else
+            } else
                 file = new File(filePath);
 
 
@@ -302,16 +303,20 @@ public class FileSaveLoadBar extends BaseBar {
             mainWindow.getPagePane().clear();
             // 总页数
             int pageSize = Integer.parseInt(in.readLine());
+
+            // 插入页数
+            for (int i = 1; i < pageSize; i++)
+                mainWindow.getPagePane().insertNewPageAfter();
+
             // 读取一页中的图形
             for (int i = 0; i < pageSize; i++) {
-                // 设置当前绘制页
-                mainWindow.getPagePane().insertNewPageAfter();
+                // 重设当前绘制页
+                mainWindow.getPagePane().resetPage(i);
                 // 当前页所含图形数
                 int pictureSize = Integer.parseInt(in.readLine());
                 // 读取每个图形
                 for (int j = 0; j < pictureSize; j++) {
                     String picture = in.readLine();
-                    System.out.println(picture);
                     mainWindow.getPagePane().getPageEditPane().addPicture(picture);
                 }
 
@@ -322,4 +327,51 @@ public class FileSaveLoadBar extends BaseBar {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 另存为
+     */
+    public void saveAsPage() {
+        // 未指定主窗口时返回
+        if (mainWindow == null) {
+            System.out.println("未设置主窗口!");
+            return;
+        }
+        // 主窗口未指定绘图页面时返回
+        if (mainWindow.getPagePane() == null) {
+            System.out.println("未设置主页面!");
+            return;
+        }
+        // 打开新文件的路径
+        chooseFilePath("另存为");
+        try {
+            File file = new File(filePath);
+            // 已存在对应文件时弹出提醒
+            if (file.exists()) {
+                System.out.println("存在已有文件！");
+
+                int choose = JOptionPane.showConfirmDialog(mainWindow.getPagePane(), "已存在对应的文件，是否覆盖？", "已存在对应文件", JOptionPane.OK_CANCEL_OPTION);
+                if (choose == 0) {
+                    if (file.delete()) {
+                        System.out.println("成功覆盖原有文件！");
+                    } else {
+                        System.out.println("删除原有文件失败！");
+                        return;
+                    }
+                } else {
+                    return;
+                }
+            }
+            // 创建文件
+            if (!file.createNewFile()) {
+                System.out.println("创建文件失败!");
+                return;
+            }
+            savePage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

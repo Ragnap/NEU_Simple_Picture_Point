@@ -1,6 +1,8 @@
 package custom.picture;
 
 import java.awt.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 /**
  * 图形基类
@@ -109,8 +111,17 @@ public class Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + " " + color.getRGB() + " " + stroke.getLineWidth() + " " + baseX + " " + baseY + " " + name;
+        return pictureKind + "_" + color.getRGB() + "_" + stroke.getLineWidth() + "_" + baseX + "_" + baseY + "_" + Arrays.toString(name.getBytes(StandardCharsets.UTF_8));
     }
 
+    /**
+     * 判断图形是否包含某个点，多态重载
+     * @param x 点x坐标
+     * @param y 点y坐标
+     * @return 该图形是否包含该点
+     */
+    public boolean isCoverPoint(int x,int y){
+        return false;
+    }
 
 }
