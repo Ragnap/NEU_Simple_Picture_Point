@@ -50,19 +50,20 @@ public class FileSaveLoadBar extends BaseBar {
 
     public FileSaveLoadBar(Dimension size) {
         baseSetting(size);
+        GridBagLayout layout = (GridBagLayout) this.getLayout();
         // 创建文件选择器
         fileChooser = new JFileChooser();
         // 设置默认选择的文件为当前文件夹下的默认文件名
         fileChooser.setCurrentDirectory(new File("./"));
         // 设置文件选择的模式为只选文件
-        fileChooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        fileChooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
         // 设置不可多选
         fileChooser.setMultiSelectionEnabled(false);
         // 设置默认使用的文件过滤器
         fileChooser.setFileFilter(new FileNameExtensionFilter("Picture Point File(*.ptt)", "ptt"));
 
-
-        // 新建按钮
+        size = new Dimension(size.width / 5, size.height / 4);
+        // 新建按钮 1*1
         createButton = new JButton("新建");
         createButton.setSize(size);
         createButton.addActionListener(new ActionListener() {
@@ -72,6 +73,9 @@ public class FileSaveLoadBar extends BaseBar {
             }
         });
         this.add(createButton);
+        layout.setConstraints(createButton, buildConstraints(0, 0, 1, 1, new Insets(10, 10, 5, 5),1));
+
+
         // 保存按钮
         saveButton = new JButton("保存");
         saveButton.setSize(size);
@@ -82,6 +86,8 @@ public class FileSaveLoadBar extends BaseBar {
             }
         });
         this.add(saveButton);
+        layout.setConstraints(saveButton, buildConstraints(1, 0, 1, 1, new Insets(10, 5, 5, 10),1));
+
         // 打开按钮
         loadButton = new JButton("打开");
         loadButton.setSize(size);
@@ -92,6 +98,8 @@ public class FileSaveLoadBar extends BaseBar {
             }
         });
         this.add(loadButton);
+        layout.setConstraints(loadButton, buildConstraints(0, 1, 1, 1, new Insets(5, 10, 10, 5),1));
+
         // 另存为按钮
         saveAsButton = new JButton("另存为");
         saveAsButton.setSize(size);
@@ -102,6 +110,8 @@ public class FileSaveLoadBar extends BaseBar {
             }
         });
         this.add(saveAsButton);
+        layout.setConstraints(saveAsButton, buildConstraints(1, 1, 1, 1, new Insets(5, 5, 10, 10),1));
+
     }
 
     /**
@@ -131,8 +141,10 @@ public class FileSaveLoadBar extends BaseBar {
 
     /**
      * 通过文件选取器获取文件保存路径与文件名到filepath中
+     *
+     * @return 是否成功通过文件读取器获取文件名
      */
-    public void chooseFilePath(String title) {
+    public boolean chooseFilePath(String title) {
         // 打开文件选择框（线程将被阻塞, 直到选择框被关闭）
         int result = fileChooser.showDialog(mainWindow.getPagePane(), title);
         // 选择了新文件
@@ -141,15 +153,18 @@ public class FileSaveLoadBar extends BaseBar {
             filePath = fileChooser.getSelectedFile().getAbsolutePath();
 
             System.out.println("打开文件" + filePath);
+            return true;
         }
-        // 不选择时使用默认名
+        // 不选择时保存原来的值或者使用默认名
         else {
-            filePath = getDefaultFileName();
+            if (filePath == null)
+                filePath = getDefaultFileName();
+            return false;
         }
     }
 
     /**
-     * 打开新的文件
+     * 创建新的文件
      */
     public void createPage() {
 
@@ -245,7 +260,6 @@ public class FileSaveLoadBar extends BaseBar {
             } else
                 file = new File(filePath);
 
-
             BufferedWriter out = new BufferedWriter(new FileWriter(file));
 
             ArrayList<Page> pages = mainWindow.getPagePane().getNowFile().getPages();
@@ -288,43 +302,44 @@ public class FileSaveLoadBar extends BaseBar {
         if (filePath != null)
             savePage();
         // 选取一个文件
-        chooseFilePath("打开");
-        // 打开文件
-        try {
-            File file = new File(filePath);
-            // 不存在时创建文件
-            if (!file.exists()) {
-                System.out.println("打开文件失败!");
-                return;
-            }
-            System.out.println("成功读取" + filePath);
-            BufferedReader in = new BufferedReader(new FileReader(file));
-            // 清空当前文件
-            mainWindow.getPagePane().clear();
-            // 总页数
-            int pageSize = Integer.parseInt(in.readLine());
-
-            // 插入页数
-            for (int i = 1; i < pageSize; i++)
-                mainWindow.getPagePane().insertNewPageAfter();
-
-            // 读取一页中的图形
-            for (int i = 0; i < pageSize; i++) {
-                // 重设当前绘制页
-                mainWindow.getPagePane().resetPage(i);
-                // 当前页所含图形数
-                int pictureSize = Integer.parseInt(in.readLine());
-                // 读取每个图形
-                for (int j = 0; j < pictureSize; j++) {
-                    String picture = in.readLine();
-                    mainWindow.getPagePane().getPageEditPane().addPicture(picture);
+        if (chooseFilePath("打开")) {
+            // 打开文件
+            try {
+                File file = new File(filePath);
+                // 不存在时创建文件
+                if (!file.exists()) {
+                    System.out.println("打开文件失败!");
+                    return;
                 }
+                System.out.println("成功读取" + filePath);
+                BufferedReader in = new BufferedReader(new FileReader(file));
+                // 清空当前文件
+                mainWindow.getPagePane().clear();
+                // 总页数
+                int pageSize = Integer.parseInt(in.readLine());
 
+                // 插入页数
+                for (int i = 1; i < pageSize; i++)
+                    mainWindow.getPagePane().insertNewPageAfter();
+
+                // 读取一页中的图形
+                for (int i = 0; i < pageSize; i++) {
+                    // 重设当前绘制页
+                    mainWindow.getPagePane().resetPage(i);
+                    // 当前页所含图形数
+                    int pictureSize = Integer.parseInt(in.readLine());
+                    // 读取每个图形
+                    for (int j = 0; j < pictureSize; j++) {
+                        String picture = in.readLine();
+                        mainWindow.getPagePane().getPageEditPane().addPicture(picture);
+                    }
+
+                }
+                in.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            in.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
@@ -343,34 +358,36 @@ public class FileSaveLoadBar extends BaseBar {
             return;
         }
         // 打开新文件的路径
-        chooseFilePath("另存为");
-        try {
-            File file = new File(filePath);
-            // 已存在对应文件时弹出提醒
-            if (file.exists()) {
-                System.out.println("存在已有文件！");
+        if (chooseFilePath("另存为")) {
+            try {
+                File file = new File(filePath);
+                // 已存在对应文件时弹出提醒
+                if (file.exists()) {
+                    System.out.println("存在已有文件！");
 
-                int choose = JOptionPane.showConfirmDialog(mainWindow.getPagePane(), "已存在对应的文件，是否覆盖？", "已存在对应文件", JOptionPane.OK_CANCEL_OPTION);
-                if (choose == 0) {
-                    if (file.delete()) {
-                        System.out.println("成功覆盖原有文件！");
+                    int choose = JOptionPane.showConfirmDialog(mainWindow.getPagePane(), "已存在对应的文件，是否覆盖？", "已存在对应文件", JOptionPane.OK_CANCEL_OPTION);
+                    if (choose == 0) {
+                        if (file.delete()) {
+                            System.out.println("成功覆盖原有文件！");
+                        } else {
+                            System.out.println("删除原有文件失败！");
+                            return;
+                        }
                     } else {
-                        System.out.println("删除原有文件失败！");
                         return;
                     }
-                } else {
+                }
+                // 创建文件
+                if (!file.createNewFile()) {
+                    System.out.println("创建文件失败!");
                     return;
                 }
+                savePage();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            // 创建文件
-            if (!file.createNewFile()) {
-                System.out.println("创建文件失败!");
-                return;
-            }
-            savePage();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+
     }
 
 

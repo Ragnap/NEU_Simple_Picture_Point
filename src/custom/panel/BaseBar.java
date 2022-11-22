@@ -32,7 +32,25 @@ public class BaseBar extends JPanel {
 
         return constraints;
     }
-    public void baseSetting(Dimension size){
+
+    /**
+     * 构建一个Constrains
+     *
+     * @param x      组件最左上占用的格子的x坐标
+     * @param y      组件最左上占用的格子的y坐标
+     * @param width  组件占用的水平格子数
+     * @param height 组件占用的竖直格子数
+     * @param fill   组件所在的区域比组件本身要大时进行缩放的类型
+     * @return 对应的约束
+     */
+    public GridBagConstraints buildConstraints(int x, int y, int width, int height, Insets insets, int fill) {
+        GridBagConstraints constraints = buildConstraints(x, y, width, height, insets);
+        // 组件所在的区域比组件本身要大时进行缩放
+        constraints.fill = fill;
+        return constraints;
+    }
+
+    public void baseSetting(Dimension size) {
         // 设置大小
         this.setBounds(0, 0, size.width / 5, size.height);
         // 边框
@@ -42,16 +60,18 @@ public class BaseBar extends JPanel {
         GridBagLayout layout = new GridBagLayout();
         this.setLayout(layout);
     }
+
     /**
      * 更新文字
      */
-    public void updateView(){
+    public void updateView() {
 
     }
+
     /**
      * 将修改的结果返回
      */
-    public void updateSetting(){
+    public void updateSetting() {
 
     }
 }

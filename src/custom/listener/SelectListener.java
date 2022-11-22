@@ -16,7 +16,6 @@ public class SelectListener implements MouseListener, MouseMotionListener {
      * 当前绘制页
      */
     private PageEditPane pageEditPane;
-
     public void setEditPane(PageEditPane pageEditPane) {
         this.pageEditPane = pageEditPane;
     }
@@ -87,7 +86,6 @@ public class SelectListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println("按下按键");
         if (!selectMode) {
             pageEditPane.selectPicture(null);
         }
@@ -122,7 +120,6 @@ public class SelectListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        System.out.println("开始拖动");
         if (!selectMode)
             return;
         moveFlag = true;

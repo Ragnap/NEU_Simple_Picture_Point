@@ -134,16 +134,20 @@ public class PageEditPane extends JPanel {
 
         addPicture(newPicture);
     }
+
     /**
      * 移动选定的的图形
      *
      * @param x 新的X坐标
      * @param y 新的Y坐标
      */
-    public void moveSelectPicture(int x,int y){
-        selectedPicture.move(x,y);
+    public void moveSelectPicture(int x, int y) {
+        if (selectedPicture == null)
+            return;
+        selectedPicture.move(x, y);
         refresh();
     }
+
     /**
      * 选中一个图片
      *
