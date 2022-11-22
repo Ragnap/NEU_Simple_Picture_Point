@@ -37,7 +37,10 @@ public class PageEditPane extends JPanel {
      * 正在绘制的图形预览
      */
     private Picture previewPicture = null;
-
+    /**
+     * 当前选中的图形
+     */
+    private Picture selectedPicture = null;
     /**
      * 双缓冲消除闪烁
      */
@@ -117,9 +120,8 @@ public class PageEditPane extends JPanel {
             }
             // 自由线
             case 5 -> {
-                int pointSize = Integer.parseInt(info[6]);
-                ArrayList<Integer> pointsX = toOriginArrayList(info[7]);
-                ArrayList<Integer> pointsY = toOriginArrayList(info[8]);
+                ArrayList<Integer> pointsX = toOriginArrayList(info[6]);
+                ArrayList<Integer> pointsY = toOriginArrayList(info[7]);
 
                 newPicture = new FreeLine(drawMode, RGB, lineWidth, baseX, baseY, name, pointsX, pointsY);
             }
@@ -135,19 +137,23 @@ public class PageEditPane extends JPanel {
 
     /**
      * 选中一个图片
+     *
      * @param picture 带选中图片
      */
-    public void selectPicture(Picture picture){
-
+    public void selectPicture(Picture picture) {
+        selectedPicture = picture;
+        refresh();
     }
+
     /**
      * 获取覆盖某个点的所有图形列表
+     *
      * @param x 点的x坐标
      * @param y 点的y坐标
      * @return 所有满足的图形
      */
-    public ArrayList<Picture> getPicturesAtPosition(int x,int y){
-        return nowPage.getPicturesAtPosition(x,y);
+    public ArrayList<Picture> getPicturesAtPosition(int x, int y) {
+        return nowPage.getPicturesAtPosition(x, y);
     }
 
     /**
@@ -181,6 +187,9 @@ public class PageEditPane extends JPanel {
         //当前界面
         for (Picture picture : nowPage.getPictures()) {
             picture.draw(bufferGraphics);
+        }
+        if (selectedPicture != null) {
+            selectedPicture.drawBorder(bufferGraphics);
         }
         if (previewPicture != null) {
             previewPicture.draw(bufferGraphics);
@@ -217,14 +226,15 @@ public class PageEditPane extends JPanel {
         String[] splitString = byteString.split(", ");
         //字符串数组转化为整型数组
         byte[] bytes = new byte[splitString.length];
-        for(int i = 0;i<splitString.length;i++)
-            bytes[i]= Byte.parseByte(splitString[i]);
+        for (int i = 0; i < splitString.length; i++)
+            bytes[i] = Byte.parseByte(splitString[i]);
         //由整型数组构建string
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
     /**
      * 将[xx, xx]形式的字符串返回成原来的ArrayList
+     *
      * @param ArrayListString [xx, xx]形式的int字符串
      * @return ArrayList<int>的值
      */
@@ -236,7 +246,7 @@ public class PageEditPane extends JPanel {
 
         ArrayList<Integer> origin = new ArrayList<Integer>();
         //字符串数组转化为整型数组
-        for(String nowString:splitString)
+        for (String nowString : splitString)
             origin.add(Integer.valueOf(nowString));
 
         return origin;

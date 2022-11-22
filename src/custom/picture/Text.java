@@ -84,7 +84,28 @@ public class Text extends Picture {
         graphics.setStroke(originStroke);
         graphics.setFont(originFont);
     }
+    /**
+     * 绘制一个可以覆盖图形的矩形虚线框，多态重载
+     *
+     * @param graphics 当前画笔
+     */
+    public void drawBorder(Graphics2D graphics){
+        //设置特色属性
+        Color originColor = graphics.getColor();
+        BasicStroke originStroke = (BasicStroke) graphics.getStroke();
+        graphics.setColor(new Color(91,209,215, 60));
 
+        int width = content.length() * font.getSize();
+        int height = font.getSize();
+
+        graphics.fillRect(baseX, baseY-height, width, height);
+        graphics.setColor(new Color(32,73,105,90));
+        graphics.setStroke(new BasicStroke(5));
+        graphics.drawRect(baseX, baseY-height, width, height);
+        //还原画笔
+        graphics.setColor(originColor);
+        graphics.setStroke(originStroke);
+    }
     /**
      * 转换成保持到文件的格式
      * 6 RGB size baseX baseY content fontName fontStyle fontSize
@@ -92,7 +113,7 @@ public class Text extends Picture {
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + "_" + color.getRGB() + "_0_" + baseX + "_" + baseY + "_" + Arrays.toString(name.getBytes(StandardCharsets.UTF_8)) + "_" + Arrays.toString(content.getBytes(StandardCharsets.UTF_8)) + "_" + Arrays.toString(font.getFontName().getBytes(StandardCharsets.UTF_8)) + "_" + font.getStyle() + "_" + font.getSize();
+        return super.toFileString() + "_" + Arrays.toString(content.getBytes(StandardCharsets.UTF_8)) + "_" + Arrays.toString(font.getFontName().getBytes(StandardCharsets.UTF_8)) + "_" + font.getStyle() + "_" + font.getSize();
     }
 
     /**
@@ -104,10 +125,11 @@ public class Text extends Picture {
      */
     public boolean isCoverPoint(int x, int y) {
         // 直接看是否在文本矩形范围内就行
-        int nowX = x - baseX;
-        int nowY = y - baseY;
         int width = content.length() * font.getSize();
         int height = font.getSize();
+        int nowX = x - baseX;
+        int nowY = y - baseY + height;
+
         // x坐标在[0,宽度]范围内，y坐标在[0,宽度]范围内
         return ((nowX >= 0 && nowX <= width) && (nowY >= 0 && nowY <= height));
     }

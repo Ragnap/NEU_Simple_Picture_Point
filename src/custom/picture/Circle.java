@@ -76,13 +76,36 @@ public class Circle extends Picture {
     }
 
     /**
+     * 绘制一个可以覆盖图形的矩形虚线框，多态重载
+     *
+     * @param graphics 当前画笔
+     */
+    public void drawBorder(Graphics2D graphics) {
+        //设置特色属性
+        Color originColor = graphics.getColor();
+        BasicStroke originStroke = (BasicStroke) graphics.getStroke();
+        graphics.setColor(new Color(91, 209, 215, 60));
+        int minX = (int) (baseX - r - stroke.getLineWidth() / 2);
+        int width = (int) (r * 2 + stroke.getLineWidth());
+        int minY = (int) (baseY - r - stroke.getLineWidth() / 2);
+        int height = (int) (r * 2 + stroke.getLineWidth());
+        graphics.fillRect(minX, minY, width, height);
+        graphics.setColor(new Color(32, 73, 105, 90));
+        graphics.setStroke(new BasicStroke(5));
+        graphics.drawRect(minX, minY, width, height);
+        //还原画笔
+        graphics.setColor(originColor);
+        graphics.setStroke(originStroke);
+    }
+
+    /**
      * 转换成保持到文件的格式
      * 3 RGB size baseX baseY r
      *
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        return pictureKind + "_" + color.getRGB() + "_" + stroke.getLineWidth() + "_" + baseX + "_" + baseY + "_" + Arrays.toString(name.getBytes(StandardCharsets.UTF_8)) + "_" + r;
+        return super.toFileString() + "_" + r;
     }
 
     /**

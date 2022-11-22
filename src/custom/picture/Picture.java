@@ -103,10 +103,17 @@ public class Picture {
     public void draw(Graphics2D graphics) {
 
     }
+    /**
+     * 绘制一个可以覆盖图形的矩形虚线框，多态重载
+     *
+     * @param graphics 当前画笔
+     */
+    public void drawBorder(Graphics2D graphics){
 
+    }
     /**
      * 转换成保持到文件的格式，多态重载
-     * pictureKind RGB size baseX baseY name 图形的特殊属性值
+     * pictureKind RGB size baseX baseY name
      *
      * @return 表示该图形的一行字符串
      */

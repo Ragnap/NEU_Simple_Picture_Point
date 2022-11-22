@@ -5,8 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static java.lang.Math.abs;
-import static java.lang.Math.sqrt;
+import static java.lang.Math.*;
 
 public class FreeLine extends Picture {
     /**
@@ -81,17 +80,50 @@ public class FreeLine extends Picture {
     }
 
     /**
+     * 绘制一个可以覆盖图形的矩形虚线框，多态重载
+     *
+     * @param graphics 当前画笔
+     */
+    public void drawBorder(Graphics2D graphics) {
+        //设置特色属性
+        Color originColor = graphics.getColor();
+        BasicStroke originStroke = (BasicStroke) graphics.getStroke();
+        graphics.setColor(new Color(91, 209, 215, 60));
+        //找横坐标和纵坐标的最大最小值
+        int minX = Integer.MAX_VALUE, maxX = Integer.MIN_VALUE, minY = Integer.MAX_VALUE, maxY = Integer.MIN_VALUE;
+        for (int nowX : pointsX) {
+            minX = min(minX, nowX);
+            maxX = max(maxX, nowX);
+        }
+        for (int nowY : pointsY) {
+            minY = min(minY, nowY);
+            maxY = max(maxY, nowY);
+        }
+        //拓展线宽
+        minX -= stroke.getLineWidth() / 2;
+        maxX += stroke.getLineWidth() / 2;
+        minY -= stroke.getLineWidth() / 2;
+        maxY += stroke.getLineWidth() / 2;
+
+        graphics.fillRect(minX, minY, maxX - minX, maxY - minY);
+        graphics.setColor(new Color(32, 73, 105, 90));
+        graphics.setStroke(new BasicStroke(5));
+        graphics.drawRect(minX, minY, maxX - minX, maxY - minY);
+        //还原画笔
+        graphics.setColor(originColor);
+        graphics.setStroke(originStroke);
+    }
+
+    /**
      * 转换成保持到文件的格式
      * 5 RGB size baseX baseY pointSize [pointsX] [pointsY]
      *
      * @return 表示该图形的一行字符串
      */
     public String toFileString() {
-        String pointSize = String.valueOf(pointsX.size());
         String pointX = pointsX.toString();
         String pointY = pointsY.toString();
-
-        return pictureKind + "_" + color.getRGB() + "_" + stroke.getLineWidth() + "_" + baseX + "_" + baseY + "_" + Arrays.toString(name.getBytes(StandardCharsets.UTF_8)) + "_" +pointSize+"_"+ pointX + "_" + pointY;
+        return super.toFileString() + "_" + "_" + pointX + "_" + pointY;
     }
 
     /**

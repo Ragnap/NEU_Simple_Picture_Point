@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class SelectListener implements MouseListener, MouseMotionListener {
 
-    private int x1=-1, x2=-1, y1=-1, y2=-1;
+    private int x1 = -1, x2 = -1, y1 = -1, y2 = -1;
 
     /**
      * 当前绘制页
@@ -45,8 +45,10 @@ public class SelectListener implements MouseListener, MouseMotionListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (!selectMode)
+        if (!selectMode){
+            pageEditPane.selectPicture(null);
             return;
+        }
         int nowX = e.getX();
         int nowY = e.getY();
         //重复点击的时候选取包含该点的下一个图形
@@ -60,18 +62,23 @@ public class SelectListener implements MouseListener, MouseMotionListener {
             y1 = nowY;
             coverPictures = pageEditPane.getPicturesAtPosition(x1, y1);
             nowIndex = 0;
-            System.out.println("选取点("+nowX+","+nowY+"),共有"+coverPictures.size()+"个图形");
+            System.out.println("选取点(" + nowX + "," + nowY + "),共有" + coverPictures.size() + "个图形");
 
         }
-        if(!coverPictures.isEmpty()){
-            System.out.println("选中"+coverPictures.get(nowIndex).getName());
+        if (!coverPictures.isEmpty()) {
+            System.out.println("选中" + coverPictures.get(nowIndex).getName());
+            pageEditPane.selectPicture(coverPictures.get(nowIndex));
         }
-
+        else{
+            pageEditPane.selectPicture(null);
+        }
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-
+        if (!selectMode){
+            pageEditPane.selectPicture(null);
+        }
     }
 
     @Override
