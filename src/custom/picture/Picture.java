@@ -43,6 +43,36 @@ public class Picture {
      */
     BasicStroke stroke = new BasicStroke(1.0f);
 
+    public void setBaseX(int baseX) {
+        this.baseX = baseX;
+    }
+
+    public void setBaseY(int baseY) {
+        this.baseY = baseY;
+    }
+
+    public int getBaseX() {
+        return baseX;
+    }
+
+    public int getBaseY() {
+        return baseY;
+    }
+
+    /**
+     * 移动整体图形的到x,y
+     *
+     * @param x 新的锚点x坐标
+     * @param y 新的锚点y坐标
+     */
+    public void move(int x, int y) {
+        //锚点移动距离
+        int deltaX = x - baseX;
+        int deltaY = y - baseY;
+        //所有点移动
+        baseX += deltaX;
+        baseY += deltaY;
+    }
 
     public String getName() {
         return name;
@@ -84,16 +114,6 @@ public class Picture {
         this.baseY = baseY;
     }
 
-    /**
-     * 移动图形
-     *
-     * @param deltaX X方向上位移
-     * @param deltaY Y方向上位移
-     */
-    public void move(int deltaX, int deltaY) {
-        this.baseX += deltaX;
-        this.baseY += deltaY;
-    }
 
     /**
      * 绘制图形，多态重载
@@ -103,14 +123,16 @@ public class Picture {
     public void draw(Graphics2D graphics) {
 
     }
+
     /**
      * 绘制一个可以覆盖图形的矩形虚线框，多态重载
      *
      * @param graphics 当前画笔
      */
-    public void drawBorder(Graphics2D graphics){
+    public void drawBorder(Graphics2D graphics) {
 
     }
+
     /**
      * 转换成保持到文件的格式，多态重载
      * pictureKind RGB size baseX baseY name
@@ -123,11 +145,12 @@ public class Picture {
 
     /**
      * 判断图形是否包含某个点，多态重载
+     *
      * @param x 点x坐标
      * @param y 点y坐标
      * @return 该图形是否包含该点
      */
-    public boolean isCoverPoint(int x,int y){
+    public boolean isCoverPoint(int x, int y) {
         return false;
     }
 

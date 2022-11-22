@@ -56,7 +56,7 @@ public class PageEditPane extends JPanel {
         selectListener.setSelectMode(true);
         selectListener.setEditPane(this);
         this.addMouseListener(selectListener);
-        this.addMouseMotionListener(drawListener);
+        this.addMouseMotionListener(selectListener);
     }
 
     /**
@@ -134,7 +134,16 @@ public class PageEditPane extends JPanel {
 
         addPicture(newPicture);
     }
-
+    /**
+     * 移动选定的的图形
+     *
+     * @param x 新的X坐标
+     * @param y 新的Y坐标
+     */
+    public void moveSelectPicture(int x,int y){
+        selectedPicture.move(x,y);
+        refresh();
+    }
     /**
      * 选中一个图片
      *

@@ -76,6 +76,23 @@ public class Line extends Picture {
         this.endY = endY;
     }
 
+    /**
+     * 移动整体图形的到x,y
+     *
+     * @param x 新的锚点x坐标
+     * @param y 新的锚点y坐标
+     */
+    public void move(int x, int y) {
+        //锚点移动距离
+        int deltaX = x- baseX ;
+        int deltaY = y- baseY ;
+        //所有点移动
+        baseX += deltaX;
+        baseY += deltaY;
+        endX += deltaX;
+        endY += deltaY;
+    }
+
     public void draw(Graphics2D graphics) {
         //设置特色属性
         Color originColor = graphics.getColor();
@@ -99,9 +116,9 @@ public class Line extends Picture {
         Color originColor = graphics.getColor();
         BasicStroke originStroke = (BasicStroke) graphics.getStroke();
         graphics.setColor(new Color(91, 209, 215, 60));
-        int minX = (int) (min(baseX,endX)  - stroke.getLineWidth() / 2);
+        int minX = (int) (min(baseX, endX) - stroke.getLineWidth() / 2);
         int width = (int) (abs(endX - baseX) + stroke.getLineWidth());
-        int minY = (int) (min(baseY,endY) - stroke.getLineWidth() / 2);
+        int minY = (int) (min(baseY, endY) - stroke.getLineWidth() / 2);
         int height = (int) (abs(endY - baseY) + stroke.getLineWidth());
 
         graphics.fillRect(minX, minY, width, height);

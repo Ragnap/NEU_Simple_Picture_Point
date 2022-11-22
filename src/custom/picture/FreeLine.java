@@ -35,7 +35,8 @@ public class FreeLine extends Picture {
         this.pictureKind = 5;
         this.id = freeLineCount;
         this.name = "自由线" + id;
-
+        this.baseX = x.get(0);
+        this.baseY = y.get(0);
         this.pointsX = x;
         this.pointsY = y;
     }
@@ -62,6 +63,28 @@ public class FreeLine extends Picture {
         this.name = name;
         this.pointsX = pointsX;
         this.pointsY = pointsY;
+    }
+
+    /**
+     * 移动整体图形的到x,y
+     *
+     * @param x 新的锚点x坐标
+     * @param y 新的锚点y坐标
+     */
+    public void move(int x, int y) {
+        //锚点移动距离
+        int deltaX = x - baseX;
+        int deltaY = y - baseY;
+        //更新锚点
+        baseX = x;
+        baseY = y;
+        //所有点移动
+        for (int i = 0; i < pointsX.size(); i++) {
+            int nowX = pointsX.get(i) + deltaX;
+            int nowY = pointsY.get(i) + deltaY;
+            pointsX.set(i, nowX);
+            pointsY.set(i, nowY);
+        }
     }
 
     public void draw(Graphics2D graphics) {
@@ -123,7 +146,7 @@ public class FreeLine extends Picture {
     public String toFileString() {
         String pointX = pointsX.toString();
         String pointY = pointsY.toString();
-        return super.toFileString() + "_" + "_" + pointX + "_" + pointY;
+        return super.toFileString() + "_" + pointX + "_" + pointY;
     }
 
     /**
