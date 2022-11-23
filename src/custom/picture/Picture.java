@@ -51,27 +51,16 @@ public class Picture {
         this.baseY = baseY;
     }
 
+    public int getPictureKind() {
+        return pictureKind;
+    }
+
     public int getBaseX() {
         return baseX;
     }
 
     public int getBaseY() {
         return baseY;
-    }
-
-    /**
-     * 移动整体图形的到x,y
-     *
-     * @param x 新的锚点x坐标
-     * @param y 新的锚点y坐标
-     */
-    public void move(int x, int y) {
-        //锚点移动距离
-        int deltaX = x - baseX;
-        int deltaY = y - baseY;
-        //所有点移动
-        baseX += deltaX;
-        baseY += deltaY;
     }
 
     public String getName() {
@@ -131,6 +120,21 @@ public class Picture {
      */
     public void drawBorder(Graphics2D graphics) {
 
+    }
+
+    /**
+     * 移动整体图形的到x,y
+     *
+     * @param x 新的锚点x坐标
+     * @param y 新的锚点y坐标
+     */
+    public void move(int x, int y) {
+        //锚点移动距离
+        int deltaX = x - baseX;
+        int deltaY = y - baseY;
+        //所有点移动
+        baseX += deltaX;
+        baseY += deltaY;
     }
 
     /**

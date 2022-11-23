@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 /**
@@ -157,6 +158,44 @@ public class PageEditPane extends JPanel {
         selectedPicture = picture;
         refresh();
     }
+
+    /**
+     * 以图形类别查找
+     *
+     * @param pictureKind 设定的图形类别,为0时不指定种类
+     * @return 所有符合的图形
+     */
+    public ArrayList<Picture> findPicture(int pictureKind) {
+        if (pictureKind == 0) {
+            return nowPage.getPictures();
+        }
+        ArrayList<Picture> results = new ArrayList<>();
+        for (Picture nowPicture : nowPage.getPictures()) {
+            if (nowPicture.getPictureKind() == pictureKind)
+                results.add(nowPicture);
+        }
+        return results;
+    }
+
+    /**
+     * 以图形名称模糊查找和种类复合查找
+     *
+     * @param pictureKind 设定的图形类别
+     * @param name        设定的图形类别
+     * @return 所有符合的图形
+     */
+    public ArrayList<Picture> findPicture(int pictureKind, String name) {
+        if (name == null || name.isEmpty()) {
+            return findPicture(pictureKind);
+        }
+        ArrayList<Picture> results = new ArrayList<>();
+        for (Picture nowPicture : findPicture(pictureKind)) {
+            if (nowPicture.getName().contains(name))
+                results.add(nowPicture);
+        }
+        return results;
+    }
+
 
     /**
      * 获取覆盖某个点的所有图形列表

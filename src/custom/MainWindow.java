@@ -22,11 +22,11 @@ public class MainWindow {
     /**
      * 上部设置工具栏
      */
-    ToolBarPane toolBarPane;
+    public ToolBarPane toolBarPane;
     /**
      * 下部页面栏
      */
-    PagePane pagePane;
+    public PagePane pagePane;
     /**
      * 下左所有页面预览列表
      */
@@ -36,12 +36,6 @@ public class MainWindow {
      */
     PageEditPane pageEditPane = new PageEditPane();
 
-
-
-
-    public PagePane getPagePane() {
-        return pagePane;
-    }
 
 
     public MainWindow() {

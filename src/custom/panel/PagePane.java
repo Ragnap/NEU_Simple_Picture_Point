@@ -9,11 +9,11 @@ public class PagePane extends JSplitPane {
     /**
      * 左所有页面预览列表
      */
-    PagePreviewPane pagePreviewPane = new PagePreviewPane();
+    public PagePreviewPane pagePreviewPane = new PagePreviewPane();
     /**
      * 右当前编辑页面
      */
-    PageEditPane pageEditPane = new PageEditPane();
+    public PageEditPane pageEditPane = new PageEditPane();
     /**
      * 当前打开的文件
      */
@@ -22,10 +22,6 @@ public class PagePane extends JSplitPane {
      * 当前页数
      */
     int nowPageIndex = 0;
-
-    public PageEditPane getPageEditPane() {
-        return pageEditPane;
-    }
 
     public PicturePointFile getNowFile() {
         return nowFile;

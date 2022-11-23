@@ -16,6 +16,7 @@ public class SelectListener implements MouseListener, MouseMotionListener {
      * 当前绘制页
      */
     private PageEditPane pageEditPane;
+
     public void setEditPane(PageEditPane pageEditPane) {
         this.pageEditPane = pageEditPane;
     }
@@ -50,15 +51,15 @@ public class SelectListener implements MouseListener, MouseMotionListener {
      * 根据当前下标选定图片
      */
     private void setSelectPicture() {
-        if (!coverPictures.isEmpty()) {
+        if (coverPictures == null || coverPictures.isEmpty()) {
+            pageEditPane.selectPicture(null);
+        } else {
             System.out.println("选中" + coverPictures.get(nowIndex).getName());
 
             originX = coverPictures.get(nowIndex).getBaseX();
             originY = coverPictures.get(nowIndex).getBaseY();
 
             pageEditPane.selectPicture(coverPictures.get(nowIndex));
-        } else {
-            pageEditPane.selectPicture(null);
         }
     }
 
@@ -68,7 +69,7 @@ public class SelectListener implements MouseListener, MouseMotionListener {
             pageEditPane.selectPicture(null);
             return;
         }
-        if (x1 == e.getX() && x2 == e.getX()) {
+        if (x1 == e.getX() && y1 == e.getY()) {
             //重复点击的时候选取包含该点的下一个图形
             nowIndex++;
             //访问完最后一个的时候回到第一个
@@ -89,23 +90,20 @@ public class SelectListener implements MouseListener, MouseMotionListener {
         if (!selectMode) {
             pageEditPane.selectPicture(null);
         }
-        // 移动完后，如果不是重复点击同一点，则清空当前选取，并重置移动坐标
-        if (!moveFlag && !(x1 == e.getX() && y1 == e.getY()) && coverPictures != null) {
-            x1 = e.getX();
-            y1 = e.getY();
-            coverPictures.clear();
-            setSelectPicture();
-        }
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        x2 = e.getX();
-        y2 = e.getY();
         if (moveFlag) {
-            System.out.println("移动到(" + x2 + "," + y2 + ")");
-        }
+            moveFlag = false;
+            System.out.println("移动到(" + e.getX() + "," + e.getY() + ")");
+            //为了多次移动同一图形需要更新图形初始值
+            originX = coverPictures.get(nowIndex).getBaseX();
+            originY = coverPictures.get(nowIndex).getBaseY();
 
+            x1 = -1;
+            y1 = -1;
+        }
     }
 
     @Override
@@ -122,9 +120,14 @@ public class SelectListener implements MouseListener, MouseMotionListener {
     public void mouseDragged(MouseEvent e) {
         if (!selectMode)
             return;
-        moveFlag = true;
+
         x2 = e.getX();
         y2 = e.getY();
+        if (!moveFlag) {
+            moveFlag = true;
+            x1 = x2;
+            y1 = y2;
+        }
         pageEditPane.moveSelectPicture(originX + x2 - x1, originY + y2 - y1);
     }
 
