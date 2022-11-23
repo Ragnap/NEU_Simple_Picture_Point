@@ -18,6 +18,14 @@ public class Circle extends Picture {
      */
     int r;
 
+    public int getR() {
+        return r;
+    }
+
+    public void setR(int r) {
+        this.r = r;
+    }
+
     /**
      * 创建以O为圆心,过B点的圆
      *

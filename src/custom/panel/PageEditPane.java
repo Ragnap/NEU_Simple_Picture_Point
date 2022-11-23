@@ -26,6 +26,15 @@ public class PageEditPane extends JPanel {
      */
     static public SelectListener selectListener = new SelectListener();
     /**
+     * 属性设置工具
+     */
+    static public AttributeSettingBar attributeSettingBar = null;
+
+    public static void setAttributeSettingBar(AttributeSettingBar attributeSettingBar) {
+        PageEditPane.attributeSettingBar = attributeSettingBar;
+    }
+
+    /**
      * 正在绘制的页面
      */
     private Page nowPage = null;
@@ -146,6 +155,7 @@ public class PageEditPane extends JPanel {
         if (selectedPicture == null)
             return;
         selectedPicture.move(x, y);
+        attributeSettingBar.updateSetting();
         refresh();
     }
 
@@ -156,9 +166,9 @@ public class PageEditPane extends JPanel {
      */
     public void selectPicture(Picture picture) {
         selectedPicture = picture;
+        attributeSettingBar.setNowPicture(picture);
         refresh();
     }
-
     /**
      * 以图形类别查找
      *

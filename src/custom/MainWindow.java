@@ -18,7 +18,6 @@ public class MainWindow {
      * 主页面
      */
     JSplitPane mainPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-
     /**
      * 上部设置工具栏
      */
@@ -36,11 +35,7 @@ public class MainWindow {
      */
     PageEditPane pageEditPane = new PageEditPane();
 
-
-
     public MainWindow() {
-
-
         // 设置窗口图标
         mainFrame.setIconImage(new ImageIcon("./src/Resource/PicturePoint2077.png").getImage());
         // 获取当前屏幕大小
@@ -70,13 +65,10 @@ public class MainWindow {
 
         // 下半部分为幻灯片部分，由左右两个部分构成
         pagePane = new PagePane(windowSize.width, windowSize.height - toolBarPane.getHeight());
-
         mainPane.setRightComponent(pagePane);
     }
 
     public void showMainWindow() {
         mainFrame.setVisible(true);
-
     }
-
 }

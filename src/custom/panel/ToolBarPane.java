@@ -30,9 +30,9 @@ public class ToolBarPane extends JSplitPane {
      */
     JPanel pictureSettingPane = new JPanel();
     /**
-     * 操作设置栏
+     * 属性设置栏
      */
-    JPanel operationSettingPane = new JPanel();
+    JPanel attributeSettingPane = new JPanel();
     /**
      * 查看设置栏
      */
@@ -57,14 +57,12 @@ public class ToolBarPane extends JSplitPane {
         // 上部分为选项菜单
         this.setTopComponent(menuPane);
 
-
         buildMenu();
 
         // 下部分对应多个设置栏
-
         buildFileSettingPane();
         buildPictureSettingPane();
-        buildOperationSettingPane();
+        buildAttributeSettingPane();
         buildViewSettingPane();
 
         // 默认时设置栏打开文件菜单
@@ -87,11 +85,10 @@ public class ToolBarPane extends JSplitPane {
                 switch (e.getActionCommand()) {
                     case "文件" -> setBottomComponent(fileSettingPane);
                     case "图像" -> setBottomComponent(pictureSettingPane);
-                    case "操作" -> setBottomComponent(operationSettingPane);
+                    case "属性" -> setBottomComponent(attributeSettingPane);
                     case "查看" -> setBottomComponent(viewSettingPane);
                 }
                 setDividerLocation(dividerLocation);
-
             }
         };
         // 不同菜单选项为透明无边框按钮
@@ -107,11 +104,11 @@ public class ToolBarPane extends JSplitPane {
         pictureMenuButton.addActionListener(actionListener);
         menuPane.add(pictureMenuButton);
 
-        JButton operationMenuButton = new JButton("操作");
-        operationMenuButton.setContentAreaFilled(false);
-        operationMenuButton.setBorder(null);
-        operationMenuButton.addActionListener(actionListener);
-        menuPane.add(operationMenuButton);
+        JButton attributeMenuButton = new JButton("属性");
+        attributeMenuButton.setContentAreaFilled(false);
+        attributeMenuButton.setBorder(null);
+        attributeMenuButton.addActionListener(actionListener);
+        menuPane.add(attributeMenuButton);
 
         JButton viewMenuButton = new JButton("查看");
         viewMenuButton.setContentAreaFilled(false);
@@ -166,8 +163,16 @@ public class ToolBarPane extends JSplitPane {
     /**
      * 构建操作设置面板
      */
-    void buildOperationSettingPane() {
-        operationSettingPane.setSize(new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2));
+    void buildAttributeSettingPane() {
+        Dimension dimension = new Dimension(this.getWidth(), this.getWidth() - getDividerLocation() - getDividerSize() - 2);
+
+        attributeSettingPane.setSize(dimension);
+        //属性控制栏
+        AttributeSettingBar attributeSettingBar = new AttributeSettingBar(dimension);
+        attributeSettingBar.setMainWindow(mainWindow);
+
+        attributeSettingPane.add(attributeSettingBar);
+        PageEditPane.setAttributeSettingBar(attributeSettingBar);
     }
 
     /**

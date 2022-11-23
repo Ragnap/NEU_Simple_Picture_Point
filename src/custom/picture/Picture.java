@@ -15,6 +15,7 @@ public class Picture {
      * 3:圆
      * 4:椭圆
      * 5:自由线
+     * 6:文字
      */
     int pictureKind;
     /**
@@ -69,6 +70,10 @@ public class Picture {
 
     public Color getColor() {
         return color;
+    }
+
+    public BasicStroke getStroke() {
+        return stroke;
     }
 
     public void setName(String name) {
@@ -157,5 +162,6 @@ public class Picture {
     public boolean isCoverPoint(int x, int y) {
         return false;
     }
+
 
 }

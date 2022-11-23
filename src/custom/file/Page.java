@@ -12,16 +12,12 @@ public class Page {
      * 该页面上的图形列表
      */
     private ArrayList<Picture> pictures = new ArrayList<>();
-
     public ArrayList<Picture> getPictures() {
         return pictures;
     }
-
     public void addPicture(Picture newPicture){
         pictures.add(newPicture);
     }
-
-
     /**
      * 获取覆盖某个点的所有图形列表
      * @param x 点的x坐标

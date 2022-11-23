@@ -10,7 +10,8 @@ import java.util.ArrayList;
 
 public class SelectListener implements MouseListener, MouseMotionListener {
 
-    private int x1 = -1, x2 = -1, y1 = -1, y2 = -1;
+    private int x1 = -1;
+    private int y1 = -1;
     private int originX, originY;
     /**
      * 当前绘制页
@@ -28,7 +29,7 @@ public class SelectListener implements MouseListener, MouseMotionListener {
     /**
      * 当前选中图形列表
      */
-    ArrayList<Picture> coverPictures;
+    ArrayList<Picture> coverPictures = new ArrayList<>();
     /**
      * 当前选中图形下标
      */
@@ -51,7 +52,7 @@ public class SelectListener implements MouseListener, MouseMotionListener {
      * 根据当前下标选定图片
      */
     private void setSelectPicture() {
-        if (coverPictures == null || coverPictures.isEmpty()) {
+        if (coverPictures.isEmpty()) {
             pageEditPane.selectPicture(null);
         } else {
             System.out.println("选中" + coverPictures.get(nowIndex).getName());
@@ -80,7 +81,7 @@ public class SelectListener implements MouseListener, MouseMotionListener {
             y1 = e.getY();
             coverPictures = pageEditPane.getPicturesAtPosition(x1, y1);
             nowIndex = 0;
-            System.out.println("选取点(" + x1 + "," + y2 + "),共有" + coverPictures.size() + "个图形");
+            System.out.println("选取点(" + x1 + "," + y1 + "),共有" + coverPictures.size() + "个图形");
         }
         setSelectPicture();
     }
@@ -100,7 +101,7 @@ public class SelectListener implements MouseListener, MouseMotionListener {
             //为了多次移动同一图形需要更新图形初始值
             originX = coverPictures.get(nowIndex).getBaseX();
             originY = coverPictures.get(nowIndex).getBaseY();
-
+            //为了重新选取需要重设上次点击位置为初始值
             x1 = -1;
             y1 = -1;
         }
@@ -121,9 +122,12 @@ public class SelectListener implements MouseListener, MouseMotionListener {
         if (!selectMode)
             return;
 
-        x2 = e.getX();
-        y2 = e.getY();
+        int x2 = e.getX();
+        int y2 = e.getY();
+        if(coverPictures.isEmpty())
+            return;
         if (!moveFlag) {
+            // 记录移动开始点
             moveFlag = true;
             x1 = x2;
             y1 = y2;
