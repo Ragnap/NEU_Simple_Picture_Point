@@ -18,6 +18,22 @@ public class Text extends Picture {
      */
     String content = "";
 
+    public Font getFont() {
+        return font;
+    }
+
+    public void setFont(Font font) {
+        this.font = font;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     /**
      * 通过给左上角点与文本与字体创建文字
      *
