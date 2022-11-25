@@ -128,8 +128,12 @@ public class ToolBarPane extends JSplitPane {
         FileSaveLoadBar fileSaveLoadBar = new FileSaveLoadBar(new Dimension(this.getWidth() / 4, this.getWidth() - getDividerLocation() - getDividerSize() - 2));
         fileSaveLoadBar.setMainWindow(mainWindow);
         fileSettingPane.add(fileSaveLoadBar);
+        // 页操作面板
+        FilePageBar filePageBar = new FilePageBar(new Dimension(this.getWidth() / 4, this.getWidth() - getDividerLocation() - getDividerSize() - 2));
+        filePageBar.setMainWindow(mainWindow);
+        fileSettingPane.add(filePageBar);
         // 筛选面板
-        FileFindBar fileFindBar = new FileFindBar(new Dimension(this.getWidth() / 4 * 3, this.getWidth() - getDividerLocation() - getDividerSize() - 2));
+        FileFindBar fileFindBar = new FileFindBar(new Dimension(this.getWidth() / 2, this.getWidth() - getDividerLocation() - getDividerSize() - 2));
         fileFindBar.setMainWindow(mainWindow);
         fileSettingPane.add(fileFindBar);
     }

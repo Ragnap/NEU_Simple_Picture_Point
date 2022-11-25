@@ -16,7 +16,7 @@ import java.util.Objects;
 /**
  * 单页面操作
  */
-public class PageEditPane extends JPanel {
+public class PageEditPane extends JScrollPane {
     /**
      * 画笔工具
      */
@@ -40,6 +40,10 @@ public class PageEditPane extends JPanel {
     private Page nowPage = null;
 
     public void setNowPage(Page nowPage) {
+        if (nowPage != this.nowPage) {
+            selectedPicture = null;
+            attributeSettingBar.setNowPicture(null);
+        }
         this.nowPage = nowPage;
     }
 
@@ -57,6 +61,7 @@ public class PageEditPane extends JPanel {
     private Image buffer = null;
 
     public PageEditPane() {
+
         // 默认是选择模式
         drawListener.setDrawMode(0);
         drawListener.setEditPane(this);
@@ -101,7 +106,6 @@ public class PageEditPane extends JPanel {
         int baseY = Integer.parseInt(info[4]);
         // 第六个参数为图形名称
         String name = toOriginString(info[5]);
-        System.out.println(name);
         // 其他参数
         switch (drawMode) {
             // 直线
@@ -169,6 +173,7 @@ public class PageEditPane extends JPanel {
         attributeSettingBar.setNowPicture(picture);
         refresh();
     }
+
     /**
      * 以图形类别查找
      *

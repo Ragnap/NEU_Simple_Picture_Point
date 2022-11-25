@@ -590,10 +590,10 @@ public class AttributeSettingBar extends BaseBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("重设选定图形名称为:" + textContentInput.getText());
-                ((Text)nowPicture).setContent(textContentInput.getText());
+                ((Text) nowPicture).setContent(textContentInput.getText());
 
                 updateSetting();
-                System.out.println("重设文字内容:"+textContentInput.getText());
+                System.out.println("重设文字内容:" + textContentInput.getText());
             }
         });
         layout.setConstraints(textContentInput, buildConstraints(21, 3, 8, 1, new Insets(0, 10, 0, 10)));
