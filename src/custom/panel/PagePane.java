@@ -7,6 +7,15 @@ import javax.swing.*;
 
 public class PagePane extends JSplitPane {
     /**
+     * 关联页面控制栏
+     */
+    static private FilePageBar filePageBar=null;
+
+    public static void setFilePageBar(FilePageBar filePageBar) {
+        PagePane.filePageBar = filePageBar;
+    }
+
+    /**
      * 左所有页面预览列表
      */
     public PagePreviewPane pagePreviewPane = new PagePreviewPane();
@@ -22,6 +31,10 @@ public class PagePane extends JSplitPane {
      * 当前页数
      */
     int nowPageIndex = 0;
+
+    public int getNowPageIndex() {
+        return nowPageIndex;
+    }
 
     public PicturePointFile getNowFile() {
         return nowFile;
@@ -48,6 +61,8 @@ public class PagePane extends JSplitPane {
 
         pagePreviewPane.setPagePane(this);
         pagePreviewPane.updatePage(nowPageIndex, pageEditPane.getPageShot());
+
+
     }
 
 
@@ -62,6 +77,7 @@ public class PagePane extends JSplitPane {
         pageEditPane.refresh();
 
         pagePreviewPane.updatePage(nowPageIndex, pageEditPane.getPageShot());
+        filePageBar.updateView();
     }
 
     /**
@@ -73,7 +89,6 @@ public class PagePane extends JSplitPane {
         pageEditPane.refresh();
 
         pagePreviewPane.updatePage(nowPageIndex, pageEditPane.getPageShot());
-
     }
 
     /**
@@ -86,6 +101,8 @@ public class PagePane extends JSplitPane {
         pageEditPane.refresh();
 
         pagePreviewPane.clear();
+        filePageBar.updateView();
+
     }
 
     /**
@@ -96,6 +113,8 @@ public class PagePane extends JSplitPane {
         nowPageIndex = index;
         pageEditPane.setNowPage(nowFile.getPageAt(nowPageIndex));
         pageEditPane.refresh();
+        filePageBar.updateView();
+
     }
 
     /**
@@ -103,17 +122,19 @@ public class PagePane extends JSplitPane {
      */
     public void deletePage() {
         //如果只有一页了，则将这页清空
-        if(nowFile.getPages().size()==1){
+        if(nowFile.getSize()==1){
             resetPage(0);
             return;
         }
         nowFile.deletePage(nowPageIndex);
         pagePreviewPane.deletePage(nowPageIndex);
         //删除的是最后一页，则需要移动到上一页
-        if (nowPageIndex == nowFile.getPages().size())
+        if (nowPageIndex == nowFile.getSize())
             nowPageIndex--;
         pageEditPane.setNowPage(nowFile.getPageAt(nowPageIndex));
         pageEditPane.refresh();
+        filePageBar.updateView();
+
     }
 
     /**
@@ -127,19 +148,23 @@ public class PagePane extends JSplitPane {
         nowFile.setPage(nowPageIndex - 1, nowPage);
         nowFile.setPage(nowPageIndex, oldPage);
         nowPageIndex--;
+        filePageBar.updateView();
+
     }
 
     /**
      * 移动当前页到下一页，与下一页交换
      */
     public void moveDownPage() {
-        if (nowPageIndex + 1 == nowFile.getPages().size())
+        if (nowPageIndex + 1 == nowFile.getSize())
             return;
         Page oldPage = nowFile.getPageAt(nowPageIndex + 1);
         Page nowPage = nowFile.getPageAt(nowPageIndex);
         nowFile.setPage(nowPageIndex + 1, nowPage);
         nowFile.setPage(nowPageIndex, oldPage);
         nowPageIndex++;
+        filePageBar.updateView();
+
     }
 
     /**
@@ -151,17 +176,21 @@ public class PagePane extends JSplitPane {
         nowPageIndex--;
         pageEditPane.setNowPage(nowFile.getPageAt(nowPageIndex));
         pageEditPane.refresh();
+        filePageBar.updateView();
+
     }
 
     /**
      * 切换到下一页
      */
     public void nextPage() {
-        if (nowPageIndex + 1 == nowFile.getPages().size())
+        if (nowPageIndex + 1 == nowFile.getSize())
             return;
         nowPageIndex++;
         pageEditPane.setNowPage(nowFile.getPageAt(nowPageIndex));
         pageEditPane.refresh();
+        filePageBar.updateView();
+
     }
 
 }

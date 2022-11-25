@@ -9,6 +9,14 @@ public class PicturePointFile {
     ArrayList<Page> pages = new ArrayList<>();
 
     /**
+     * 返回当前总页数
+     * @return 总页数
+     */
+    public int getSize(){
+        return pages.size();
+    }
+
+    /**
      * 获取下标为index的单页
      *
      * @param index 下标
@@ -27,14 +35,6 @@ public class PicturePointFile {
         return pages.get(0);
     }
 
-    /**
-     * 获取最后一页
-     *
-     * @return 最后一页
-     */
-    public Page getPageBack() {
-        return pages.get(pages.size() - 1);
-    }
 
     /**
      * 获取所有单页

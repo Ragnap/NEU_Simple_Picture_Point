@@ -40,12 +40,12 @@ public class FileFindBar extends BaseBar {
      */
     JComboBox<String> resultChooser;
 
-    public void setMainWindow(MainWindow mainWindow) {
-        this.mainWindow = mainWindow;
-    }
+    public FileFindBar(MainWindow mainWindow,Dimension size) {
 
-    public FileFindBar(Dimension size) {
         baseSetting(size);
+
+        this.mainWindow = mainWindow;
+
         GridBagLayout layout = (GridBagLayout) this.getLayout();
 
         // 类别提示文字 5*1
@@ -65,7 +65,7 @@ public class FileFindBar extends BaseBar {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("查找种类:" + kindChooser.getSelectedItem());
-                kind = switch ((String)kindChooser.getSelectedItem()) {
+                kind = switch ((String) kindChooser.getSelectedItem()) {
                     case "直线" -> 1;
                     case "矩形" -> 2;
                     case "圆形" -> 3;
@@ -117,12 +117,15 @@ public class FileFindBar extends BaseBar {
         resultChooser.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                mainWindow.pagePane.pageEditPane.selectPicture(result.get(resultChooser.getSelectedIndex()));
+
             }
         });
         layout.setConstraints(resultChooser, buildConstraints(4, 2, 4, 1, new Insets(0, 10, 5, 10)));
     }
 
+    /**
+     * 将搜索结果放到下拉选择框中
+     */
     private void refreshResultChooser() {
         result = mainWindow.pagePane.pageEditPane.findPicture(kind, keyword);
         System.out.println("当前筛选的是" + kind + " 查找名称为" + keyword);
@@ -135,6 +138,8 @@ public class FileFindBar extends BaseBar {
             resultChooser.setEnabled(true);
             for (Picture nowPicture : result)
                 resultList.add(nowPicture.getName());
+            // 默认选择第一个结果
+            mainWindow.pagePane.pageEditPane.selectPicture(result.get(0));
         }
         resultChooser.setModel(new DefaultComboBoxModel<String>(resultList));
     }

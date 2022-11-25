@@ -44,12 +44,10 @@ public class FileSaveLoadBar extends BaseBar {
      */
     MainWindow mainWindow = null;
 
-    public void setMainWindow(MainWindow mainWindow) {
-        this.mainWindow = mainWindow;
-    }
 
-    public FileSaveLoadBar(Dimension size) {
+    public FileSaveLoadBar(MainWindow mainWindow, Dimension size) {
         baseSetting(size);
+        this.mainWindow = mainWindow;
         GridBagLayout layout = (GridBagLayout) this.getLayout();
         // 创建文件选择器
         fileChooser = new JFileChooser();
@@ -73,7 +71,7 @@ public class FileSaveLoadBar extends BaseBar {
             }
         });
         this.add(createButton);
-        layout.setConstraints(createButton, buildConstraints(0, 0, 1, 1, new Insets(10, 10, 5, 5),1));
+        layout.setConstraints(createButton, buildConstraints(0, 0, 1, 1, new Insets(10, 10, 5, 5), 1));
 
 
         // 保存按钮
@@ -86,7 +84,7 @@ public class FileSaveLoadBar extends BaseBar {
             }
         });
         this.add(saveButton);
-        layout.setConstraints(saveButton, buildConstraints(1, 0, 1, 1, new Insets(10, 5, 5, 10),1));
+        layout.setConstraints(saveButton, buildConstraints(1, 0, 1, 1, new Insets(10, 5, 5, 10), 1));
 
         // 打开按钮
         loadButton = new JButton("打开");
@@ -98,7 +96,7 @@ public class FileSaveLoadBar extends BaseBar {
             }
         });
         this.add(loadButton);
-        layout.setConstraints(loadButton, buildConstraints(0, 1, 1, 1, new Insets(5, 10, 10, 5),1));
+        layout.setConstraints(loadButton, buildConstraints(0, 1, 1, 1, new Insets(5, 10, 10, 5), 1));
 
         // 另存为按钮
         saveAsButton = new JButton("另存为");
@@ -110,7 +108,7 @@ public class FileSaveLoadBar extends BaseBar {
             }
         });
         this.add(saveAsButton);
-        layout.setConstraints(saveAsButton, buildConstraints(1, 1, 1, 1, new Insets(5, 5, 10, 10),1));
+        layout.setConstraints(saveAsButton, buildConstraints(1, 1, 1, 1, new Insets(5, 5, 10, 10), 1));
 
     }
 
